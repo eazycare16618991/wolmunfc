@@ -193,7 +193,7 @@
       font-size: 13px;
       border-bottom: 1px solid var(--border);
     }
-    .standings-table td:first-child { text-align: left; font-weight: 600; }
+    .standings-table td:first-child { text-align: left; font-weight: 600; white-space: nowrap; }
     .standings-table tr:last-child td { border-bottom: none; }
     .standings-table tr.my-team td { background: rgba(0,184,148,0.07); }
     .standings-table tr.my-team td:first-child { color: var(--accent-dark); }
@@ -339,7 +339,8 @@
       background: var(--card);
       border-radius: 16px;
       box-shadow: 0 2px 16px rgba(0,0,0,0.07);
-      overflow: hidden;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
     }
     .records-table {
       width: 100%;
@@ -368,7 +369,8 @@
       text-align: center;
       border-bottom: 1px solid var(--border);
     }
-    .records-table td:first-child { text-align: left; font-weight: 600; }
+    .records-table td:first-child { text-align: left; font-weight: 600; white-space: nowrap; }
+    .records-table td:nth-child(2) { white-space: nowrap; }
     .records-table tr:last-child td { border-bottom: none; }
     .records-table tr:hover td { background: #f5fcfc; }
     .record-name { display: inline-flex; align-items: center; gap: 5px; }
