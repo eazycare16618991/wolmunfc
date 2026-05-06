@@ -334,78 +334,100 @@
     .video-info .title { font-size: 14px; font-weight: 700; color: var(--primary); line-height: 1.3; }
     .video-info .meta { color: var(--muted); font-size: 12px; margin-top: 6px; }
 
-    /* ── 회비 현황 ── */
-    .fee-section { padding-top: 0; }
-    .fee-summary {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 16px;
-      margin-bottom: 28px;
-    }
-    @media (max-width: 600px) { .fee-summary { grid-template-columns: 1fr; } }
-    .fee-stat-card {
-      background: var(--card);
-      border-radius: 14px;
-      padding: 22px 20px;
-      box-shadow: 0 2px 12px rgba(0,0,0,0.06);
-    }
-    .fee-stat-card .lbl { color: var(--muted); font-size: 12px; font-weight: 600; margin-bottom: 8px; }
-    .fee-stat-card .amt { font-size: 24px; font-weight: 800; color: var(--primary); }
-    .fee-stat-card.collected .amt { color: var(--accent-dark); }
-    .fee-stat-card.pending  .amt { color: #e17055; }
-    .fee-table-wrap {
+    /* ── 개인기록 ── */
+    .records-table-wrap {
       background: var(--card);
       border-radius: 16px;
       box-shadow: 0 2px 16px rgba(0,0,0,0.07);
       overflow: hidden;
     }
-    .fee-table {
+    .records-table {
       width: 100%;
       border-collapse: collapse;
     }
-    .fee-table th {
-      background: var(--primary);
-      color: #fff;
+    .records-table th {
+      background: #e0f5f4;
+      color: var(--primary-dark);
       font-size: 12px;
-      font-weight: 600;
+      font-weight: 700;
       padding: 12px 18px;
-      text-align: left;
+      text-align: center;
       letter-spacing: .4px;
+      cursor: pointer;
+      user-select: none;
+      white-space: nowrap;
     }
-    .fee-table td {
-      padding: 12px 18px;
+    .records-table th:first-child { text-align: left; cursor: default; }
+    .records-table th.sortable:hover { background: #c8eceb; }
+    .records-table th .sort-icon { margin-left: 4px; opacity: 0.4; font-size: 10px; }
+    .records-table th.sort-asc .sort-icon,
+    .records-table th.sort-desc .sort-icon { opacity: 1; color: var(--primary); }
+    .records-table td {
+      padding: 11px 18px;
       font-size: 13px;
+      text-align: center;
       border-bottom: 1px solid var(--border);
     }
-    .fee-table tr:last-child td { border-bottom: none; }
-    .fee-table tr:hover td { background: #f8fafb; }
-    .status-paid {
-      display: inline-flex;
-      align-items: center;
-      gap: 5px;
-      color: var(--accent-dark);
-      font-weight: 700;
-      font-size: 12px;
-    }
-    .status-paid::before { content: '✓'; font-weight: 900; }
-    .status-pending {
-      display: inline-flex;
-      align-items: center;
-      gap: 5px;
-      color: #e17055;
-      font-weight: 700;
-      font-size: 12px;
-    }
-    .status-pending::before { content: '○'; }
-    .amount-cell { font-weight: 700; color: var(--primary); }
-    .month-chip {
+    .records-table td:first-child { text-align: left; font-weight: 600; }
+    .records-table tr:last-child td { border-bottom: none; }
+    .records-table tr:hover td { background: #f5fcfc; }
+    .record-name { display: inline-flex; align-items: center; gap: 5px; }
+    .icon-goal  { font-size: 14px; title: '득점왕'; }
+    .icon-assist { font-size: 14px; title: '어시스트왕'; }
+    .extra-record.record-hidden { display: none; }
+    .team-chip {
       display: inline-block;
-      background: #f0f4f8;
-      color: var(--muted);
       font-size: 11px;
+      font-weight: 600;
       padding: 2px 8px;
-      border-radius: 5px;
+      border-radius: 10px;
+      background: #e0f5f4;
+      color: var(--primary-dark);
     }
+
+    /* ── MVP ── */
+    .mvp-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+    @media (max-width: 720px) { .mvp-grid { grid-template-columns: 1fr; } }
+    .mvp-team-card {
+      background: var(--card);
+      border-radius: 16px;
+      box-shadow: 0 2px 16px rgba(0,0,0,0.07);
+      overflow: hidden;
+    }
+    .mvp-team-header {
+      background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+      padding: 14px 20px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .mvp-team-header .team-icon { font-size: 20px; }
+    .mvp-team-header h3 { color: #fff; font-size: 15px; font-weight: 800; }
+    .mvp-items { padding: 16px 20px; display: flex; flex-direction: column; gap: 12px; }
+    .mvp-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 14px;
+      background: var(--bg);
+      border-radius: 12px;
+    }
+    .mvp-badge {
+      width: 40px; height: 40px;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 20px;
+      flex-shrink: 0;
+    }
+    .mvp-badge.keeper { background: rgba(58,188,184,0.15); }
+    .mvp-badge.defense { background: rgba(245,200,66,0.2); }
+    .mvp-info { display: flex; flex-direction: column; gap: 2px; }
+    .mvp-label { font-size: 11px; font-weight: 700; color: var(--muted); letter-spacing: .5px; }
+    .mvp-name { font-size: 15px; font-weight: 800; color: var(--text); }
 
     /* ── 참석인원 ── */
     .attend-grid {
@@ -560,7 +582,7 @@
     <nav>
       <a href="#league">리그현황</a>
       <a href="#videos">경기영상</a>
-      <a href="#fee">회비현황</a>
+      <a href="#records">개인기록</a>
     </nav>
   </div>
 </header>
@@ -570,6 +592,7 @@
   <div class="hero-badge">⚽ 2026 시즌 리그 진행중</div>
   <h1>오늘도 평화로운<br><span>월문 FC</span></h1>
   <p>함께 뛰고, 함께 성장하는<br>우리들의 풋살 이야기</p>
+  <p style="color:rgba(255,255,255,0.6);font-size:13px;margin-top:-16px;margin-bottom:0;">(리그기간 : 2026년 5월 3일 ~ 6월 7일)</p>
   <div class="hero-stats">
     <div class="hero-stat">
       <div class="num">3팀</div>
@@ -740,6 +763,91 @@
 
 <hr class="divider" style="max-width:1100px;margin:0 auto;" />
 
+<!-- ── MVP ── -->
+<section id="mvp">
+  <div class="section-header">
+    <div class="section-tag">MVP</div>
+    <h2>라운드 MVP</h2>
+    <p>각 팀이 선정한 1라운드 포지션별 MVP</p>
+  </div>
+
+  <div class="mvp-grid">
+    <!-- 선우팀 -->
+    <div class="mvp-team-card">
+      <div class="mvp-team-header">
+        <span class="team-icon">🔵</span>
+        <h3>선우팀</h3>
+      </div>
+      <div class="mvp-items">
+        <div class="mvp-item">
+          <div class="mvp-badge keeper">🧤</div>
+          <div class="mvp-info">
+            <span class="mvp-label">키퍼 MVP</span>
+            <span class="mvp-name">방선우</span>
+          </div>
+        </div>
+        <div class="mvp-item">
+          <div class="mvp-badge defense">🛡️</div>
+          <div class="mvp-info">
+            <span class="mvp-label">수비 MVP</span>
+            <span class="mvp-name">김병묵</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 기빈팀 -->
+    <div class="mvp-team-card">
+      <div class="mvp-team-header">
+        <span class="team-icon">🟢</span>
+        <h3>기빈팀</h3>
+      </div>
+      <div class="mvp-items">
+        <div class="mvp-item">
+          <div class="mvp-badge keeper">🧤</div>
+          <div class="mvp-info">
+            <span class="mvp-label">키퍼 MVP</span>
+            <span class="mvp-name">박영수</span>
+          </div>
+        </div>
+        <div class="mvp-item">
+          <div class="mvp-badge defense">🛡️</div>
+          <div class="mvp-info">
+            <span class="mvp-label">수비 MVP</span>
+            <span class="mvp-name">전원표</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 영록팀 -->
+    <div class="mvp-team-card">
+      <div class="mvp-team-header">
+        <span class="team-icon">🔴</span>
+        <h3>영록팀</h3>
+      </div>
+      <div class="mvp-items">
+        <div class="mvp-item">
+          <div class="mvp-badge keeper">🧤</div>
+          <div class="mvp-info">
+            <span class="mvp-label">키퍼 MVP</span>
+            <span class="mvp-name">김지훈</span>
+          </div>
+        </div>
+        <div class="mvp-item">
+          <div class="mvp-badge defense">🛡️</div>
+          <div class="mvp-info">
+            <span class="mvp-label">수비 MVP</span>
+            <span class="mvp-name">홍래균</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider" style="max-width:1100px;margin:0 auto;" />
+
 <!-- ── 참석인원 ── -->
 <section id="attend">
   <div class="section-header">
@@ -760,18 +868,18 @@
     </div>
     <div class="attend-card rank2">
       <span class="crown">🥈</span>
-      <div class="team-nm">선우팀</div>
+      <div class="team-nm">영록팀</div>
       <div class="attend-bar-wrap"><div class="attend-bar" style="width:70%"></div></div>
       <div class="attend-nums">
         <div><strong>7명</strong>참석</div>
       </div>
     </div>
-    <div class="attend-card rank2">
-      <span class="crown">🥈</span>
-      <div class="team-nm">영록팀</div>
-      <div class="attend-bar-wrap"><div class="attend-bar" style="width:70%"></div></div>
+    <div class="attend-card rank3">
+      <span class="crown">🥉</span>
+      <div class="team-nm">선우팀</div>
+      <div class="attend-bar-wrap"><div class="attend-bar" style="width:60%"></div></div>
       <div class="attend-nums">
-        <div><strong>7명</strong>참석</div>
+        <div><strong>6명</strong>참석</div>
       </div>
     </div>
   </div>
@@ -790,7 +898,7 @@
         <tr><td>방선우</td><td>선우팀</td><td><span class="attend-o">●</span></td><td class="attend-total">1</td></tr>
         <tr><td>장지호</td><td>선우팀</td><td><span class="attend-o">●</span></td><td class="attend-total">1</td></tr>
         <tr><td>정종환</td><td>선우팀</td><td><span class="attend-o">●</span></td><td class="attend-total">1</td></tr>
-        <tr><td>김태홍</td><td>선우팀</td><td><span class="attend-o">●</span></td><td class="attend-total">1</td></tr>
+        <tr><td>김태홍</td><td>선우팀</td><td><span class="attend-x">✕</span></td><td class="attend-total">0</td></tr>
         <tr><td>최만식</td><td>선우팀</td><td><span class="attend-o">●</span></td><td class="attend-total">1</td></tr>
         <tr class="extra-row"><td>김병묵</td><td>선우팀</td><td><span class="attend-o">●</span></td><td class="attend-total">1</td></tr>
         <tr class="extra-row"><td>김성록</td><td>선우팀</td><td><span class="attend-o">●</span></td><td class="attend-total">1</td></tr>
@@ -868,77 +976,148 @@
         <div class="meta">YouTube에서 보기</div>
       </div>
     </a>
+    <a href="https://youtu.be/JYEP9sgpsdc?si=ZoO0OmtIxTJdJH3o" target="_blank" class="video-card">
+      <div class="video-thumb">
+        <img src="https://img.youtube.com/vi/JYEP9sgpsdc/hqdefault.jpg" alt="경기 영상 3" />
+        <div class="play-btn"></div>
+        <span class="video-thumb-label">📹 유튜브</span>
+      </div>
+      <div class="video-info">
+        <div class="round">경기 영상 3</div>
+        <div class="title">월문 FC 경기 영상</div>
+        <div class="meta">YouTube에서 보기</div>
+      </div>
+    </a>
   </div>
 </section>
 
 <hr class="divider" style="max-width:1100px;margin:0 auto;" />
 
-<!-- ── 회비 현황 ── -->
-<section id="fee" class="fee-section">
+<!-- ── 개인기록 ── -->
+<section id="records">
   <div class="section-header">
-    <div class="section-tag">Finance</div>
-    <h2>회비 현황</h2>
-    <p>2026 시즌 팀원 회비 납부 현황</p>
+    <div class="section-tag">Records</div>
+    <h2>개인기록</h2>
+    <p>2026 월문FC 내부 리그 · 개인 득점/어시스트 기록 · 열 클릭 시 정렬</p>
   </div>
 
-  <div class="fee-summary">
-    <div class="fee-stat-card">
-      <div class="lbl">총 인원</div>
-      <div class="amt">24명</div>
-    </div>
-    <div class="fee-stat-card collected">
-      <div class="lbl">납부 완료</div>
-      <div class="amt">-</div>
-    </div>
-    <div class="fee-stat-card pending">
-      <div class="lbl">미납</div>
-      <div class="amt">-</div>
-    </div>
-  </div>
-
-  <div class="fee-table-wrap">
-    <table class="fee-table">
+  <div class="records-table-wrap">
+    <table class="records-table" id="recordsTable">
       <thead>
         <tr>
-          <th>이름</th>
+          <th>회원명</th>
           <th>팀</th>
-          <th>납부 금액</th>
-          <th>상태</th>
+          <th class="sortable" data-col="goal" onclick="sortRecords('goal')">득점 <span class="sort-icon">▼</span></th>
+          <th class="sortable" data-col="assist" onclick="sortRecords('assist')">어시스트 <span class="sort-icon">▼</span></th>
+          <th class="sortable" data-col="keeper" onclick="sortRecords('keeper')">키퍼 <span class="sort-icon">▼</span></th>
+          <th class="sortable" data-col="attend" onclick="sortRecords('attend')">참석수 <span class="sort-icon">▼</span></th>
         </tr>
       </thead>
-      <tbody>
-        <tr><td><strong>방선우</strong></td><td>선우팀</td><td class="amount-cell">-</td><td><span class="status-pending">미확인</span></td></tr>
-        <tr><td><strong>장지호</strong></td><td>선우팀</td><td class="amount-cell">-</td><td><span class="status-pending">미확인</span></td></tr>
-        <tr><td><strong>정종환</strong></td><td>선우팀</td><td class="amount-cell">-</td><td><span class="status-pending">미확인</span></td></tr>
-        <tr><td><strong>김태홍</strong></td><td>선우팀</td><td class="amount-cell">-</td><td><span class="status-pending">미확인</span></td></tr>
-        <tr><td><strong>최만식</strong></td><td>선우팀</td><td class="amount-cell">-</td><td><span class="status-pending">미확인</span></td></tr>
-        <tr class="extra-row"><td><strong>김병묵</strong></td><td>선우팀</td><td class="amount-cell">-</td><td><span class="status-pending">미확인</span></td></tr>
-        <tr class="extra-row"><td><strong>김성록</strong></td><td>선우팀</td><td class="amount-cell">-</td><td><span class="status-pending">미확인</span></td></tr>
-        <tr class="extra-row"><td><strong>강기빈</strong></td><td>기빈팀</td><td class="amount-cell">-</td><td><span class="status-pending">미확인</span></td></tr>
-        <tr class="extra-row"><td><strong>김태향</strong></td><td>기빈팀</td><td class="amount-cell">-</td><td><span class="status-pending">미확인</span></td></tr>
-        <tr class="extra-row"><td><strong>전원표</strong></td><td>기빈팀</td><td class="amount-cell">-</td><td><span class="status-pending">미확인</span></td></tr>
-        <tr class="extra-row"><td><strong>황인성</strong></td><td>기빈팀</td><td class="amount-cell">-</td><td><span class="status-pending">미확인</span></td></tr>
-        <tr class="extra-row"><td><strong>박영수</strong></td><td>기빈팀</td><td class="amount-cell">-</td><td><span class="status-pending">미확인</span></td></tr>
-        <tr class="extra-row"><td><strong>채동훈</strong></td><td>기빈팀</td><td class="amount-cell">-</td><td><span class="status-pending">미확인</span></td></tr>
-        <tr class="extra-row"><td><strong>박찬빈</strong></td><td>기빈팀</td><td class="amount-cell">-</td><td><span class="status-pending">미확인</span></td></tr>
-        <tr class="extra-row"><td><strong>채유민</strong></td><td>기빈팀</td><td class="amount-cell">-</td><td><span class="status-pending">미확인</span></td></tr>
-        <tr class="extra-row"><td><strong>이형일</strong></td><td>기빈팀</td><td class="amount-cell">-</td><td><span class="status-pending">미확인</span></td></tr>
-        <tr class="extra-row"><td><strong>이인표</strong></td><td>기빈팀</td><td class="amount-cell">-</td><td><span class="status-pending">미확인</span></td></tr>
-        <tr class="extra-row"><td><strong>박영록</strong></td><td>영록팀</td><td class="amount-cell">-</td><td><span class="status-pending">미확인</span></td></tr>
-        <tr class="extra-row"><td><strong>박상현</strong></td><td>영록팀</td><td class="amount-cell">-</td><td><span class="status-pending">미확인</span></td></tr>
-        <tr class="extra-row"><td><strong>김동수</strong></td><td>영록팀</td><td class="amount-cell">-</td><td><span class="status-pending">미확인</span></td></tr>
-        <tr class="extra-row"><td><strong>김지훈</strong></td><td>영록팀</td><td class="amount-cell">-</td><td><span class="status-pending">미확인</span></td></tr>
-        <tr class="extra-row"><td><strong>홍래균</strong></td><td>영록팀</td><td class="amount-cell">-</td><td><span class="status-pending">미확인</span></td></tr>
-        <tr class="extra-row"><td><strong>강성현</strong></td><td>영록팀</td><td class="amount-cell">-</td><td><span class="status-pending">미확인</span></td></tr>
-        <tr class="extra-row"><td><strong>조성인</strong></td><td>영록팀</td><td class="amount-cell">-</td><td><span class="status-pending">미확인</span></td></tr>
-      </tbody>
+      <tbody id="recordsTbody"></tbody>
     </table>
-    <button class="attend-toggle-btn" onclick="toggleRows(this)">
-      19명 더 보기 <i class="arrow">▼</i>
-    </button>
-    <p style="padding:12px 18px;font-size:12px;color:var(--muted);">※ 회비 상세 내역을 공유해주시면 업데이트해드릴게요.</p>
+    <button class="attend-toggle-btn" id="recordToggleBtn" onclick="toggleRecordRows()">19명 더 보기 ▼</button>
+    <p style="padding:12px 18px;font-size:12px;color:var(--muted);">⚽ 득점왕 &nbsp;·&nbsp; 🎯 어시스트왕 &nbsp;·&nbsp; 기록 업데이트는 관리자에게 문의하세요.</p>
   </div>
 </section>
+
+<script>
+  const recordsData = [
+    { name:'강기빈', team:'기빈팀', goal:2, assist:1, keeper:0, attend:1 },
+    { name:'강성현', team:'영록팀', goal:0, assist:0, keeper:1, attend:1 },
+    { name:'김동수', team:'영록팀', goal:2, assist:0, keeper:0, attend:1 },
+    { name:'김병묵', team:'선우팀', goal:0, assist:0, keeper:0, attend:1 },
+    { name:'김성록', team:'선우팀', goal:3, assist:0, keeper:0, attend:1 },
+    { name:'김지훈', team:'영록팀', goal:0, assist:0, keeper:3, attend:1 },
+    { name:'김태향', team:'기빈팀', goal:1, assist:3, keeper:0, attend:1 },
+    { name:'김태홍', team:'선우팀', goal:0, assist:0, keeper:0, attend:0 },
+    { name:'박상현', team:'영록팀', goal:0, assist:1, keeper:0, attend:1 },
+    { name:'박영록', team:'영록팀', goal:0, assist:0, keeper:0, attend:1 },
+    { name:'박영수', team:'기빈팀', goal:0, assist:1, keeper:1, attend:1 },
+    { name:'박찬빈', team:'기빈팀', goal:0, assist:1, keeper:1, attend:1 },
+    { name:'방선우', team:'선우팀', goal:0, assist:1, keeper:4, attend:1 },
+    { name:'이인표', team:'기빈팀', goal:0, assist:0, keeper:0, attend:1 },
+    { name:'이형일', team:'기빈팀', goal:0, assist:1, keeper:1, attend:1 },
+    { name:'장지호', team:'선우팀', goal:1, assist:4, keeper:0, attend:1 },
+    { name:'전원표', team:'기빈팀', goal:1, assist:0, keeper:0, attend:1 },
+    { name:'정종환', team:'선우팀', goal:0, assist:1, keeper:0, attend:1 },
+    { name:'조성인', team:'영록팀', goal:1, assist:2, keeper:0, attend:1 },
+    { name:'채동훈', team:'기빈팀', goal:1, assist:0, keeper:0, attend:1 },
+    { name:'채유민', team:'기빈팀', goal:0, assist:0, keeper:0, attend:1 },
+    { name:'최만식', team:'선우팀', goal:3, assist:0, keeper:0, attend:1 },
+    { name:'홍래균', team:'영록팀', goal:0, assist:0, keeper:0, attend:1 },
+    { name:'황인성', team:'기빈팀', goal:2, assist:0, keeper:0, attend:1 },
+  ];
+
+  let currentSort = { col: null, asc: false };
+
+  function getTopPlayers(col) {
+    const max = Math.max(...recordsData.map(r => r[col]));
+    if (max === 0) return [];
+    return recordsData.filter(r => r[col] === max).map(r => r.name);
+  }
+
+  function renderRecords(data) {
+    const topGoals   = getTopPlayers('goal');
+    const topAssists = getTopPlayers('assist');
+    const tbody = document.getElementById('recordsTbody');
+    tbody.innerHTML = data.map((r, i) => {
+      const goalIcon   = topGoals.includes(r.name)   ? '<span class="icon-goal"  title="득점왕">⚽</span>' : '';
+      const assistIcon = topAssists.includes(r.name) ? '<span class="icon-assist" title="어시스트왕">🎯</span>' : '';
+      const hidden = i >= 5 ? ' class="extra-record"' : '';
+      return `<tr${hidden}>
+        <td><span class="record-name">${r.name}${goalIcon}${assistIcon}</span></td>
+        <td><span class="team-chip">${r.team}</span></td>
+        <td>${r.goal}</td>
+        <td>${r.assist}</td>
+        <td>${r.keeper}</td>
+        <td>${r.attend}</td>
+      </tr>`;
+    }).join('');
+    updateRecordToggleBtn();
+  }
+
+  function updateRecordToggleBtn() {
+    const extras = document.querySelectorAll('.extra-record');
+    const btn = document.getElementById('recordToggleBtn');
+    if (!btn) return;
+    const isOpen = extras.length > 0 && !extras[0].classList.contains('record-hidden');
+    btn.textContent = isOpen ? '접기 ▲' : `${extras.length}명 더 보기 ▼`;
+  }
+
+  function toggleRecordRows() {
+    const extras = document.querySelectorAll('.extra-record');
+    const isOpen = !extras[0].classList.contains('record-hidden');
+    extras.forEach(r => r.classList.toggle('record-hidden', isOpen));
+    updateRecordToggleBtn();
+  }
+
+  function sortRecords(col) {
+    const isSameCol = currentSort.col === col;
+    currentSort.asc = isSameCol ? !currentSort.asc : false;
+    currentSort.col = col;
+
+    document.querySelectorAll('#recordsTable th').forEach(th => {
+      th.classList.remove('sort-asc', 'sort-desc');
+    });
+    const th = document.querySelector(`#recordsTable th[data-col="${col}"]`);
+    th.classList.add(currentSort.asc ? 'sort-asc' : 'sort-desc');
+    const icon = th.querySelector('.sort-icon');
+    icon.textContent = currentSort.asc ? '▲' : '▼';
+
+    const sorted = [...recordsData].sort((a, b) =>
+      currentSort.asc ? a[col] - b[col] : b[col] - a[col]
+    );
+    renderRecords(sorted);
+  }
+
+  // 초기: 득점 내림차순 정렬
+  currentSort = { col: 'goal', asc: false };
+  const initialSorted = [...recordsData].sort((a, b) => b.goal - a.goal);
+  renderRecords(initialSorted);
+  document.querySelector('#recordsTable th[data-col="goal"]').classList.add('sort-desc');
+  // 초기 5명 이후 숨김
+  document.querySelectorAll('.extra-record').forEach(r => r.classList.add('record-hidden'));
+</script>
 
 <!-- ── 푸터 ── -->
 <footer>
