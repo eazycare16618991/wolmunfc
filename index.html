@@ -1170,10 +1170,35 @@
     document.getElementById('mvp-next').disabled = mvpRound === mvpMaxRound;
   }
 
+  // ── 오늘의 기록 네비게이터 (1라운드 → 2라운드) ──
+  let todayRound = 2;
+  const todayMaxRound = 2;
+
+  function changeTodayRound(dir) {
+    todayRound = Math.max(1, Math.min(todayMaxRound, todayRound + dir));
+    updateTodayDisplay();
+  }
+
+  const todaySubtitles = {
+    1: '1라운드 (05.03) · 골·어시스트·키퍼 기록 선수',
+    2: '2라운드 (05.10) · 골·어시스트·키퍼 기록 선수',
+  };
+
+  function updateTodayDisplay() {
+    document.querySelectorAll('#today-records .round-content').forEach(el => {
+      el.style.display = parseInt(el.dataset.round) === todayRound ? '' : 'none';
+    });
+    document.getElementById('today-round-label').textContent = todayRound + '라운드';
+    document.getElementById('today-subtitle').textContent = todaySubtitles[todayRound];
+    document.getElementById('today-prev').disabled = todayRound === 1;
+    document.getElementById('today-next').disabled = todayRound === todayMaxRound;
+  }
+
   // 페이지 로드 시 초기화
   document.addEventListener('DOMContentLoaded', () => {
     updateLeagueDisplay();
     updateMvpDisplay();
+    updateTodayDisplay();
   });
 
   function applyTeamChipColors() {
@@ -1241,47 +1266,85 @@
   <div class="section-header">
     <div class="section-tag">Today</div>
     <h2>오늘의 기록</h2>
-    <p>2라운드 (05.10) · 골·어시스트·키퍼 기록 선수</p>
+    <p id="today-subtitle">2라운드 (05.10) · 골·어시스트·키퍼 기록 선수</p>
   </div>
 
-  <div class="attend-table-wrap">
-    <table class="records-table">
-      <thead>
-        <tr>
-          <th>회원명</th>
-          <th>팀</th>
-          <th>득점</th>
-          <th>어시스트</th>
-          <th>키퍼</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr><td><span class="record-name">김현</span></td><td><span class="team-chip">영록팀</span></td><td>5</td><td>2</td><td>0</td></tr>
-        <tr><td><span class="record-name">강기빈</span></td><td><span class="team-chip">기빈팀</span></td><td>4</td><td>0</td><td>0</td></tr>
-        <tr><td><span class="record-name">정종환</span></td><td><span class="team-chip">선우팀</span></td><td>4</td><td>1</td><td>0</td></tr>
-        <tr><td><span class="record-name">장지호</span></td><td><span class="team-chip">선우팀</span></td><td>3</td><td>2</td><td>0</td></tr>
-        <tr><td><span class="record-name">김지훈</span></td><td><span class="team-chip">영록팀</span></td><td>3</td><td>1</td><td>2</td></tr>
-        <tr class="extra-row"><td><span class="record-name">황인성</span></td><td><span class="team-chip">기빈팀</span></td><td>2</td><td>0</td><td>0</td></tr>
-        <tr class="extra-row"><td><span class="record-name">김동수</span></td><td><span class="team-chip">영록팀</span></td><td>2</td><td>1</td><td>0</td></tr>
-        <tr class="extra-row"><td><span class="record-name">박상현</span></td><td><span class="team-chip">영록팀</span></td><td>1</td><td>2</td><td>0</td></tr>
-        <tr class="extra-row"><td><span class="record-name">최만식</span></td><td><span class="team-chip">선우팀</span></td><td>1</td><td>1</td><td>0</td></tr>
-        <tr class="extra-row"><td><span class="record-name">홍래균</span></td><td><span class="team-chip">영록팀</span></td><td>1</td><td>1</td><td>0</td></tr>
-        <tr class="extra-row"><td><span class="record-name">김성록</span></td><td><span class="team-chip">선우팀</span></td><td>1</td><td>1</td><td>0</td></tr>
-        <tr class="extra-row"><td><span class="record-name">채유민</span></td><td><span class="team-chip">기빈팀</span></td><td>1</td><td>0</td><td>1</td></tr>
-        <tr class="extra-row"><td><span class="record-name">전원표</span></td><td><span class="team-chip">기빈팀</span></td><td>0</td><td>3</td><td>0</td></tr>
-        <tr class="extra-row"><td><span class="record-name">채동훈</span></td><td><span class="team-chip">기빈팀</span></td><td>0</td><td>2</td><td>0</td></tr>
-        <tr class="extra-row"><td><span class="record-name">방선우</span></td><td><span class="team-chip">선우팀</span></td><td>0</td><td>1</td><td>2</td></tr>
-        <tr class="extra-row"><td><span class="record-name">박영록</span></td><td><span class="team-chip">영록팀</span></td><td>0</td><td>1</td><td>2</td></tr>
-        <tr class="extra-row"><td><span class="record-name">김태향</span></td><td><span class="team-chip">기빈팀</span></td><td>0</td><td>1</td><td>0</td></tr>
-        <tr class="extra-row"><td><span class="record-name">김인</span></td><td><span class="team-chip">영록팀</span></td><td>0</td><td>1</td><td>0</td></tr>
-        <tr class="extra-row"><td><span class="record-name">박영수</span></td><td><span class="team-chip">기빈팀</span></td><td>0</td><td>0</td><td>2</td></tr>
-        <tr class="extra-row"><td><span class="record-name">정해승</span></td><td><span class="team-chip">선우팀</span></td><td>0</td><td>0</td><td>2</td></tr>
-        <tr class="extra-row"><td><span class="record-name">이형일</span></td><td><span class="team-chip">기빈팀</span></td><td>0</td><td>0</td><td>1</td></tr>
-      </tbody>
-    </table>
-    <button class="attend-toggle-btn" onclick="toggleRows(this)">
-      16명 더 보기 <i class="arrow">▼</i>
-    </button>
+  <!-- 라운드 네비게이터 -->
+  <div class="round-nav">
+    <button class="round-arrow" id="today-prev" onclick="changeTodayRound(-1)">◀</button>
+    <span class="round-nav-text" id="today-round-label">2라운드</span>
+    <button class="round-arrow" id="today-next" onclick="changeTodayRound(1)" disabled>▶</button>
+  </div>
+
+  <!-- 1라운드 -->
+  <div class="round-content" data-round="1" style="display:none">
+    <div class="attend-table-wrap">
+      <table class="records-table">
+        <thead>
+          <tr><th>회원명</th><th>팀</th><th>득점</th><th>어시스트</th><th>키퍼</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><span class="record-name">김성록</span></td><td><span class="team-chip">선우팀</span></td><td>3</td><td>0</td><td>0</td></tr>
+          <tr><td><span class="record-name">최만식</span></td><td><span class="team-chip">선우팀</span></td><td>3</td><td>0</td><td>0</td></tr>
+          <tr><td><span class="record-name">강기빈</span></td><td><span class="team-chip">기빈팀</span></td><td>2</td><td>1</td><td>0</td></tr>
+          <tr><td><span class="record-name">황인성</span></td><td><span class="team-chip">기빈팀</span></td><td>2</td><td>0</td><td>0</td></tr>
+          <tr><td><span class="record-name">김동수</span></td><td><span class="team-chip">영록팀</span></td><td>2</td><td>0</td><td>0</td></tr>
+          <tr class="extra-row"><td><span class="record-name">장지호</span></td><td><span class="team-chip">선우팀</span></td><td>1</td><td>4</td><td>0</td></tr>
+          <tr class="extra-row"><td><span class="record-name">김태향</span></td><td><span class="team-chip">기빈팀</span></td><td>1</td><td>3</td><td>0</td></tr>
+          <tr class="extra-row"><td><span class="record-name">조성인</span></td><td><span class="team-chip">영록팀</span></td><td>1</td><td>2</td><td>0</td></tr>
+          <tr class="extra-row"><td><span class="record-name">전원표</span></td><td><span class="team-chip">기빈팀</span></td><td>1</td><td>0</td><td>0</td></tr>
+          <tr class="extra-row"><td><span class="record-name">채동훈</span></td><td><span class="team-chip">기빈팀</span></td><td>1</td><td>0</td><td>0</td></tr>
+          <tr class="extra-row"><td><span class="record-name">방선우</span></td><td><span class="team-chip">선우팀</span></td><td>0</td><td>1</td><td>4</td></tr>
+          <tr class="extra-row"><td><span class="record-name">김지훈</span></td><td><span class="team-chip">영록팀</span></td><td>0</td><td>0</td><td>3</td></tr>
+          <tr class="extra-row"><td><span class="record-name">박영수</span></td><td><span class="team-chip">기빈팀</span></td><td>0</td><td>1</td><td>1</td></tr>
+          <tr class="extra-row"><td><span class="record-name">박찬빈</span></td><td><span class="team-chip">기빈팀</span></td><td>0</td><td>1</td><td>1</td></tr>
+          <tr class="extra-row"><td><span class="record-name">이형일</span></td><td><span class="team-chip">기빈팀</span></td><td>0</td><td>1</td><td>1</td></tr>
+          <tr class="extra-row"><td><span class="record-name">정종환</span></td><td><span class="team-chip">선우팀</span></td><td>0</td><td>1</td><td>0</td></tr>
+          <tr class="extra-row"><td><span class="record-name">박상현</span></td><td><span class="team-chip">영록팀</span></td><td>0</td><td>1</td><td>0</td></tr>
+          <tr class="extra-row"><td><span class="record-name">강성현</span></td><td><span class="team-chip">영록팀</span></td><td>0</td><td>0</td><td>1</td></tr>
+        </tbody>
+      </table>
+      <button class="attend-toggle-btn" onclick="toggleRows(this)">
+        13명 더 보기 <i class="arrow">▼</i>
+      </button>
+    </div>
+  </div>
+
+  <!-- 2라운드 -->
+  <div class="round-content" data-round="2">
+    <div class="attend-table-wrap">
+      <table class="records-table">
+        <thead>
+          <tr><th>회원명</th><th>팀</th><th>득점</th><th>어시스트</th><th>키퍼</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><span class="record-name">김현</span></td><td><span class="team-chip">영록팀</span></td><td>5</td><td>2</td><td>0</td></tr>
+          <tr><td><span class="record-name">강기빈</span></td><td><span class="team-chip">기빈팀</span></td><td>4</td><td>0</td><td>0</td></tr>
+          <tr><td><span class="record-name">정종환</span></td><td><span class="team-chip">선우팀</span></td><td>4</td><td>1</td><td>0</td></tr>
+          <tr><td><span class="record-name">장지호</span></td><td><span class="team-chip">선우팀</span></td><td>3</td><td>2</td><td>0</td></tr>
+          <tr><td><span class="record-name">김지훈</span></td><td><span class="team-chip">영록팀</span></td><td>3</td><td>1</td><td>2</td></tr>
+          <tr class="extra-row"><td><span class="record-name">황인성</span></td><td><span class="team-chip">기빈팀</span></td><td>2</td><td>0</td><td>0</td></tr>
+          <tr class="extra-row"><td><span class="record-name">김동수</span></td><td><span class="team-chip">영록팀</span></td><td>2</td><td>1</td><td>0</td></tr>
+          <tr class="extra-row"><td><span class="record-name">박상현</span></td><td><span class="team-chip">영록팀</span></td><td>1</td><td>2</td><td>0</td></tr>
+          <tr class="extra-row"><td><span class="record-name">최만식</span></td><td><span class="team-chip">선우팀</span></td><td>1</td><td>1</td><td>0</td></tr>
+          <tr class="extra-row"><td><span class="record-name">홍래균</span></td><td><span class="team-chip">영록팀</span></td><td>1</td><td>1</td><td>0</td></tr>
+          <tr class="extra-row"><td><span class="record-name">김성록</span></td><td><span class="team-chip">선우팀</span></td><td>1</td><td>1</td><td>0</td></tr>
+          <tr class="extra-row"><td><span class="record-name">채유민</span></td><td><span class="team-chip">기빈팀</span></td><td>1</td><td>0</td><td>1</td></tr>
+          <tr class="extra-row"><td><span class="record-name">전원표</span></td><td><span class="team-chip">기빈팀</span></td><td>0</td><td>3</td><td>0</td></tr>
+          <tr class="extra-row"><td><span class="record-name">채동훈</span></td><td><span class="team-chip">기빈팀</span></td><td>0</td><td>2</td><td>0</td></tr>
+          <tr class="extra-row"><td><span class="record-name">방선우</span></td><td><span class="team-chip">선우팀</span></td><td>0</td><td>1</td><td>2</td></tr>
+          <tr class="extra-row"><td><span class="record-name">박영록</span></td><td><span class="team-chip">영록팀</span></td><td>0</td><td>1</td><td>2</td></tr>
+          <tr class="extra-row"><td><span class="record-name">김태향</span></td><td><span class="team-chip">기빈팀</span></td><td>0</td><td>1</td><td>0</td></tr>
+          <tr class="extra-row"><td><span class="record-name">김인</span></td><td><span class="team-chip">영록팀</span></td><td>0</td><td>1</td><td>0</td></tr>
+          <tr class="extra-row"><td><span class="record-name">박영수</span></td><td><span class="team-chip">기빈팀</span></td><td>0</td><td>0</td><td>2</td></tr>
+          <tr class="extra-row"><td><span class="record-name">정해승</span></td><td><span class="team-chip">선우팀</span></td><td>0</td><td>0</td><td>2</td></tr>
+          <tr class="extra-row"><td><span class="record-name">이형일</span></td><td><span class="team-chip">기빈팀</span></td><td>0</td><td>0</td><td>1</td></tr>
+        </tbody>
+      </table>
+      <button class="attend-toggle-btn" onclick="toggleRows(this)">
+        16명 더 보기 <i class="arrow">▼</i>
+      </button>
+    </div>
   </div>
 </section>
 
