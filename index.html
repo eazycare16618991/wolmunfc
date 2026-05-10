@@ -3,7 +3,16 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>오늘도 평화로운 월문FC</title>
+  <title>오늘도 평화로운 월문FC | 경기기록</title>
+  <meta name="description" content="2026 월문FC 내부 풋살 리그 · 경기결과, 순위, 개인기록" />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="오늘도 평화로운 월문FC | 경기기록" />
+  <meta property="og:description" content="2026 월문FC 내부 풋살 리그 · 2라운드 경기결과, 순위, 개인기록" />
+  <meta property="og:image" content="logo.png" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="오늘도 평화로운 월문FC | 경기기록" />
+  <meta name="twitter:description" content="2026 월문FC 내부 풋살 리그 · 2라운드 경기결과, 순위, 개인기록" />
+  <meta name="twitter:image" content="logo.png" />
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -657,9 +666,9 @@
 
   <!-- 라운드 네비게이터 -->
   <div class="round-nav">
-    <button class="round-arrow" id="prev-round" onclick="changeRound(-1)">◀</button>
-    <span class="round-nav-text" id="current-round-label">2라운드</span>
-    <button class="round-arrow" id="next-round" onclick="changeRound(1)" disabled>▶</button>
+    <button class="round-arrow" id="league-prev" onclick="changeLeagueRound(-1)">◀</button>
+    <span class="round-nav-text" id="league-round-label">2라운드</span>
+    <button class="round-arrow" id="league-next" onclick="changeLeagueRound(1)">▶</button>
   </div>
 
   <!-- 1라운드 -->
@@ -766,7 +775,7 @@
         <div class="card-header">
           <span class="icon">🏆</span>
           <h3>리그 순위표</h3>
-          <span class="badge-live">누적</span>
+          <span class="badge-live">2라운드</span>
         </div>
         <table class="standings-table">
           <thead>
@@ -774,16 +783,16 @@
           </thead>
           <tbody>
             <tr>
-              <td><span class="rank-num rank-1">1</span>기빈팀</td>
-              <td>8</td><td class="win">4</td><td class="draw">2</td><td class="loss">2</td><td>0</td><td><strong>14</strong></td>
+              <td><span class="rank-num rank-1">1</span>영록팀</td>
+              <td>4</td><td class="win">2</td><td class="draw">1</td><td class="loss">1</td><td>+5</td><td><strong>7</strong></td>
             </tr>
             <tr>
-              <td><span class="rank-num rank-2">2</span>선우팀</td>
-              <td>8</td><td class="win">3</td><td class="draw">2</td><td class="loss">3</td><td>-1</td><td><strong>11</strong></td>
+              <td><span class="rank-num rank-2">2</span>기빈팀</td>
+              <td>4</td><td class="win">2</td><td class="draw">0</td><td class="loss">2</td><td>-2</td><td><strong>6</strong></td>
             </tr>
             <tr>
-              <td><span class="rank-num rank-3">3</span>영록팀</td>
-              <td>8</td><td class="win">2</td><td class="draw">2</td><td class="loss">4</td><td>+1</td><td><strong>8</strong></td>
+              <td><span class="rank-num rank-3">3</span>선우팀</td>
+              <td>4</td><td class="win">1</td><td class="draw">1</td><td class="loss">2</td><td>-3</td><td><strong>4</strong></td>
             </tr>
           </tbody>
         </table>
@@ -853,6 +862,66 @@
     </div>
   </div>
 
+  <!-- 누적 순위 -->
+  <div class="round-content" data-round="3" style="display:none">
+    <div class="league-grid">
+      <div class="card">
+        <div class="card-header">
+          <span class="icon">🏆</span>
+          <h3>리그 순위표</h3>
+          <span class="badge-live">누적</span>
+        </div>
+        <table class="standings-table">
+          <thead>
+            <tr><th>팀명</th><th>경기</th><th>승</th><th>무</th><th>패</th><th>골득실</th><th>승점</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><span class="rank-num rank-1">1</span>기빈팀</td>
+              <td>8</td><td class="win">4</td><td class="draw">2</td><td class="loss">2</td><td>0</td><td><strong>14</strong></td>
+            </tr>
+            <tr>
+              <td><span class="rank-num rank-2">2</span>선우팀</td>
+              <td>8</td><td class="win">3</td><td class="draw">2</td><td class="loss">3</td><td>-1</td><td><strong>11</strong></td>
+            </tr>
+            <tr>
+              <td><span class="rank-num rank-3">3</span>영록팀</td>
+              <td>8</td><td class="win">2</td><td class="draw">2</td><td class="loss">4</td><td>+1</td><td><strong>8</strong></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="card">
+        <div class="card-header">
+          <span class="icon">📊</span>
+          <h3>라운드별 승점</h3>
+          <span class="badge-live">1·2라운드</span>
+        </div>
+        <div class="attend-table-wrap">
+        <table class="standings-table attend-table">
+          <thead>
+            <tr><th>팀명</th><th>1라운드</th><th>2라운드</th><th>합계</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><span class="rank-num rank-1">1</span>기빈팀</td>
+              <td>8</td><td>6</td><td><strong>14</strong></td>
+            </tr>
+            <tr>
+              <td><span class="rank-num rank-2">2</span>선우팀</td>
+              <td>7</td><td>4</td><td><strong>11</strong></td>
+            </tr>
+            <tr>
+              <td><span class="rank-num rank-3">3</span>영록팀</td>
+              <td>1</td><td>7</td><td><strong>8</strong></td>
+            </tr>
+          </tbody>
+        </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
 </section>
 
 <hr class="divider" style="max-width:1100px;margin:0 auto;" />
@@ -867,9 +936,9 @@
 
   <!-- MVP 라운드 네비게이터 -->
   <div class="round-nav">
-    <button class="round-arrow" id="mvp-prev" onclick="changeRound(-1)">◀</button>
+    <button class="round-arrow" id="mvp-prev" onclick="changeMvpRound(-1)">◀</button>
     <span class="round-nav-text" id="mvp-round-label">2라운드</span>
-    <button class="round-arrow" id="mvp-next" onclick="changeRound(1)" disabled>▶</button>
+    <button class="round-arrow" id="mvp-next" onclick="changeMvpRound(1)" disabled>▶</button>
   </div>
 
   <!-- 1라운드 MVP -->
@@ -1064,34 +1133,48 @@
       : `${count}명 더 보기 <i class="arrow">▼</i>`;
   }
 
-  let currentRound = 2;
-  const maxRound = 2;
+  // ── 리그 네비게이터 (1라운드 → 2라운드 → 누적) ──
+  let leagueRound = 2;
+  const leagueMaxRound = 3;
 
-  function changeRound(dir) {
-    currentRound = Math.max(1, Math.min(maxRound, currentRound + dir));
-    updateRoundDisplay();
+  function changeLeagueRound(dir) {
+    leagueRound = Math.max(1, Math.min(leagueMaxRound, leagueRound + dir));
+    updateLeagueDisplay();
   }
 
-  function updateRoundDisplay() {
-    // 라운드별 콘텐츠 토글
-    document.querySelectorAll('.round-content').forEach(el => {
-      el.style.display = parseInt(el.dataset.round) === currentRound ? '' : 'none';
+  function updateLeagueDisplay() {
+    document.querySelectorAll('#league .round-content').forEach(el => {
+      el.style.display = parseInt(el.dataset.round) === leagueRound ? '' : 'none';
     });
-    // 라벨 업데이트
-    document.querySelectorAll('#current-round-label, #mvp-round-label').forEach(el => {
-      el.textContent = currentRound + '라운드';
-    });
-    // 버튼 활성/비활성
-    document.querySelectorAll('#prev-round, #mvp-prev').forEach(btn => {
-      btn.disabled = currentRound === 1;
-    });
-    document.querySelectorAll('#next-round, #mvp-next').forEach(btn => {
-      btn.disabled = currentRound === maxRound;
-    });
+    const label = leagueRound === leagueMaxRound ? '누적' : leagueRound + '라운드';
+    document.getElementById('league-round-label').textContent = label;
+    document.getElementById('league-prev').disabled = leagueRound === 1;
+    document.getElementById('league-next').disabled = leagueRound === leagueMaxRound;
   }
 
-  // 페이지 로드 시 2라운드로 초기화
-  document.addEventListener('DOMContentLoaded', updateRoundDisplay);
+  // ── MVP 네비게이터 (1라운드 → 2라운드) ──
+  let mvpRound = 2;
+  const mvpMaxRound = 2;
+
+  function changeMvpRound(dir) {
+    mvpRound = Math.max(1, Math.min(mvpMaxRound, mvpRound + dir));
+    updateMvpDisplay();
+  }
+
+  function updateMvpDisplay() {
+    document.querySelectorAll('#mvp .round-content').forEach(el => {
+      el.style.display = parseInt(el.dataset.round) === mvpRound ? '' : 'none';
+    });
+    document.getElementById('mvp-round-label').textContent = mvpRound + '라운드';
+    document.getElementById('mvp-prev').disabled = mvpRound === 1;
+    document.getElementById('mvp-next').disabled = mvpRound === mvpMaxRound;
+  }
+
+  // 페이지 로드 시 초기화
+  document.addEventListener('DOMContentLoaded', () => {
+    updateLeagueDisplay();
+    updateMvpDisplay();
+  });
 
   function applyTeamChipColors() {
     document.querySelectorAll('.team-chip').forEach(chip => {
