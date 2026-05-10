@@ -539,8 +539,10 @@
       border-radius: 16px;
       box-shadow: 0 2px 16px rgba(0,0,0,0.07);
       overflow: hidden;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
     }
-    .attend-table { width: 100%; border-collapse: collapse; }
+    .attend-table { width: 100%; border-collapse: collapse; min-width: 480px; }
     .attend-table th {
       background: var(--primary);
       color: #fff;
