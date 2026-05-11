@@ -664,262 +664,276 @@
     <p>2026 월문FC 내부 리그 · 2라운드 완료</p>
   </div>
 
-  <!-- 라운드 네비게이터 -->
-  <div class="round-nav">
-    <button class="round-arrow" id="league-prev" onclick="changeLeagueRound(-1)">◀</button>
-    <span class="round-nav-text" id="league-round-label">2라운드</span>
-    <button class="round-arrow" id="league-next" onclick="changeLeagueRound(1)">▶</button>
-  </div>
+  <div class="league-grid">
 
-  <!-- 1라운드 -->
-  <div class="round-content" data-round="1" style="display:none">
-    <div class="league-grid">
-      <div class="card">
-        <div class="card-header">
-          <span class="icon">🏆</span>
-          <h3>리그 순위표</h3>
-          <span class="badge-live">1라운드</span>
-        </div>
-        <table class="standings-table">
-          <thead>
-            <tr><th>팀명</th><th>경기</th><th>승</th><th>무</th><th>패</th><th>골득실</th><th>승점</th></tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td><span class="rank-num rank-1">1</span>기빈팀</td>
-              <td>4</td><td class="win">2</td><td class="draw">2</td><td class="loss">0</td><td>+2</td><td><strong>8</strong></td>
-            </tr>
-            <tr>
-              <td><span class="rank-num rank-2">2</span>선우팀</td>
-              <td>4</td><td class="win">2</td><td class="draw">1</td><td class="loss">1</td><td>+2</td><td><strong>7</strong></td>
-            </tr>
-            <tr>
-              <td><span class="rank-num rank-3">3</span>영록팀</td>
-              <td>4</td><td class="win">0</td><td class="draw">1</td><td class="loss">3</td><td>-4</td><td><strong>1</strong></td>
-            </tr>
-          </tbody>
-        </table>
+    <!-- ── 왼쪽: 순위표 (라운드 네비) ── -->
+    <div>
+      <div class="round-nav" style="margin-bottom:20px;">
+        <button class="round-arrow" id="league-prev" onclick="changeLeagueRound(-1)">◀</button>
+        <span class="round-nav-text" id="league-round-label">2라운드</span>
+        <button class="round-arrow" id="league-next" onclick="changeLeagueRound(1)">▶</button>
       </div>
-      <div class="card">
-        <div class="card-header">
-          <span class="icon">📋</span>
-          <h3>1라운드 경기 결과 · 05.03</h3>
-        </div>
-        <ul class="match-list">
-          <li class="match-item">
-            <span class="match-date">1경기</span>
-            <div class="match-teams">
-              <span class="team-name">선우팀</span>
-              <div class="score-box"><span class="score">1</span><span class="score-sep">:</span><span class="score">1</span></div>
-              <span class="team-name">기빈팀</span>
-            </div>
-            <span class="result-badge result-d">무</span>
-          </li>
-          <li class="match-item">
-            <span class="match-date">2경기</span>
-            <div class="match-teams">
-              <span class="team-name">기빈팀</span>
-              <div class="score-box"><span class="score">2</span><span class="score-sep">:</span><span class="score">2</span></div>
-              <span class="team-name">영록팀</span>
-            </div>
-            <span class="result-badge result-d">무</span>
-          </li>
-          <li class="match-item">
-            <span class="match-date">3경기</span>
-            <div class="match-teams">
-              <span class="team-name">영록팀</span>
-              <div class="score-box"><span class="score">0</span><span class="score-sep">:</span><span class="score win-score">2</span></div>
-              <span class="team-name">선우팀</span>
-            </div>
-            <span class="result-badge result-w">선우↑</span>
-          </li>
-          <li class="match-item">
-            <span class="match-date">4경기</span>
-            <div class="match-teams">
-              <span class="team-name">선우팀</span>
-              <div class="score-box"><span class="score">2</span><span class="score-sep">:</span><span class="score win-score">3</span></div>
-              <span class="team-name">기빈팀</span>
-            </div>
-            <span class="result-badge result-w">기빈↑</span>
-          </li>
-          <li class="match-item">
-            <span class="match-date">5경기</span>
-            <div class="match-teams">
-              <span class="team-name">기빈팀</span>
-              <div class="score-box"><span class="score win-score">1</span>
-              <span class="score-sep">:</span>
-              <span class="score">0</span>
-            </div>
-              <span class="team-name">영록팀</span>
-            </div>
-            <span class="result-badge result-w">기빈↑</span>
-          </li>
-          <li class="match-item">
-            <span class="match-date">6경기</span>
-            <div class="match-teams">
-              <span class="team-name">영록팀</span>
-              <div class="score-box"><span class="score">1</span><span class="score-sep">:</span><span class="score win-score">2</span></div>
-              <span class="team-name">선우팀</span>
-            </div>
-            <span class="result-badge result-w">선우↑</span>
-          </li>
-        </ul>
-      </div>
-    </div>
-  </div>
 
-  <!-- 2라운드 -->
-  <div class="round-content" data-round="2">
-    <div class="league-grid">
-      <div class="card">
-        <div class="card-header">
-          <span class="icon">🏆</span>
-          <h3>리그 순위표</h3>
-          <span class="badge-live">2라운드</span>
+      <!-- 1라운드 순위표 -->
+      <div class="standings-panel" data-round="1" style="display:none">
+        <div class="card">
+          <div class="card-header">
+            <span class="icon">🏆</span>
+            <h3>리그 순위표</h3>
+            <span class="badge-live">1라운드</span>
+          </div>
+          <table class="standings-table">
+            <thead>
+              <tr><th>팀명</th><th>경기</th><th>승</th><th>무</th><th>패</th><th>득점</th><th>실점</th><th>골득실</th><th>승점</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><span class="rank-num rank-1">1</span>기빈팀</td>
+                <td>4</td><td class="win">2</td><td class="draw">2</td><td class="loss">0</td><td>7</td><td>5</td><td>+2</td><td><strong>8</strong></td>
+              </tr>
+              <tr>
+                <td><span class="rank-num rank-2">2</span>선우팀</td>
+                <td>4</td><td class="win">2</td><td class="draw">1</td><td class="loss">1</td><td>7</td><td>5</td><td>+2</td><td><strong>7</strong></td>
+              </tr>
+              <tr>
+                <td><span class="rank-num rank-3">3</span>영록팀</td>
+                <td>4</td><td class="win">0</td><td class="draw">1</td><td class="loss">3</td><td>3</td><td>7</td><td>-4</td><td><strong>1</strong></td>
+              </tr>
+            </tbody>
+          </table>
         </div>
-        <table class="standings-table">
-          <thead>
-            <tr><th>팀명</th><th>경기</th><th>승</th><th>무</th><th>패</th><th>골득실</th><th>승점</th></tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td><span class="rank-num rank-1">1</span>영록팀</td>
-              <td>4</td><td class="win">2</td><td class="draw">1</td><td class="loss">1</td><td>+5</td><td><strong>7</strong></td>
-            </tr>
-            <tr>
-              <td><span class="rank-num rank-2">2</span>기빈팀</td>
-              <td>4</td><td class="win">2</td><td class="draw">0</td><td class="loss">2</td><td>-2</td><td><strong>6</strong></td>
-            </tr>
-            <tr>
-              <td><span class="rank-num rank-3">3</span>선우팀</td>
-              <td>4</td><td class="win">1</td><td class="draw">1</td><td class="loss">2</td><td>-3</td><td><strong>4</strong></td>
-            </tr>
-          </tbody>
-        </table>
       </div>
-      <div class="card">
-        <div class="card-header">
-          <span class="icon">📋</span>
-          <h3>2라운드 경기 결과 · 05.10</h3>
-        </div>
-        <ul class="match-list">
-          <li class="match-item">
-            <span class="match-date">1경기</span>
-            <div class="match-teams">
-              <span class="team-name">기빈팀</span>
-              <div class="score-box"><span class="score">0</span><span class="score-sep">:</span><span class="score win-score">4</span></div>
-              <span class="team-name">영록팀</span>
-            </div>
-            <span class="result-badge result-w">영록↑</span>
-          </li>
-          <li class="match-item">
-            <span class="match-date">2경기</span>
-            <div class="match-teams">
-              <span class="team-name">영록팀</span>
-              <div class="score-box"><span class="score">3</span><span class="score-sep">:</span><span class="score">3</span></div>
-              <span class="team-name">선우팀</span>
-            </div>
-            <span class="result-badge result-d">무</span>
-          </li>
-          <li class="match-item">
-            <span class="match-date">3경기</span>
-            <div class="match-teams">
-              <span class="team-name">선우팀</span>
-              <div class="score-box"><span class="score">2</span><span class="score-sep">:</span><span class="score win-score">3</span></div>
-              <span class="team-name">기빈팀</span>
-            </div>
-            <span class="result-badge result-w">기빈↑</span>
-          </li>
-          <li class="match-item">
-            <span class="match-date">4경기</span>
-            <div class="match-teams">
-              <span class="team-name">기빈팀</span>
-              <div class="score-box"><span class="score win-score">2</span><span class="score-sep">:</span><span class="score">0</span></div>
-              <span class="team-name">영록팀</span>
-            </div>
-            <span class="result-badge result-w">기빈↑</span>
-          </li>
-          <li class="match-item">
-            <span class="match-date">5경기</span>
-            <div class="match-teams">
-              <span class="team-name">영록팀</span>
-              <div class="score-box"><span class="score win-score">5</span><span class="score-sep">:</span><span class="score">2</span></div>
-              <span class="team-name">선우팀</span>
-            </div>
-            <span class="result-badge result-w">영록↑</span>
-          </li>
-          <li class="match-item">
-            <span class="match-date">6경기</span>
-            <div class="match-teams">
-              <span class="team-name">선우팀</span>
-              <div class="score-box"><span class="score win-score">3</span><span class="score-sep">:</span><span class="score">2</span></div>
-              <span class="team-name">기빈팀</span>
-            </div>
-            <span class="result-badge result-w">선우↑</span>
-          </li>
-        </ul>
-      </div>
-    </div>
-  </div>
 
-  <!-- 누적 순위 -->
-  <div class="round-content" data-round="3" style="display:none">
-    <div class="league-grid">
-      <div class="card">
-        <div class="card-header">
-          <span class="icon">🏆</span>
-          <h3>리그 순위표</h3>
-          <span class="badge-live">누적</span>
+      <!-- 2라운드 순위표 -->
+      <div class="standings-panel" data-round="2">
+        <div class="card">
+          <div class="card-header">
+            <span class="icon">🏆</span>
+            <h3>리그 순위표</h3>
+            <span class="badge-live">2라운드</span>
+          </div>
+          <table class="standings-table">
+            <thead>
+              <tr><th>팀명</th><th>경기</th><th>승</th><th>무</th><th>패</th><th>득점</th><th>실점</th><th>골득실</th><th>승점</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><span class="rank-num rank-1">1</span>영록팀</td>
+                <td>4</td><td class="win">2</td><td class="draw">1</td><td class="loss">1</td><td>12</td><td>7</td><td>+5</td><td><strong>7</strong></td>
+              </tr>
+              <tr>
+                <td><span class="rank-num rank-2">2</span>기빈팀</td>
+                <td>4</td><td class="win">2</td><td class="draw">0</td><td class="loss">2</td><td>7</td><td>9</td><td>-2</td><td><strong>6</strong></td>
+              </tr>
+              <tr>
+                <td><span class="rank-num rank-3">3</span>선우팀</td>
+                <td>4</td><td class="win">1</td><td class="draw">1</td><td class="loss">2</td><td>10</td><td>13</td><td>-3</td><td><strong>4</strong></td>
+              </tr>
+            </tbody>
+          </table>
         </div>
-        <table class="standings-table">
-          <thead>
-            <tr><th>팀명</th><th>경기</th><th>승</th><th>무</th><th>패</th><th>골득실</th><th>승점</th></tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td><span class="rank-num rank-1">1</span>기빈팀</td>
-              <td>8</td><td class="win">4</td><td class="draw">2</td><td class="loss">2</td><td>0</td><td><strong>14</strong></td>
-            </tr>
-            <tr>
-              <td><span class="rank-num rank-2">2</span>선우팀</td>
-              <td>8</td><td class="win">3</td><td class="draw">2</td><td class="loss">3</td><td>-1</td><td><strong>11</strong></td>
-            </tr>
-            <tr>
-              <td><span class="rank-num rank-3">3</span>영록팀</td>
-              <td>8</td><td class="win">2</td><td class="draw">2</td><td class="loss">4</td><td>+1</td><td><strong>8</strong></td>
-            </tr>
-          </tbody>
-        </table>
       </div>
-      <div class="card">
-        <div class="card-header">
-          <span class="icon">📊</span>
-          <h3>라운드별 승점</h3>
-          <span class="badge-live">1·2라운드</span>
+
+      <!-- 누적 순위표 -->
+      <div class="standings-panel" data-round="3" style="display:none">
+        <div class="card">
+          <div class="card-header">
+            <span class="icon">🏆</span>
+            <h3>리그 순위표</h3>
+            <span class="badge-live">누적</span>
+          </div>
+          <table class="standings-table">
+            <thead>
+              <tr><th>팀명</th><th>경기</th><th>승</th><th>무</th><th>패</th><th>득점</th><th>실점</th><th>골득실</th><th>승점</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><span class="rank-num rank-1">1</span>기빈팀</td>
+                <td>8</td><td class="win">4</td><td class="draw">2</td><td class="loss">2</td><td>14</td><td>14</td><td>0</td><td><strong>14</strong></td>
+              </tr>
+              <tr>
+                <td><span class="rank-num rank-2">2</span>선우팀</td>
+                <td>8</td><td class="win">3</td><td class="draw">2</td><td class="loss">3</td><td>17</td><td>18</td><td>-1</td><td><strong>11</strong></td>
+              </tr>
+              <tr>
+                <td><span class="rank-num rank-3">3</span>영록팀</td>
+                <td>8</td><td class="win">2</td><td class="draw">2</td><td class="loss">4</td><td>15</td><td>14</td><td>+1</td><td><strong>8</strong></td>
+              </tr>
+            </tbody>
+          </table>
         </div>
-        <div class="attend-table-wrap">
-        <table class="standings-table attend-table">
-          <thead>
-            <tr><th>팀명</th><th>1라운드</th><th>2라운드</th><th>합계</th></tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td><span class="rank-num rank-1">1</span>기빈팀</td>
-              <td>8</td><td>6</td><td><strong>14</strong></td>
-            </tr>
-            <tr>
-              <td><span class="rank-num rank-2">2</span>선우팀</td>
-              <td>7</td><td>4</td><td><strong>11</strong></td>
-            </tr>
-            <tr>
-              <td><span class="rank-num rank-3">3</span>영록팀</td>
-              <td>1</td><td>7</td><td><strong>8</strong></td>
-            </tr>
-          </tbody>
-        </table>
+        <div class="card" style="margin-top:20px">
+          <div class="card-header">
+            <span class="icon">📊</span>
+            <h3>라운드별 승점</h3>
+            <span class="badge-live">1·2라운드</span>
+          </div>
+          <div class="attend-table-wrap">
+          <table class="standings-table attend-table">
+            <thead>
+              <tr><th>팀명</th><th>1라운드</th><th>2라운드</th><th>합계</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><span class="rank-num rank-1">1</span>기빈팀</td>
+                <td>8</td><td>6</td><td><strong>14</strong></td>
+              </tr>
+              <tr>
+                <td><span class="rank-num rank-2">2</span>선우팀</td>
+                <td>7</td><td>4</td><td><strong>11</strong></td>
+              </tr>
+              <tr>
+                <td><span class="rank-num rank-3">3</span>영록팀</td>
+                <td>1</td><td>7</td><td><strong>8</strong></td>
+              </tr>
+            </tbody>
+          </table>
+          </div>
         </div>
       </div>
     </div>
+
+    <!-- ── 오른쪽: 경기결과 (독립 네비) ── -->
+    <div>
+      <div class="round-nav" style="margin-bottom:20px;">
+        <button class="round-arrow" id="match-prev" onclick="changeMatchRound(-1)" disabled>◀</button>
+        <span class="round-nav-text" id="match-round-label">2라운드 · 05.10</span>
+        <button class="round-arrow" id="match-next" onclick="changeMatchRound(1)">▶</button>
+      </div>
+
+      <!-- 1라운드 경기결과 -->
+      <div class="match-panel" data-round="1" style="display:none">
+        <div class="card">
+          <div class="card-header">
+            <span class="icon">📋</span>
+            <h3>1라운드 경기 결과 · 05.03</h3>
+          </div>
+          <ul class="match-list">
+            <li class="match-item">
+              <span class="match-date">1경기</span>
+              <div class="match-teams">
+                <span class="team-name">선우팀</span>
+                <div class="score-box"><span class="score">1</span><span class="score-sep">:</span><span class="score">1</span></div>
+                <span class="team-name">기빈팀</span>
+              </div>
+              <span class="result-badge result-d">무</span>
+            </li>
+            <li class="match-item">
+              <span class="match-date">2경기</span>
+              <div class="match-teams">
+                <span class="team-name">기빈팀</span>
+                <div class="score-box"><span class="score">2</span><span class="score-sep">:</span><span class="score">2</span></div>
+                <span class="team-name">영록팀</span>
+              </div>
+              <span class="result-badge result-d">무</span>
+            </li>
+            <li class="match-item">
+              <span class="match-date">3경기</span>
+              <div class="match-teams">
+                <span class="team-name">영록팀</span>
+                <div class="score-box"><span class="score">0</span><span class="score-sep">:</span><span class="score win-score">2</span></div>
+                <span class="team-name">선우팀</span>
+              </div>
+              <span class="result-badge result-w">선우↑</span>
+            </li>
+            <li class="match-item">
+              <span class="match-date">4경기</span>
+              <div class="match-teams">
+                <span class="team-name">선우팀</span>
+                <div class="score-box"><span class="score">2</span><span class="score-sep">:</span><span class="score win-score">3</span></div>
+                <span class="team-name">기빈팀</span>
+              </div>
+              <span class="result-badge result-w">기빈↑</span>
+            </li>
+            <li class="match-item">
+              <span class="match-date">5경기</span>
+              <div class="match-teams">
+                <span class="team-name">기빈팀</span>
+                <div class="score-box"><span class="score win-score">1</span><span class="score-sep">:</span><span class="score">0</span></div>
+                <span class="team-name">영록팀</span>
+              </div>
+              <span class="result-badge result-w">기빈↑</span>
+            </li>
+            <li class="match-item">
+              <span class="match-date">6경기</span>
+              <div class="match-teams">
+                <span class="team-name">영록팀</span>
+                <div class="score-box"><span class="score">1</span><span class="score-sep">:</span><span class="score win-score">2</span></div>
+                <span class="team-name">선우팀</span>
+              </div>
+              <span class="result-badge result-w">선우↑</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- 2라운드 경기결과 -->
+      <div class="match-panel" data-round="2">
+        <div class="card">
+          <div class="card-header">
+            <span class="icon">📋</span>
+            <h3>2라운드 경기 결과 · 05.10</h3>
+          </div>
+          <ul class="match-list">
+            <li class="match-item">
+              <span class="match-date">1경기</span>
+              <div class="match-teams">
+                <span class="team-name">기빈팀</span>
+                <div class="score-box"><span class="score">0</span><span class="score-sep">:</span><span class="score win-score">4</span></div>
+                <span class="team-name">영록팀</span>
+              </div>
+              <span class="result-badge result-w">영록↑</span>
+            </li>
+            <li class="match-item">
+              <span class="match-date">2경기</span>
+              <div class="match-teams">
+                <span class="team-name">영록팀</span>
+                <div class="score-box"><span class="score">3</span><span class="score-sep">:</span><span class="score">3</span></div>
+                <span class="team-name">선우팀</span>
+              </div>
+              <span class="result-badge result-d">무</span>
+            </li>
+            <li class="match-item">
+              <span class="match-date">3경기</span>
+              <div class="match-teams">
+                <span class="team-name">선우팀</span>
+                <div class="score-box"><span class="score">2</span><span class="score-sep">:</span><span class="score win-score">3</span></div>
+                <span class="team-name">기빈팀</span>
+              </div>
+              <span class="result-badge result-w">기빈↑</span>
+            </li>
+            <li class="match-item">
+              <span class="match-date">4경기</span>
+              <div class="match-teams">
+                <span class="team-name">기빈팀</span>
+                <div class="score-box"><span class="score win-score">2</span><span class="score-sep">:</span><span class="score">0</span></div>
+                <span class="team-name">영록팀</span>
+              </div>
+              <span class="result-badge result-w">기빈↑</span>
+            </li>
+            <li class="match-item">
+              <span class="match-date">5경기</span>
+              <div class="match-teams">
+                <span class="team-name">영록팀</span>
+                <div class="score-box"><span class="score win-score">5</span><span class="score-sep">:</span><span class="score">2</span></div>
+                <span class="team-name">선우팀</span>
+              </div>
+              <span class="result-badge result-w">영록↑</span>
+            </li>
+            <li class="match-item">
+              <span class="match-date">6경기</span>
+              <div class="match-teams">
+                <span class="team-name">선우팀</span>
+                <div class="score-box"><span class="score win-score">3</span><span class="score-sep">:</span><span class="score">2</span></div>
+                <span class="team-name">기빈팀</span>
+              </div>
+              <span class="result-badge result-w">선우↑</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
   </div>
 
 </section>
@@ -1040,84 +1054,224 @@
   <div class="section-header">
     <div class="section-tag">Attendance</div>
     <h2>참석인원 현황</h2>
-    <p>많이 참석한 팀에게 상이 주어집니다 🏅 · 2라운드 기준</p>
+    <p>많이 참석한 팀에게 상이 주어집니다 🏅</p>
   </div>
 
-  <div class="attend-grid">
-    <div class="attend-card rank1">
-      <span class="crown">🥇</span>
-      <div class="team-nm">기빈팀</div>
-      <div class="attend-bar-wrap"><div class="attend-bar" style="width:100%"></div></div>
-      <div class="attend-nums">
-        <div><strong>10명</strong>참석</div>
+  <!-- 참석 라운드 네비게이터 -->
+  <div class="round-nav">
+    <button class="round-arrow" id="attend-prev" onclick="changeAttendRound(-1)" disabled>◀</button>
+    <span class="round-nav-text" id="attend-round-label">2라운드 참석현황</span>
+    <button class="round-arrow" id="attend-next" onclick="changeAttendRound(1)">▶</button>
+  </div>
+
+  <!-- 1라운드 참석현황 -->
+  <div class="attend-panel" data-round="1" style="display:none">
+    <div class="attend-grid">
+      <div class="attend-card rank1">
+        <span class="crown">🥇</span>
+        <div class="team-nm">기빈팀</div>
+        <div class="attend-bar-wrap"><div class="attend-bar" style="width:100%"></div></div>
+        <div class="attend-nums"><div><strong>10명</strong>참석</div></div>
+        <span class="attend-award">🏆 참석왕</span>
       </div>
-      <span class="attend-award">🏆 참석왕</span>
+      <div class="attend-card rank2">
+        <span class="crown">🥈</span>
+        <div class="team-nm">영록팀</div>
+        <div class="attend-bar-wrap"><div class="attend-bar" style="width:70%"></div></div>
+        <div class="attend-nums"><div><strong>7명</strong>참석</div></div>
+      </div>
+      <div class="attend-card rank3">
+        <span class="crown">🥉</span>
+        <div class="team-nm">선우팀</div>
+        <div class="attend-bar-wrap"><div class="attend-bar" style="width:60%"></div></div>
+        <div class="attend-nums"><div><strong>6명</strong>참석</div></div>
+      </div>
     </div>
-    <div class="attend-card rank2">
-      <span class="crown">🥈</span>
-      <div class="team-nm">영록팀</div>
-      <div class="attend-bar-wrap"><div class="attend-bar" style="width:80%"></div></div>
-      <div class="attend-nums">
-        <div><strong>8명</strong>참석</div>
-      </div>
-    </div>
-    <div class="attend-card rank3">
-      <span class="crown">🥉</span>
-      <div class="team-nm">선우팀</div>
-      <div class="attend-bar-wrap"><div class="attend-bar" style="width:70%"></div></div>
-      <div class="attend-nums">
-        <div><strong>7명</strong>참석</div>
-      </div>
+    <div class="attend-table-wrap">
+      <table class="attend-table">
+        <thead>
+          <tr>
+            <th>이름</th><th>팀</th><th>1라운드 (05.03)</th><th>참석</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>방선우</td><td>선우팀</td><td><span class="attend-o">●</span></td><td class="attend-total">1</td></tr>
+          <tr><td>장지호</td><td>선우팀</td><td><span class="attend-o">●</span></td><td class="attend-total">1</td></tr>
+          <tr><td>정종환</td><td>선우팀</td><td><span class="attend-o">●</span></td><td class="attend-total">1</td></tr>
+          <tr><td>김태홍</td><td>선우팀</td><td><span class="attend-x">✕</span></td><td class="attend-total">0</td></tr>
+          <tr><td>최만식</td><td>선우팀</td><td><span class="attend-o">●</span></td><td class="attend-total">1</td></tr>
+          <tr class="extra-row"><td>김병묵</td><td>선우팀</td><td><span class="attend-o">●</span></td><td class="attend-total">1</td></tr>
+          <tr class="extra-row"><td>김성록</td><td>선우팀</td><td><span class="attend-o">●</span></td><td class="attend-total">1</td></tr>
+          <tr class="extra-row"><td>정해승</td><td>선우팀</td><td><span class="attend-x">✕</span></td><td class="attend-total">0</td></tr>
+          <tr class="extra-row"><td>우성길</td><td>선우팀</td><td><span class="attend-x">✕</span></td><td class="attend-total">0</td></tr>
+          <tr class="extra-row"><td>강기빈</td><td>기빈팀</td><td><span class="attend-o">●</span></td><td class="attend-total">1</td></tr>
+          <tr class="extra-row"><td>김태향</td><td>기빈팀</td><td><span class="attend-o">●</span></td><td class="attend-total">1</td></tr>
+          <tr class="extra-row"><td>전원표</td><td>기빈팀</td><td><span class="attend-o">●</span></td><td class="attend-total">1</td></tr>
+          <tr class="extra-row"><td>황인성</td><td>기빈팀</td><td><span class="attend-o">●</span></td><td class="attend-total">1</td></tr>
+          <tr class="extra-row"><td>박영수</td><td>기빈팀</td><td><span class="attend-o">●</span></td><td class="attend-total">1</td></tr>
+          <tr class="extra-row"><td>채동훈</td><td>기빈팀</td><td><span class="attend-o">●</span></td><td class="attend-total">1</td></tr>
+          <tr class="extra-row"><td>박찬빈</td><td>기빈팀</td><td><span class="attend-o">●</span></td><td class="attend-total">1</td></tr>
+          <tr class="extra-row"><td>채유민</td><td>기빈팀</td><td><span class="attend-o">●</span></td><td class="attend-total">1</td></tr>
+          <tr class="extra-row"><td>이형일</td><td>기빈팀</td><td><span class="attend-o">●</span></td><td class="attend-total">1</td></tr>
+          <tr class="extra-row"><td>이인표</td><td>기빈팀</td><td><span class="attend-o">●</span></td><td class="attend-total">1</td></tr>
+          <tr class="extra-row"><td>안성균</td><td>기빈팀</td><td><span class="attend-x">✕</span></td><td class="attend-total">0</td></tr>
+          <tr class="extra-row"><td>박영록</td><td>영록팀</td><td><span class="attend-o">●</span></td><td class="attend-total">1</td></tr>
+          <tr class="extra-row"><td>박상현</td><td>영록팀</td><td><span class="attend-o">●</span></td><td class="attend-total">1</td></tr>
+          <tr class="extra-row"><td>김동수</td><td>영록팀</td><td><span class="attend-o">●</span></td><td class="attend-total">1</td></tr>
+          <tr class="extra-row"><td>김지훈</td><td>영록팀</td><td><span class="attend-o">●</span></td><td class="attend-total">1</td></tr>
+          <tr class="extra-row"><td>홍래균</td><td>영록팀</td><td><span class="attend-o">●</span></td><td class="attend-total">1</td></tr>
+          <tr class="extra-row"><td>강성현</td><td>영록팀</td><td><span class="attend-o">●</span></td><td class="attend-total">1</td></tr>
+          <tr class="extra-row"><td>조성인</td><td>영록팀</td><td><span class="attend-o">●</span></td><td class="attend-total">1</td></tr>
+          <tr class="extra-row"><td>김인</td><td>영록팀</td><td><span class="attend-x">✕</span></td><td class="attend-total">0</td></tr>
+          <tr class="extra-row"><td>김현</td><td>영록팀</td><td><span class="attend-x">✕</span></td><td class="attend-total">0</td></tr>
+        </tbody>
+      </table>
+      <button class="attend-toggle-btn" onclick="toggleRows(this)">
+        24명 더 보기 <i class="arrow">▼</i>
+      </button>
     </div>
   </div>
 
-  <div class="attend-table-wrap">
-    <table class="attend-table">
-      <thead>
-        <tr>
-          <th>이름</th>
-          <th>팀</th>
-          <th>1라운드<br>05.03</th>
-          <th>2라운드<br>05.10</th>
-          <th>총 참석</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr><td>방선우</td><td>선우팀</td><td><span class="attend-o">●</span></td><td><span class="attend-o">●</span></td><td class="attend-total">2</td></tr>
-        <tr><td>장지호</td><td>선우팀</td><td><span class="attend-o">●</span></td><td><span class="attend-o">●</span></td><td class="attend-total">2</td></tr>
-        <tr><td>정종환</td><td>선우팀</td><td><span class="attend-o">●</span></td><td><span class="attend-o">●</span></td><td class="attend-total">2</td></tr>
-        <tr><td>김태홍</td><td>선우팀</td><td><span class="attend-x">✕</span></td><td><span class="attend-x">✕</span></td><td class="attend-total">0</td></tr>
-        <tr><td>최만식</td><td>선우팀</td><td><span class="attend-o">●</span></td><td><span class="attend-o">●</span></td><td class="attend-total">2</td></tr>
-        <tr class="extra-row"><td>김병묵</td><td>선우팀</td><td><span class="attend-o">●</span></td><td><span class="attend-x">✕</span></td><td class="attend-total">1</td></tr>
-        <tr class="extra-row"><td>김성록</td><td>선우팀</td><td><span class="attend-o">●</span></td><td><span class="attend-o">●</span></td><td class="attend-total">2</td></tr>
-        <tr class="extra-row"><td>정해승</td><td>선우팀</td><td><span class="attend-x">✕</span></td><td><span class="attend-o">●</span></td><td class="attend-total">1</td></tr>
-        <tr class="extra-row"><td>우성길</td><td>선우팀</td><td><span class="attend-x">✕</span></td><td><span class="attend-o">●</span></td><td class="attend-total">1</td></tr>
-        <tr class="extra-row"><td>강기빈</td><td>기빈팀</td><td><span class="attend-o">●</span></td><td><span class="attend-o">●</span></td><td class="attend-total">2</td></tr>
-        <tr class="extra-row"><td>김태향</td><td>기빈팀</td><td><span class="attend-o">●</span></td><td><span class="attend-o">●</span></td><td class="attend-total">2</td></tr>
-        <tr class="extra-row"><td>전원표</td><td>기빈팀</td><td><span class="attend-o">●</span></td><td><span class="attend-o">●</span></td><td class="attend-total">2</td></tr>
-        <tr class="extra-row"><td>황인성</td><td>기빈팀</td><td><span class="attend-o">●</span></td><td><span class="attend-o">●</span></td><td class="attend-total">2</td></tr>
-        <tr class="extra-row"><td>박영수</td><td>기빈팀</td><td><span class="attend-o">●</span></td><td><span class="attend-o">●</span></td><td class="attend-total">2</td></tr>
-        <tr class="extra-row"><td>채동훈</td><td>기빈팀</td><td><span class="attend-o">●</span></td><td><span class="attend-o">●</span></td><td class="attend-total">2</td></tr>
-        <tr class="extra-row"><td>박찬빈</td><td>기빈팀</td><td><span class="attend-o">●</span></td><td><span class="attend-o">●</span></td><td class="attend-total">2</td></tr>
-        <tr class="extra-row"><td>채유민</td><td>기빈팀</td><td><span class="attend-o">●</span></td><td><span class="attend-o">●</span></td><td class="attend-total">2</td></tr>
-        <tr class="extra-row"><td>이형일</td><td>기빈팀</td><td><span class="attend-o">●</span></td><td><span class="attend-o">●</span></td><td class="attend-total">2</td></tr>
-        <tr class="extra-row"><td>이인표</td><td>기빈팀</td><td><span class="attend-o">●</span></td><td><span class="attend-x">✕</span></td><td class="attend-total">1</td></tr>
-        <tr class="extra-row"><td>안성균</td><td>기빈팀</td><td><span class="attend-x">✕</span></td><td><span class="attend-o">●</span></td><td class="attend-total">1</td></tr>
-        <tr class="extra-row"><td>박영록</td><td>영록팀</td><td><span class="attend-o">●</span></td><td><span class="attend-o">●</span></td><td class="attend-total">2</td></tr>
-        <tr class="extra-row"><td>박상현</td><td>영록팀</td><td><span class="attend-o">●</span></td><td><span class="attend-o">●</span></td><td class="attend-total">2</td></tr>
-        <tr class="extra-row"><td>김동수</td><td>영록팀</td><td><span class="attend-o">●</span></td><td><span class="attend-o">●</span></td><td class="attend-total">2</td></tr>
-        <tr class="extra-row"><td>김지훈</td><td>영록팀</td><td><span class="attend-o">●</span></td><td><span class="attend-o">●</span></td><td class="attend-total">2</td></tr>
-        <tr class="extra-row"><td>홍래균</td><td>영록팀</td><td><span class="attend-o">●</span></td><td><span class="attend-o">●</span></td><td class="attend-total">2</td></tr>
-        <tr class="extra-row"><td>강성현</td><td>영록팀</td><td><span class="attend-o">●</span></td><td><span class="attend-o">●</span></td><td class="attend-total">2</td></tr>
-        <tr class="extra-row"><td>조성인</td><td>영록팀</td><td><span class="attend-o">●</span></td><td><span class="attend-x">✕</span></td><td class="attend-total">1</td></tr>
-        <tr class="extra-row"><td>김인</td><td>영록팀</td><td><span class="attend-x">✕</span></td><td><span class="attend-o">●</span></td><td class="attend-total">1</td></tr>
-        <tr class="extra-row"><td>김현</td><td>영록팀</td><td><span class="attend-x">✕</span></td><td><span class="attend-o">●</span></td><td class="attend-total">1</td></tr>
-      </tbody>
-    </table>
-    <button class="attend-toggle-btn" onclick="toggleRows(this)">
-      24명 더 보기 <i class="arrow">▼</i>
-    </button>
+  <!-- 2라운드 참석현황 -->
+  <div class="attend-panel" data-round="2">
+    <div class="attend-grid">
+      <div class="attend-card rank1">
+        <span class="crown">🥇</span>
+        <div class="team-nm">기빈팀</div>
+        <div class="attend-bar-wrap"><div class="attend-bar" style="width:100%"></div></div>
+        <div class="attend-nums"><div><strong>10명</strong>참석</div></div>
+        <span class="attend-award">🏆 참석왕</span>
+      </div>
+      <div class="attend-card rank2">
+        <span class="crown">🥈</span>
+        <div class="team-nm">영록팀</div>
+        <div class="attend-bar-wrap"><div class="attend-bar" style="width:80%"></div></div>
+        <div class="attend-nums"><div><strong>8명</strong>참석</div></div>
+      </div>
+      <div class="attend-card rank3">
+        <span class="crown">🥉</span>
+        <div class="team-nm">선우팀</div>
+        <div class="attend-bar-wrap"><div class="attend-bar" style="width:70%"></div></div>
+        <div class="attend-nums"><div><strong>7명</strong>참석</div></div>
+      </div>
+    </div>
+    <div class="attend-table-wrap">
+      <table class="attend-table">
+        <thead>
+          <tr>
+            <th>이름</th><th>팀</th><th>2라운드 (05.10)</th><th>참석</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>방선우</td><td>선우팀</td><td><span class="attend-o">●</span></td><td class="attend-total">1</td></tr>
+          <tr><td>장지호</td><td>선우팀</td><td><span class="attend-o">●</span></td><td class="attend-total">1</td></tr>
+          <tr><td>정종환</td><td>선우팀</td><td><span class="attend-o">●</span></td><td class="attend-total">1</td></tr>
+          <tr><td>김태홍</td><td>선우팀</td><td><span class="attend-x">✕</span></td><td class="attend-total">0</td></tr>
+          <tr><td>최만식</td><td>선우팀</td><td><span class="attend-o">●</span></td><td class="attend-total">1</td></tr>
+          <tr class="extra-row"><td>김병묵</td><td>선우팀</td><td><span class="attend-x">✕</span></td><td class="attend-total">0</td></tr>
+          <tr class="extra-row"><td>김성록</td><td>선우팀</td><td><span class="attend-o">●</span></td><td class="attend-total">1</td></tr>
+          <tr class="extra-row"><td>정해승</td><td>선우팀</td><td><span class="attend-o">●</span></td><td class="attend-total">1</td></tr>
+          <tr class="extra-row"><td>우성길</td><td>선우팀</td><td><span class="attend-o">●</span></td><td class="attend-total">1</td></tr>
+          <tr class="extra-row"><td>강기빈</td><td>기빈팀</td><td><span class="attend-o">●</span></td><td class="attend-total">1</td></tr>
+          <tr class="extra-row"><td>김태향</td><td>기빈팀</td><td><span class="attend-o">●</span></td><td class="attend-total">1</td></tr>
+          <tr class="extra-row"><td>전원표</td><td>기빈팀</td><td><span class="attend-o">●</span></td><td class="attend-total">1</td></tr>
+          <tr class="extra-row"><td>황인성</td><td>기빈팀</td><td><span class="attend-o">●</span></td><td class="attend-total">1</td></tr>
+          <tr class="extra-row"><td>박영수</td><td>기빈팀</td><td><span class="attend-o">●</span></td><td class="attend-total">1</td></tr>
+          <tr class="extra-row"><td>채동훈</td><td>기빈팀</td><td><span class="attend-o">●</span></td><td class="attend-total">1</td></tr>
+          <tr class="extra-row"><td>박찬빈</td><td>기빈팀</td><td><span class="attend-o">●</span></td><td class="attend-total">1</td></tr>
+          <tr class="extra-row"><td>채유민</td><td>기빈팀</td><td><span class="attend-o">●</span></td><td class="attend-total">1</td></tr>
+          <tr class="extra-row"><td>이형일</td><td>기빈팀</td><td><span class="attend-o">●</span></td><td class="attend-total">1</td></tr>
+          <tr class="extra-row"><td>이인표</td><td>기빈팀</td><td><span class="attend-x">✕</span></td><td class="attend-total">0</td></tr>
+          <tr class="extra-row"><td>안성균</td><td>기빈팀</td><td><span class="attend-o">●</span></td><td class="attend-total">1</td></tr>
+          <tr class="extra-row"><td>박영록</td><td>영록팀</td><td><span class="attend-o">●</span></td><td class="attend-total">1</td></tr>
+          <tr class="extra-row"><td>박상현</td><td>영록팀</td><td><span class="attend-o">●</span></td><td class="attend-total">1</td></tr>
+          <tr class="extra-row"><td>김동수</td><td>영록팀</td><td><span class="attend-o">●</span></td><td class="attend-total">1</td></tr>
+          <tr class="extra-row"><td>김지훈</td><td>영록팀</td><td><span class="attend-o">●</span></td><td class="attend-total">1</td></tr>
+          <tr class="extra-row"><td>홍래균</td><td>영록팀</td><td><span class="attend-o">●</span></td><td class="attend-total">1</td></tr>
+          <tr class="extra-row"><td>강성현</td><td>영록팀</td><td><span class="attend-o">●</span></td><td class="attend-total">1</td></tr>
+          <tr class="extra-row"><td>조성인</td><td>영록팀</td><td><span class="attend-x">✕</span></td><td class="attend-total">0</td></tr>
+          <tr class="extra-row"><td>김인</td><td>영록팀</td><td><span class="attend-o">●</span></td><td class="attend-total">1</td></tr>
+          <tr class="extra-row"><td>김현</td><td>영록팀</td><td><span class="attend-o">●</span></td><td class="attend-total">1</td></tr>
+        </tbody>
+      </table>
+      <button class="attend-toggle-btn" onclick="toggleRows(this)">
+        24명 더 보기 <i class="arrow">▼</i>
+      </button>
+    </div>
   </div>
+
+  <!-- 누적참석인원 현황 -->
+  <div class="attend-panel" data-round="3" style="display:none">
+    <div class="attend-grid">
+      <div class="attend-card rank1">
+        <span class="crown">🥇</span>
+        <div class="team-nm">기빈팀</div>
+        <div class="attend-bar-wrap"><div class="attend-bar" style="width:100%"></div></div>
+        <div class="attend-nums"><div><strong>20명</strong>누적참석</div></div>
+        <span class="attend-award">🏆 참석왕</span>
+      </div>
+      <div class="attend-card rank2">
+        <span class="crown">🥈</span>
+        <div class="team-nm">영록팀</div>
+        <div class="attend-bar-wrap"><div class="attend-bar" style="width:75%"></div></div>
+        <div class="attend-nums"><div><strong>15명</strong>누적참석</div></div>
+      </div>
+      <div class="attend-card rank3">
+        <span class="crown">🥉</span>
+        <div class="team-nm">선우팀</div>
+        <div class="attend-bar-wrap"><div class="attend-bar" style="width:65%"></div></div>
+        <div class="attend-nums"><div><strong>13명</strong>누적참석</div></div>
+      </div>
+    </div>
+    <div class="attend-table-wrap">
+      <table class="attend-table">
+        <thead>
+          <tr>
+            <th>이름</th>
+            <th>팀</th>
+            <th>1라운드<br>05.03</th>
+            <th>2라운드<br>05.10</th>
+            <th>총 참석</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>방선우</td><td>선우팀</td><td><span class="attend-o">●</span></td><td><span class="attend-o">●</span></td><td class="attend-total">2</td></tr>
+          <tr><td>장지호</td><td>선우팀</td><td><span class="attend-o">●</span></td><td><span class="attend-o">●</span></td><td class="attend-total">2</td></tr>
+          <tr><td>정종환</td><td>선우팀</td><td><span class="attend-o">●</span></td><td><span class="attend-o">●</span></td><td class="attend-total">2</td></tr>
+          <tr><td>김태홍</td><td>선우팀</td><td><span class="attend-x">✕</span></td><td><span class="attend-x">✕</span></td><td class="attend-total">0</td></tr>
+          <tr><td>최만식</td><td>선우팀</td><td><span class="attend-o">●</span></td><td><span class="attend-o">●</span></td><td class="attend-total">2</td></tr>
+          <tr class="extra-row"><td>김병묵</td><td>선우팀</td><td><span class="attend-o">●</span></td><td><span class="attend-x">✕</span></td><td class="attend-total">1</td></tr>
+          <tr class="extra-row"><td>김성록</td><td>선우팀</td><td><span class="attend-o">●</span></td><td><span class="attend-o">●</span></td><td class="attend-total">2</td></tr>
+          <tr class="extra-row"><td>정해승</td><td>선우팀</td><td><span class="attend-x">✕</span></td><td><span class="attend-o">●</span></td><td class="attend-total">1</td></tr>
+          <tr class="extra-row"><td>우성길</td><td>선우팀</td><td><span class="attend-x">✕</span></td><td><span class="attend-o">●</span></td><td class="attend-total">1</td></tr>
+          <tr class="extra-row"><td>강기빈</td><td>기빈팀</td><td><span class="attend-o">●</span></td><td><span class="attend-o">●</span></td><td class="attend-total">2</td></tr>
+          <tr class="extra-row"><td>김태향</td><td>기빈팀</td><td><span class="attend-o">●</span></td><td><span class="attend-o">●</span></td><td class="attend-total">2</td></tr>
+          <tr class="extra-row"><td>전원표</td><td>기빈팀</td><td><span class="attend-o">●</span></td><td><span class="attend-o">●</span></td><td class="attend-total">2</td></tr>
+          <tr class="extra-row"><td>황인성</td><td>기빈팀</td><td><span class="attend-o">●</span></td><td><span class="attend-o">●</span></td><td class="attend-total">2</td></tr>
+          <tr class="extra-row"><td>박영수</td><td>기빈팀</td><td><span class="attend-o">●</span></td><td><span class="attend-o">●</span></td><td class="attend-total">2</td></tr>
+          <tr class="extra-row"><td>채동훈</td><td>기빈팀</td><td><span class="attend-o">●</span></td><td><span class="attend-o">●</span></td><td class="attend-total">2</td></tr>
+          <tr class="extra-row"><td>박찬빈</td><td>기빈팀</td><td><span class="attend-o">●</span></td><td><span class="attend-o">●</span></td><td class="attend-total">2</td></tr>
+          <tr class="extra-row"><td>채유민</td><td>기빈팀</td><td><span class="attend-o">●</span></td><td><span class="attend-o">●</span></td><td class="attend-total">2</td></tr>
+          <tr class="extra-row"><td>이형일</td><td>기빈팀</td><td><span class="attend-o">●</span></td><td><span class="attend-o">●</span></td><td class="attend-total">2</td></tr>
+          <tr class="extra-row"><td>이인표</td><td>기빈팀</td><td><span class="attend-o">●</span></td><td><span class="attend-x">✕</span></td><td class="attend-total">1</td></tr>
+          <tr class="extra-row"><td>안성균</td><td>기빈팀</td><td><span class="attend-x">✕</span></td><td><span class="attend-o">●</span></td><td class="attend-total">1</td></tr>
+          <tr class="extra-row"><td>박영록</td><td>영록팀</td><td><span class="attend-o">●</span></td><td><span class="attend-o">●</span></td><td class="attend-total">2</td></tr>
+          <tr class="extra-row"><td>박상현</td><td>영록팀</td><td><span class="attend-o">●</span></td><td><span class="attend-o">●</span></td><td class="attend-total">2</td></tr>
+          <tr class="extra-row"><td>김동수</td><td>영록팀</td><td><span class="attend-o">●</span></td><td><span class="attend-o">●</span></td><td class="attend-total">2</td></tr>
+          <tr class="extra-row"><td>김지훈</td><td>영록팀</td><td><span class="attend-o">●</span></td><td><span class="attend-o">●</span></td><td class="attend-total">2</td></tr>
+          <tr class="extra-row"><td>홍래균</td><td>영록팀</td><td><span class="attend-o">●</span></td><td><span class="attend-o">●</span></td><td class="attend-total">2</td></tr>
+          <tr class="extra-row"><td>강성현</td><td>영록팀</td><td><span class="attend-o">●</span></td><td><span class="attend-o">●</span></td><td class="attend-total">2</td></tr>
+          <tr class="extra-row"><td>조성인</td><td>영록팀</td><td><span class="attend-o">●</span></td><td><span class="attend-x">✕</span></td><td class="attend-total">1</td></tr>
+          <tr class="extra-row"><td>김인</td><td>영록팀</td><td><span class="attend-x">✕</span></td><td><span class="attend-o">●</span></td><td class="attend-total">1</td></tr>
+          <tr class="extra-row"><td>김현</td><td>영록팀</td><td><span class="attend-x">✕</span></td><td><span class="attend-o">●</span></td><td class="attend-total">1</td></tr>
+        </tbody>
+      </table>
+      <button class="attend-toggle-btn" onclick="toggleRows(this)">
+        24명 더 보기 <i class="arrow">▼</i>
+      </button>
+    </div>
+  </div>
+
 </section>
 
 <script>
@@ -1133,7 +1287,7 @@
       : `${count}명 더 보기 <i class="arrow">▼</i>`;
   }
 
-  // ── 리그 네비게이터 (1라운드 → 2라운드 → 누적) ──
+  // ── 리그 순위표 네비게이터 (1라운드 → 2라운드 → 누적) ──
   let leagueRound = 2;
   const leagueMaxRound = 3;
 
@@ -1143,13 +1297,51 @@
   }
 
   function updateLeagueDisplay() {
-    document.querySelectorAll('#league .round-content').forEach(el => {
+    document.querySelectorAll('#league .standings-panel').forEach(el => {
       el.style.display = parseInt(el.dataset.round) === leagueRound ? '' : 'none';
     });
     const label = leagueRound === leagueMaxRound ? '누적' : leagueRound + '라운드';
     document.getElementById('league-round-label').textContent = label;
     document.getElementById('league-prev').disabled = leagueRound === 1;
     document.getElementById('league-next').disabled = leagueRound === leagueMaxRound;
+  }
+
+  // ── 경기결과 네비게이터 (1라운드 ↔ 2라운드) ──
+  let matchRound = 2;
+  const matchMaxRound = 2;
+  const matchLabels = { 1: '1라운드 · 05.03', 2: '2라운드 · 05.10' };
+
+  function changeMatchRound(dir) {
+    matchRound = Math.max(1, Math.min(matchMaxRound, matchRound + dir));
+    updateMatchDisplay();
+  }
+
+  function updateMatchDisplay() {
+    document.querySelectorAll('#league .match-panel').forEach(el => {
+      el.style.display = parseInt(el.dataset.round) === matchRound ? '' : 'none';
+    });
+    document.getElementById('match-round-label').textContent = matchLabels[matchRound];
+    document.getElementById('match-prev').disabled = matchRound === 1;
+    document.getElementById('match-next').disabled = matchRound === matchMaxRound;
+  }
+
+  // ── 참석인원 네비게이터 (1라운드 → 2라운드 → 누적) ──
+  let attendRound = 2;
+  const attendMaxRound = 3;
+  const attendLabels = { 1: '1라운드 참석현황', 2: '2라운드 참석현황', 3: '누적참석인원 현황' };
+
+  function changeAttendRound(dir) {
+    attendRound = Math.max(1, Math.min(attendMaxRound, attendRound + dir));
+    updateAttendDisplay();
+  }
+
+  function updateAttendDisplay() {
+    document.querySelectorAll('#attend .attend-panel').forEach(el => {
+      el.style.display = parseInt(el.dataset.round) === attendRound ? '' : 'none';
+    });
+    document.getElementById('attend-round-label').textContent = attendLabels[attendRound];
+    document.getElementById('attend-prev').disabled = attendRound === 1;
+    document.getElementById('attend-next').disabled = attendRound === attendMaxRound;
   }
 
   // ── MVP 네비게이터 (1라운드 → 2라운드) ──
@@ -1197,6 +1389,8 @@
   // 페이지 로드 시 초기화
   document.addEventListener('DOMContentLoaded', () => {
     updateLeagueDisplay();
+    updateMatchDisplay();
+    updateAttendDisplay();
     updateMvpDisplay();
     updateTodayDisplay();
   });
@@ -1220,9 +1414,9 @@
   </div>
 
   <div class="video-grid">
-    <a href="https://youtu.be/52hYqGFI0Jc?si=k3S2OpW5wQOoL99v" target="_blank" class="video-card">
+    <a href="https://youtu.be/6tqjWWmDHsU?si=_E5QW1i3tWG8hT3Z" target="_blank" class="video-card">
       <div class="video-thumb">
-        <img src="https://img.youtube.com/vi/52hYqGFI0Jc/hqdefault.jpg" alt="경기 영상 1" />
+        <img src="https://img.youtube.com/vi/6tqjWWmDHsU/hqdefault.jpg" alt="경기 영상 1" />
         <div class="play-btn"></div>
         <span class="video-thumb-label">📹 유튜브</span>
       </div>
