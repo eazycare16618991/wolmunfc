@@ -610,6 +610,210 @@
       display: block;
     }
 
+    /* ── 시상 안내 ── */
+    .awards-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+      margin-bottom: 32px;
+    }
+    @media (max-width: 900px) { .awards-grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 560px) { .awards-grid { grid-template-columns: 1fr; } }
+
+    .award-card {
+      background: var(--card);
+      border-radius: 16px;
+      box-shadow: 0 2px 16px rgba(0,0,0,0.07);
+      padding: 22px 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      border-top: 4px solid var(--primary);
+      transition: transform .2s, box-shadow .2s;
+    }
+    .award-card:hover { transform: translateY(-3px); box-shadow: 0 6px 24px rgba(58,188,184,0.18); }
+    .award-card.accent { border-top-color: var(--accent); }
+    .award-card.special { border-top-color: #e17055; }
+
+    .award-icon { font-size: 28px; line-height: 1; }
+    .award-title {
+      font-size: 15px;
+      font-weight: 800;
+      color: var(--primary);
+    }
+    .award-card.accent .award-title { color: var(--accent-dark); }
+    .award-card.special .award-title { color: #c0392b; }
+    .award-desc {
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.55;
+    }
+    .award-rule {
+      font-size: 11.5px;
+      color: #b2bec3;
+      margin-top: 2px;
+      line-height: 1.5;
+    }
+
+    .awards-notice {
+      background: linear-gradient(135deg, #2aadaa 0%, #3abcb8 60%, #4dcfcb 100%);
+      border-radius: 18px;
+      padding: 30px 32px;
+      color: #fff;
+      display: flex;
+      gap: 18px;
+      align-items: flex-start;
+    }
+    .awards-notice-icon { font-size: 36px; flex-shrink: 0; }
+    .awards-notice-body { flex: 1; }
+    .awards-notice-body strong {
+      display: block;
+      font-size: 16px;
+      font-weight: 800;
+      margin-bottom: 8px;
+      color: var(--accent);
+    }
+    .awards-notice-body p {
+      font-size: 14px;
+      line-height: 1.75;
+      color: rgba(255,255,255,0.92);
+    }
+    .awards-notice-body p.laugh {
+      margin-top: 10px;
+      font-size: 13px;
+      color: rgba(255,255,255,0.7);
+      font-style: italic;
+    }
+
+    .no-dup-badge {
+      display: inline-block;
+      background: #fff3cd;
+      color: #856404;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 20px;
+      margin-bottom: 4px;
+    }
+
+    /* ── 상품 쇼케이스 ── */
+    .prize-showcase {
+      background: linear-gradient(135deg, #0f5c5a 0%, #1a8a87 40%, #2aadaa 100%);
+      border-radius: 24px;
+      padding: 44px 32px 36px;
+      margin-bottom: 32px;
+      position: relative;
+      overflow: hidden;
+    }
+    .prize-showcase::before {
+      content: '';
+      position: absolute;
+      width: 400px; height: 400px;
+      background: radial-gradient(circle, rgba(245,200,66,0.15) 0%, transparent 70%);
+      top: -120px; right: -80px;
+      border-radius: 50%;
+      pointer-events: none;
+    }
+    .prize-showcase::after {
+      content: '';
+      position: absolute;
+      width: 300px; height: 300px;
+      background: radial-gradient(circle, rgba(255,255,255,0.08) 0%, transparent 70%);
+      bottom: -80px; left: -60px;
+      border-radius: 50%;
+      pointer-events: none;
+    }
+    .prize-stars {
+      text-align: center;
+      font-size: 18px;
+      letter-spacing: 8px;
+      color: var(--accent);
+      margin-bottom: 10px;
+      position: relative;
+    }
+    .prize-showcase-title {
+      text-align: center;
+      margin-bottom: 32px;
+      position: relative;
+    }
+    .prize-showcase-title h3 {
+      font-size: 24px;
+      font-weight: 900;
+      color: #fff;
+      margin-bottom: 6px;
+      letter-spacing: -0.5px;
+    }
+    .prize-showcase-title h3 em {
+      color: var(--accent);
+      font-style: normal;
+    }
+    .prize-showcase-title p {
+      color: rgba(255,255,255,0.65);
+      font-size: 13px;
+    }
+    .prize-products {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 14px;
+      position: relative;
+    }
+    @media (max-width: 900px) { .prize-products { grid-template-columns: repeat(3, 1fr); } }
+    @media (max-width: 560px) { .prize-products { grid-template-columns: repeat(2, 1fr); } }
+    .prize-product-card {
+      background: rgba(255,255,255,0.13);
+      border: 1px solid rgba(255,255,255,0.22);
+      border-radius: 16px;
+      overflow: hidden;
+      transition: transform .2s, box-shadow .2s;
+      cursor: default;
+    }
+    .prize-product-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 28px rgba(0,0,0,0.25);
+    }
+    .prize-product-img-wrap {
+      width: 100%;
+      aspect-ratio: 1 / 1;
+      overflow: hidden;
+      background: rgba(255,255,255,0.08);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 40px;
+    }
+    .prize-product-img-wrap img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+    .prize-product-info {
+      padding: 10px 10px 12px;
+      text-align: center;
+    }
+    .prize-product-name {
+      color: #fff;
+      font-size: 12px;
+      font-weight: 700;
+      line-height: 1.45;
+    }
+    .prize-product-price {
+      color: var(--accent);
+      font-size: 13px;
+      font-weight: 800;
+      margin-top: 4px;
+    }
+    .prize-badge {
+      display: inline-block;
+      background: var(--accent);
+      color: #4a3800;
+      font-size: 10px;
+      font-weight: 800;
+      padding: 2px 8px;
+      border-radius: 20px;
+      margin-bottom: 5px;
+    }
+
     /* ── 푸터 ── */
     footer {
       background: var(--primary);
@@ -632,6 +836,7 @@
     </a>
     <nav>
       <a href="#league">리그현황</a>
+      <a href="#awards">시상안내</a>
       <a href="#videos">경기영상</a>
       <a href="#records">개인기록</a>
     </nav>
@@ -913,6 +1118,178 @@
 
   </div>
 
+</section>
+
+<hr class="divider" style="max-width:1100px;margin:0 auto;" />
+
+<!-- ── 시상 안내 ── -->
+<section id="awards">
+  <div class="section-header">
+    <div class="section-tag">Awards</div>
+    <h2>리그 시상 안내</h2>
+    <p>리그 종료 후 야유회에서 시상합니다</p>
+  </div>
+
+  <div class="awards-grid">
+
+    <!-- 우승팀 -->
+    <div class="award-card accent">
+      <div class="award-icon">🏆</div>
+      <div class="award-title">우승팀 시상</div>
+      <div class="award-desc">우승팀 전원 시상</div>
+      <div class="award-rule">리그 1회 이상 참석 &amp; 야유회 참석자 대상</div>
+    </div>
+
+    <!-- 득점왕 -->
+    <div class="award-card">
+      <div class="award-icon">⚽</div>
+      <div class="award-title">득점왕</div>
+      <div class="award-desc">최다 골</div>
+      <div class="award-rule">동수 시 → 비우승팀 → 최소실점팀 순</div>
+    </div>
+
+    <!-- 어시스트 -->
+    <div class="award-card">
+      <div class="award-icon">🎯</div>
+      <div class="award-title">어시스트상</div>
+      <div class="award-desc">최다 어시스트</div>
+      <div class="award-rule">동수 시 → 비우승팀 → 최소실점팀 순</div>
+    </div>
+
+    <!-- 철벽수비상 -->
+    <div class="award-card">
+      <div class="award-icon">🛡️</div>
+      <div class="award-title">철벽수비상</div>
+      <div class="award-desc">최다 우수선수 선정</div>
+      <div class="award-rule">동수 시 → 비우승팀 → 최소실점팀 순</div>
+    </div>
+
+    <!-- 야신상 -->
+    <div class="award-card">
+      <div class="award-icon">🧤</div>
+      <div class="award-title">야신상</div>
+      <div class="award-desc">최소실점팀 최다 우수선수</div>
+      <div class="award-rule">동수 시 → 비우승팀 → 팀장 선정 순</div>
+    </div>
+
+    <!-- 기량발전상 -->
+    <div class="award-card">
+      <div class="award-icon">📈</div>
+      <div class="award-title">기량발전상 <small style="font-size:11px;font-weight:600;color:#b2bec3;">1인</small></div>
+      <div class="award-desc">감독 선정</div>
+    </div>
+
+    <!-- 최다출석팀상 -->
+    <div class="award-card accent">
+      <div class="award-icon">👥</div>
+      <div class="award-title">최다출석팀상</div>
+      <div class="award-desc">최다출석팀 전원 시상</div>
+      <div class="award-rule">리그 1회 이상 참석 &amp; 야유회 참석자 대상</div>
+    </div>
+
+    <!-- 리그 MVP -->
+    <div class="award-card special">
+      <div class="award-icon">🌟</div>
+      <div class="award-title">리그 MVP</div>
+      <div class="award-desc">운영진 5인 합의 선정</div>
+    </div>
+
+    <!-- 중복수상 안내 -->
+    <div class="award-card" style="border-top-color:#6c5ce7; background:#f8f7ff;">
+      <div class="award-icon">📋</div>
+      <span class="no-dup-badge">중복수상 불가</span>
+      <div class="award-title" style="color:#6c5ce7;">기록상 안내</div>
+      <div class="award-desc">중복 시 1개는 차석자에게 수여</div>
+      <div class="award-rule">적용 우선순위: 득점 → 어시스트 → 철벽수비 → 야신</div>
+    </div>
+
+  </div>
+
+  <!-- 상품 쇼케이스 -->
+  <div class="prize-showcase">
+    <div class="prize-stars">✦ ✦ ✦ ✦ ✦ ✦ ✦</div>
+    <div class="prize-showcase-title">
+      <h3>🎁 <em>이런 상품이 기다립니다!</em> 🎁</h3>
+      <p>리그 시상 · 전체 상품 라인업 · 야유회에서 지급</p>
+    </div>
+    <div class="prize-products">
+
+      <!-- 에어프라이어 오븐 -->
+      <div class="prize-product-card">
+        <div class="prize-product-img-wrap">
+          <img src="prize1.jpg" alt="에어프라이어 멀티오븐"
+               onerror="this.parentElement.innerHTML='🍗'">
+        </div>
+        <div class="prize-product-info">
+          <div class="prize-badge">BEST</div>
+          <div class="prize-product-name">에어프라이어<br>멀티오븐</div>
+        </div>
+      </div>
+
+      <!-- 2in1 전기그릴 -->
+      <div class="prize-product-card">
+        <div class="prize-product-img-wrap">
+          <img src="prize2.jpg" alt="2in1 전기그릴"
+               onerror="this.parentElement.innerHTML='🍲'">
+        </div>
+        <div class="prize-product-info">
+          <div class="prize-product-name">2in1 분리세척<br>전기그릴</div>
+          <div class="prize-product-price">37,800원</div>
+        </div>
+      </div>
+
+      <!-- 무선 블렌더 -->
+      <div class="prize-product-card">
+        <div class="prize-product-img-wrap">
+          <img src="prize3.jpg" alt="무선 휴대용 블렌더"
+               onerror="this.parentElement.innerHTML='🥤'">
+        </div>
+        <div class="prize-product-info">
+          <div class="prize-product-name">무선 휴대용<br>블렌더 600ml</div>
+          <div class="prize-product-price">28,600원</div>
+        </div>
+      </div>
+
+      <!-- 미니 전기그릴 -->
+      <div class="prize-product-card">
+        <div class="prize-product-img-wrap">
+          <img src="prize4.jpg" alt="미니 전기그릴"
+               onerror="this.parentElement.innerHTML='🥩'">
+        </div>
+        <div class="prize-product-info">
+          <div class="prize-product-name">나혼자<br>미니 전기그릴</div>
+          <div class="prize-product-price">19,800원</div>
+        </div>
+      </div>
+
+      <!-- 귀지압 패치 -->
+      <div class="prize-product-card">
+        <div class="prize-product-img-wrap">
+          <img src="prize5.jpg" alt="귀지압 패치 세트"
+               onerror="this.parentElement.innerHTML='💆'">
+        </div>
+        <div class="prize-product-info">
+          <div class="prize-product-name">귀지압 패치<br>1800매 세트</div>
+          <div class="prize-product-price">12,900원</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- 야유회 공지 -->
+  <div class="awards-notice">
+    <div class="awards-notice-icon">🎉</div>
+    <div class="awards-notice-body">
+      <strong>시상은 모두 야유회에서 진행됩니다!</strong>
+      <p>
+        모든 시상은 리그 종료 후 <strong style="color:#fff;">월문 야유회</strong>에서 진행됩니다.<br>
+        2026 월문 하계야유회에는 다양한 <strong style="color:#fff;">별도 시상</strong>도 준비되어 있으니 많은 관심 부탁드립니다.<br><br>
+        야유회를 위해 <strong style="color:#fff;">많은 찬조</strong> 부탁드립니다 🙏
+      </p>
+      <p class="laugh">조금~ 아니 많이 주셔도 감사히 받겠습니다 ㅎㅎㅎ</p>
+    </div>
+  </div>
 </section>
 
 <hr class="divider" style="max-width:1100px;margin:0 auto;" />
