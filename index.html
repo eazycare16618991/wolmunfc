@@ -696,6 +696,35 @@
       margin-bottom: 4px;
     }
 
+    /* ── 시상 테이블 ── */
+    .awards-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 8px;
+      background: var(--card);
+      border-radius: 14px;
+      overflow: hidden;
+      box-shadow: 0 2px 16px rgba(0,0,0,0.07);
+    }
+    .awards-table th {
+      background: var(--primary);
+      color: #fff;
+      padding: 12px 20px;
+      font-size: 13px;
+      font-weight: 700;
+      text-align: left;
+    }
+    .awards-table td {
+      padding: 13px 20px;
+      font-size: 14px;
+      border-bottom: 1px solid var(--border);
+    }
+    .awards-table td:first-child { font-weight: 700; white-space: nowrap; }
+    .awards-table td:last-child { color: var(--muted); }
+    .awards-table tr:last-child td { border-bottom: none; }
+    .awards-table tr.dup-row td { color: #6c5ce7; font-size: 13px; }
+    .awards-table tbody tr:hover td { background: #f0fafa; }
+
     /* ── 상품 쇼케이스 ── */
     .prize-showcase {
       background: linear-gradient(135deg, #0f5c5a 0%, #1a8a87 40%, #2aadaa 100%);
@@ -1130,166 +1159,23 @@
     <p>리그 종료 후 야유회에서 시상합니다</p>
   </div>
 
-  <div class="awards-grid">
+  <table class="awards-table">
+    <thead>
+      <tr><th>시상</th><th>선정 방식</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>🏆 우승팀 시상</td><td>리그 1회 이상 참석 + 야유회 참석자</td></tr>
+      <tr><td>⚽ 득점왕</td><td>최다 골 / 동수 시 비우승팀 → 최소실점팀 순</td></tr>
+      <tr><td>🎯 어시스트상</td><td>최다 어시스트 / 동수 시 동일 기준</td></tr>
+      <tr><td>🛡️ 철벽수비상</td><td>최다 우수선수 / 동수 시 동일 기준</td></tr>
+      <tr><td>🧤 야신상</td><td>최소실점팀 최다 우수선수 / 동수 시 비우승팀 → 팀장선정 순</td></tr>
+      <tr><td>📈 기량발전상</td><td>감독 선정 (1인)</td></tr>
+      <tr><td>👥 최다출석팀상</td><td>리그 1회 이상 참석 + 야유회 참석자</td></tr>
+      <tr><td>🌟 리그 MVP</td><td>운영진 5인 합의 선정</td></tr>
+      <tr class="dup-row"><td>📋 중복수상 안내</td><td>득 → 어 → 수 → 야 우선순위 (중복 시 차석자 수여)</td></tr>
+    </tbody>
+  </table>
 
-    <!-- 우승팀 -->
-    <div class="award-card accent">
-      <div class="award-icon">🏆</div>
-      <div class="award-title">우승팀 시상</div>
-      <div class="award-desc">우승팀 전원 시상</div>
-      <div class="award-rule">리그 1회 이상 참석 &amp; 야유회 참석자 대상</div>
-    </div>
-
-    <!-- 득점왕 -->
-    <div class="award-card">
-      <div class="award-icon">⚽</div>
-      <div class="award-title">득점왕</div>
-      <div class="award-desc">최다 골</div>
-      <div class="award-rule">동수 시 → 비우승팀 → 최소실점팀 순</div>
-    </div>
-
-    <!-- 어시스트 -->
-    <div class="award-card">
-      <div class="award-icon">🎯</div>
-      <div class="award-title">어시스트상</div>
-      <div class="award-desc">최다 어시스트</div>
-      <div class="award-rule">동수 시 → 비우승팀 → 최소실점팀 순</div>
-    </div>
-
-    <!-- 철벽수비상 -->
-    <div class="award-card">
-      <div class="award-icon">🛡️</div>
-      <div class="award-title">철벽수비상</div>
-      <div class="award-desc">최다 우수선수 선정</div>
-      <div class="award-rule">동수 시 → 비우승팀 → 최소실점팀 순</div>
-    </div>
-
-    <!-- 야신상 -->
-    <div class="award-card">
-      <div class="award-icon">🧤</div>
-      <div class="award-title">야신상</div>
-      <div class="award-desc">최소실점팀 최다 우수선수</div>
-      <div class="award-rule">동수 시 → 비우승팀 → 팀장 선정 순</div>
-    </div>
-
-    <!-- 기량발전상 -->
-    <div class="award-card">
-      <div class="award-icon">📈</div>
-      <div class="award-title">기량발전상 <small style="font-size:11px;font-weight:600;color:#b2bec3;">1인</small></div>
-      <div class="award-desc">감독 선정</div>
-    </div>
-
-    <!-- 최다출석팀상 -->
-    <div class="award-card accent">
-      <div class="award-icon">👥</div>
-      <div class="award-title">최다출석팀상</div>
-      <div class="award-desc">최다출석팀 전원 시상</div>
-      <div class="award-rule">리그 1회 이상 참석 &amp; 야유회 참석자 대상</div>
-    </div>
-
-    <!-- 리그 MVP -->
-    <div class="award-card special">
-      <div class="award-icon">🌟</div>
-      <div class="award-title">리그 MVP</div>
-      <div class="award-desc">운영진 5인 합의 선정</div>
-    </div>
-
-    <!-- 중복수상 안내 -->
-    <div class="award-card" style="border-top-color:#6c5ce7; background:#f8f7ff;">
-      <div class="award-icon">📋</div>
-      <span class="no-dup-badge">중복수상 불가</span>
-      <div class="award-title" style="color:#6c5ce7;">기록상 안내</div>
-      <div class="award-desc">중복 시 1개는 차석자에게 수여</div>
-      <div class="award-rule">적용 우선순위: 득점 → 어시스트 → 철벽수비 → 야신</div>
-    </div>
-
-  </div>
-
-  <!-- 상품 쇼케이스 -->
-  <div class="prize-showcase">
-    <div class="prize-stars">✦ ✦ ✦ ✦ ✦ ✦ ✦</div>
-    <div class="prize-showcase-title">
-      <h3>🎁 <em>이런 상품이 기다립니다!</em> 🎁</h3>
-      <p>리그 시상 · 전체 상품 라인업 · 야유회에서 지급</p>
-    </div>
-    <div class="prize-products">
-
-      <!-- 에어프라이어 오븐 -->
-      <div class="prize-product-card">
-        <div class="prize-product-img-wrap">
-          <img src="prize1.jpg" alt="에어프라이어 멀티오븐"
-               onerror="this.parentElement.innerHTML='🍗'">
-        </div>
-        <div class="prize-product-info">
-          <div class="prize-badge">BEST</div>
-          <div class="prize-product-name">에어프라이어<br>멀티오븐</div>
-        </div>
-      </div>
-
-      <!-- 2in1 전기그릴 -->
-      <div class="prize-product-card">
-        <div class="prize-product-img-wrap">
-          <img src="prize2.jpg" alt="2in1 전기그릴"
-               onerror="this.parentElement.innerHTML='🍲'">
-        </div>
-        <div class="prize-product-info">
-          <div class="prize-product-name">2in1 분리세척<br>전기그릴</div>
-          <div class="prize-product-price">37,800원</div>
-        </div>
-      </div>
-
-      <!-- 무선 블렌더 -->
-      <div class="prize-product-card">
-        <div class="prize-product-img-wrap">
-          <img src="prize3.jpg" alt="무선 휴대용 블렌더"
-               onerror="this.parentElement.innerHTML='🥤'">
-        </div>
-        <div class="prize-product-info">
-          <div class="prize-product-name">무선 휴대용<br>블렌더 600ml</div>
-          <div class="prize-product-price">28,600원</div>
-        </div>
-      </div>
-
-      <!-- 미니 전기그릴 -->
-      <div class="prize-product-card">
-        <div class="prize-product-img-wrap">
-          <img src="prize4.jpg" alt="미니 전기그릴"
-               onerror="this.parentElement.innerHTML='🥩'">
-        </div>
-        <div class="prize-product-info">
-          <div class="prize-product-name">나혼자<br>미니 전기그릴</div>
-          <div class="prize-product-price">19,800원</div>
-        </div>
-      </div>
-
-      <!-- 귀지압 패치 -->
-      <div class="prize-product-card">
-        <div class="prize-product-img-wrap">
-          <img src="prize5.jpg" alt="귀지압 패치 세트"
-               onerror="this.parentElement.innerHTML='💆'">
-        </div>
-        <div class="prize-product-info">
-          <div class="prize-product-name">귀지압 패치<br>1800매 세트</div>
-          <div class="prize-product-price">12,900원</div>
-        </div>
-      </div>
-
-    </div>
-  </div>
-
-  <!-- 야유회 공지 -->
-  <div class="awards-notice">
-    <div class="awards-notice-icon">🎉</div>
-    <div class="awards-notice-body">
-      <strong>시상은 모두 야유회에서 진행됩니다!</strong>
-      <p>
-        모든 시상은 리그 종료 후 <strong style="color:#fff;">월문 야유회</strong>에서 진행됩니다.<br>
-        2026 월문 하계야유회에는 다양한 <strong style="color:#fff;">별도 시상</strong>도 준비되어 있으니 많은 관심 부탁드립니다.<br><br>
-        야유회를 위해 <strong style="color:#fff;">많은 찬조</strong> 부탁드립니다 🙏
-      </p>
-      <p class="laugh">조금~ 아니 많이 주셔도 감사히 받겠습니다 ㅎㅎㅎ</p>
-    </div>
-  </div>
 </section>
 
 <hr class="divider" style="max-width:1100px;margin:0 auto;" />
