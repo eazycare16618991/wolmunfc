@@ -314,8 +314,11 @@
     .video-section { padding-top: 0; }
     .video-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      grid-template-columns: repeat(3, 1fr);
       gap: 20px;
+    }
+    @media (max-width: 700px) {
+      .video-grid { grid-template-columns: 1fr; }
     }
     .video-card {
       background: var(--card);
@@ -1829,12 +1832,31 @@
   }
 
   // 페이지 로드 시 초기화
+  let videoPage = 1;
+  const videoMaxPage = 2;
+  const videoPageLabels = { 1: '최신 영상', 2: '이전 영상' };
+
+  function changeVideoPage(dir) {
+    videoPage = Math.max(1, Math.min(videoMaxPage, videoPage + dir));
+    updateVideoDisplay();
+  }
+
+  function updateVideoDisplay() {
+    document.querySelectorAll('.video-page').forEach(el => {
+      el.style.display = parseInt(el.dataset.page) === videoPage ? '' : 'none';
+    });
+    document.getElementById('video-page-label').textContent = videoPageLabels[videoPage];
+    document.getElementById('video-prev').disabled = videoPage === 1;
+    document.getElementById('video-next').disabled = videoPage === videoMaxPage;
+  }
+
   document.addEventListener('DOMContentLoaded', () => {
     updateLeagueDisplay();
     updateMatchDisplay();
     updateAttendDisplay();
     updateMvpDisplay();
     updateTodayDisplay();
+    updateVideoDisplay();
   });
 
   function applyTeamChipColors() {
@@ -1855,27 +1877,35 @@
     <p>리그 경기 하이라이트 영상을 확인하세요</p>
   </div>
 
-  <div class="video-grid">
-    <a href="https://youtu.be/6tqjWWmDHsU?si=_E5QW1i3tWG8hT3Z" target="_blank" class="video-card">
+  <!-- 영상 네비게이터 -->
+  <div class="round-nav">
+    <button class="round-arrow" id="video-prev" onclick="changeVideoPage(-1)" disabled>◀</button>
+    <span class="round-label" id="video-page-label">최신 영상</span>
+    <button class="round-arrow" id="video-next" onclick="changeVideoPage(1)">▶</button>
+  </div>
+
+  <!-- 페이지 1: 최신 3개 -->
+  <div class="video-grid video-page" data-page="1">
+    <a href="https://youtu.be/VZzsikPlPNs?si=NQMYFuhkgWb8EfUt" target="_blank" class="video-card">
       <div class="video-thumb">
-        <img src="https://img.youtube.com/vi/6tqjWWmDHsU/hqdefault.jpg" alt="경기 영상 1" />
+        <img src="https://img.youtube.com/vi/VZzsikPlPNs/hqdefault.jpg" alt="경기 영상 5" />
         <div class="play-btn"></div>
         <span class="video-thumb-label">📹 유튜브</span>
       </div>
       <div class="video-info">
-        <div class="round">경기 영상 1</div>
+        <div class="round">경기 영상 5 · 최신</div>
         <div class="title">월문 FC 경기 영상</div>
         <div class="meta">YouTube에서 보기</div>
       </div>
     </a>
-    <a href="https://youtu.be/JdzkkJ36PUU?si=w06MuVC9eXeE4y3S" target="_blank" class="video-card">
+    <a href="https://youtu.be/6kIc9ip23vc?si=5UhwU35xJGk0-yFr" target="_blank" class="video-card">
       <div class="video-thumb">
-        <img src="https://img.youtube.com/vi/JdzkkJ36PUU/hqdefault.jpg" alt="경기 영상 2" />
+        <img src="https://img.youtube.com/vi/6kIc9ip23vc/hqdefault.jpg" alt="경기 영상 4" />
         <div class="play-btn"></div>
         <span class="video-thumb-label">📹 유튜브</span>
       </div>
       <div class="video-info">
-        <div class="round">경기 영상 2</div>
+        <div class="round">경기 영상 4</div>
         <div class="title">월문 FC 경기 영상</div>
         <div class="meta">YouTube에서 보기</div>
       </div>
@@ -1888,6 +1918,34 @@
       </div>
       <div class="video-info">
         <div class="round">경기 영상 3</div>
+        <div class="title">월문 FC 경기 영상</div>
+        <div class="meta">YouTube에서 보기</div>
+      </div>
+    </a>
+  </div>
+
+  <!-- 페이지 2: 이전 2개 -->
+  <div class="video-grid video-page" data-page="2" style="display:none">
+    <a href="https://youtu.be/JdzkkJ36PUU?si=w06MuVC9eXeE4y3S" target="_blank" class="video-card">
+      <div class="video-thumb">
+        <img src="https://img.youtube.com/vi/JdzkkJ36PUU/hqdefault.jpg" alt="경기 영상 2" />
+        <div class="play-btn"></div>
+        <span class="video-thumb-label">📹 유튜브</span>
+      </div>
+      <div class="video-info">
+        <div class="round">경기 영상 2</div>
+        <div class="title">월문 FC 경기 영상</div>
+        <div class="meta">YouTube에서 보기</div>
+      </div>
+    </a>
+    <a href="https://youtu.be/6tqjWWmDHsU?si=_E5QW1i3tWG8hT3Z" target="_blank" class="video-card">
+      <div class="video-thumb">
+        <img src="https://img.youtube.com/vi/6tqjWWmDHsU/hqdefault.jpg" alt="경기 영상 1" />
+        <div class="play-btn"></div>
+        <span class="video-thumb-label">📹 유튜브</span>
+      </div>
+      <div class="video-info">
+        <div class="round">경기 영상 1</div>
         <div class="title">월문 FC 경기 영상</div>
         <div class="meta">YouTube에서 보기</div>
       </div>
