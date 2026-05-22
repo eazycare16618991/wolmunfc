@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>바이러스버스 최저가 비교</title>
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --primary: #1a73e8;
+      --primary-dark: #1558b0;
+      --success: #0d904f;
+      --danger: #e53935;
+      --bg: #f8faff;
+      --card: #ffffff;
+      --text: #1c1c1e;
+      --muted: #6b7280;
+      --border: #e5e7eb;
+      --shadow: 0 2px 16px rgba(26,115,232,0.08);
+    }
+
+    body {
+      font-family: 'Apple SD Gothic Neo', 'Noto Sans KR', 'Segoe UI', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    /* ── 헤더 ── */
+    header {
+      background: linear-gradient(135deg, #1a73e8 0%, #0d47a1 100%);
+      color: #fff;
+      padding: 28px 24px 22px;
+      text-align: center;
+      box-shadow: 0 4px 20px rgba(26,115,232,0.3);
+    }
+    header h1 { font-size: 1.8rem; font-weight: 800; letter-spacing: -0.5px; }
+    header p { margin-top: 6px; font-size: 0.95rem; opacity: 0.85; }
+
+    /* ── 검색 바 ── */
+    .search-bar {
+      display: flex;
+      gap: 10px;
+      max-width: 700px;
+      margin: 28px auto 0;
+      padding: 0 16px;
+    }
+    .search-bar input {
+      flex: 1;
+      padding: 14px 18px;
+      border: none;
+      border-radius: 12px;
+      font-size: 1rem;
+      background: rgba(255,255,255,0.15);
+      color: #fff;
+      outline: none;
+      backdrop-filter: blur(4px);
+      border: 1.5px solid rgba(255,255,255,0.3);
+    }
+    .search-bar input::placeholder { color: rgba(255,255,255,0.65); }
+    .search-bar button {
+      padding: 14px 24px;
+      background: #fff;
+      color: var(--primary);
+      border: none;
+      border-radius: 12px;
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: transform 0.15s, box-shadow 0.15s;
+    }
+    .search-bar button:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
+    .search-bar button:active { transform: translateY(0); }
+
+    /* ── 메인 컨텐츠 ── */
+    main {
+      max-width: 1100px;
+      margin: 32px auto;
+      padding: 0 16px;
+    }
+
+    /* ── 통계 바 ── */
+    .stats-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+    .stats-info { font-size: 0.9rem; color: var(--muted); }
+    .stats-info strong { color: var(--text); }
+
+    .sort-group {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+    .sort-label { font-size: 0.85rem; color: var(--muted); }
+    .sort-btn {
+      padding: 7px 16px;
+      border: 1.5px solid var(--border);
+      background: var(--card);
+      border-radius: 20px;
+      font-size: 0.85rem;
+      cursor: pointer;
+      color: var(--muted);
+      transition: all 0.15s;
+    }
+    .sort-btn.active {
+      background: var(--primary);
+      border-color: var(--primary);
+      color: #fff;
+      font-weight: 600;
+    }
+    .sort-btn:hover:not(.active) { border-color: var(--primary); color: var(--primary); }
+
+    /* ── 가격 요약 카드 ── */
+    .price-summary {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 14px;
+      margin-bottom: 24px;
+    }
+    .summary-card {
+      background: var(--card);
+      border-radius: 14px;
+      padding: 18px 20px;
+      box-shadow: var(--shadow);
+      border: 1px solid var(--border);
+    }
+    .summary-card .label { font-size: 0.8rem; color: var(--muted); margin-bottom: 6px; }
+    .summary-card .value {
+      font-size: 1.4rem;
+      font-weight: 800;
+      color: var(--primary);
+    }
+    .summary-card.lowest .value { color: var(--success); }
+    .summary-card.highest .value { color: var(--danger); }
+
+    /* ── 상품 그리드 ── */
+    .product-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 18px;
+    }
+
+    .product-card {
+      background: var(--card);
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: var(--shadow);
+      border: 1px solid var(--border);
+      transition: transform 0.2s, box-shadow 0.2s;
+      display: flex;
+      flex-direction: column;
+    }
+    .product-card:hover { transform: translateY(-4px); box-shadow: 0 8px 32px rgba(26,115,232,0.15); }
+
+    .product-card.rank-1 { border: 2px solid #f59e0b; }
+    .product-card.rank-2 { border: 2px solid #9ca3af; }
+    .product-card.rank-3 { border: 2px solid #b45309; }
+
+    .rank-badge {
+      display: none;
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      font-size: 0.75rem;
+      font-weight: 800;
+      color: #fff;
+      align-items: center;
+      justify-content: center;
+      z-index: 2;
+    }
+    .product-card.rank-1 .rank-badge { display: flex; background: #f59e0b; }
+    .product-card.rank-2 .rank-badge { display: flex; background: #9ca3af; }
+    .product-card.rank-3 .rank-badge { display: flex; background: #b45309; }
+
+    .card-img-wrap {
+      position: relative;
+      width: 100%;
+      padding-top: 65%;
+      background: #f3f4f6;
+      overflow: hidden;
+    }
+    .card-img-wrap img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      padding: 12px;
+      transition: transform 0.3s;
+    }
+    .product-card:hover .card-img-wrap img { transform: scale(1.05); }
+
+    .card-body {
+      padding: 14px 16px 16px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .card-mall {
+      font-size: 0.75rem;
+      color: var(--primary);
+      font-weight: 600;
+      background: rgba(26,115,232,0.08);
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 6px;
+    }
+
+    .card-title {
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--text);
+      line-height: 1.45;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .card-price-row {
+      display: flex;
+      align-items: baseline;
+      gap: 8px;
+      margin-top: auto;
+    }
+    .card-price {
+      font-size: 1.35rem;
+      font-weight: 800;
+      color: var(--danger);
+    }
+    .card-unit { font-size: 0.8rem; color: var(--muted); }
+
+    .card-link {
+      display: block;
+      text-align: center;
+      padding: 10px;
+      background: var(--primary);
+      color: #fff;
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 700;
+      transition: background 0.15s;
+    }
+    .card-link:hover { background: var(--primary-dark); }
+
+    /* ── 로딩 / 오류 / 빈 상태 ── */
+    .state-box {
+      text-align: center;
+      padding: 60px 20px;
+      color: var(--muted);
+    }
+    .state-box .icon { font-size: 3rem; margin-bottom: 14px; }
+    .state-box h2 { font-size: 1.2rem; margin-bottom: 8px; color: var(--text); }
+    .state-box p { font-size: 0.9rem; line-height: 1.6; }
+    .state-box pre {
+      margin-top: 14px;
+      background: #f3f4f6;
+      border-radius: 10px;
+      padding: 14px 18px;
+      font-size: 0.82rem;
+      text-align: left;
+      color: #374151;
+      line-height: 1.7;
+    }
+
+    .spinner {
+      width: 48px;
+      height: 48px;
+      border: 4px solid var(--border);
+      border-top-color: var(--primary);
+      border-radius: 50%;
+      animation: spin 0.7s linear infinite;
+      margin: 0 auto 16px;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* ── 더 보기 버튼 ── */
+    .load-more-wrap { text-align: center; margin-top: 32px; }
+    .load-more-btn {
+      padding: 14px 40px;
+      background: var(--card);
+      border: 2px solid var(--primary);
+      color: var(--primary);
+      border-radius: 30px;
+      font-size: 0.95rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .load-more-btn:hover { background: var(--primary); color: #fff; }
+
+    /* ── API 설정 안내 ── */
+    .api-notice {
+      background: #fffbeb;
+      border: 1.5px solid #f59e0b;
+      border-radius: 14px;
+      padding: 16px 20px;
+      margin-bottom: 24px;
+      font-size: 0.88rem;
+      line-height: 1.7;
+      color: #78350f;
+    }
+    .api-notice strong { display: block; font-size: 0.95rem; margin-bottom: 4px; }
+    .api-notice code {
+      background: rgba(245,158,11,0.15);
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-family: 'Courier New', monospace;
+    }
+
+    footer {
+      text-align: center;
+      padding: 32px 16px;
+      font-size: 0.82rem;
+      color: var(--muted);
+      border-top: 1px solid var(--border);
+      margin-top: 40px;
+    }
+
+    @media (max-width: 600px) {
+      header h1 { font-size: 1.4rem; }
+      .product-grid { grid-template-columns: 1fr; }
+      .price-summary { grid-template-columns: repeat(2, 1fr); }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>🦠 바이러스버스 최저가 비교</h1>
+  <p>네이버 쇼핑 기준 · 실시간 최저가 검색</p>
+  <div class="search-bar">
+    <input type="text" id="searchInput" value="바이러스버스" placeholder="상품명 입력..." />
+    <button onclick="resetAndSearch()">🔍 검색</button>
+  </div>
+</header>
+
+<main>
+  <div id="apiNotice" class="api-notice" style="display:none;">
+    <strong>⚠️ 네이버 API 키 설정 필요</strong>
+    서버를 시작할 때 아래 환경변수를 설정해야 합니다:<br>
+    <code>NAVER_CLIENT_ID=발급받은_ID NAVER_CLIENT_SECRET=발급받은_SECRET node server.js</code><br><br>
+    네이버 개발자 센터(<code>https://developers.naver.com</code>) → 애플리케이션 등록 → 검색 API 선택 후 발급
+  </div>
+
+  <div id="statsBar" class="stats-bar" style="display:none;">
+    <div class="stats-info">
+      검색어: <strong id="queryLabel"></strong> &nbsp;·&nbsp; 총 <strong id="totalCount"></strong>개 상품
+    </div>
+    <div class="sort-group">
+      <span class="sort-label">정렬:</span>
+      <button class="sort-btn active" onclick="changeSort('asc')" id="sortAsc">최저가순</button>
+      <button class="sort-btn" onclick="changeSort('dsc')" id="sortDsc">최고가순</button>
+      <button class="sort-btn" onclick="changeSort('sim')" id="sortSim">관련도순</button>
+    </div>
+  </div>
+
+  <div id="priceSummary" class="price-summary" style="display:none;">
+    <div class="summary-card lowest">
+      <div class="label">최저가</div>
+      <div class="value" id="minPrice">-</div>
+    </div>
+    <div class="summary-card">
+      <div class="label">평균가</div>
+      <div class="value" id="avgPrice">-</div>
+    </div>
+    <div class="summary-card highest">
+      <div class="label">최고가</div>
+      <div class="value" id="maxPrice">-</div>
+    </div>
+    <div class="summary-card">
+      <div class="label">검색 결과 수</div>
+      <div class="value" id="resultCount">-</div>
+    </div>
+  </div>
+
+  <div id="productGrid" class="product-grid"></div>
+
+  <div id="stateBox" class="state-box">
+    <div class="icon">🔍</div>
+    <h2>바이러스버스 최저가를 검색합니다</h2>
+    <p>서버를 실행하고 검색 버튼을 누르세요.</p>
+  </div>
+
+  <div id="loadMoreWrap" class="load-more-wrap" style="display:none;">
+    <button class="load-more-btn" onclick="loadMore()">더 보기 ↓</button>
+  </div>
+</main>
+
+<footer>
+  데이터 출처: 네이버 쇼핑 검색 API &nbsp;·&nbsp; 가격은 실시간으로 변동될 수 있습니다
+</footer>
+
+<script>
+  let currentSort = 'asc';
+  let currentStart = 1;
+  let currentQuery = '바이러스버스';
+  let allItems = [];
+  const DISPLAY = 40;
+
+  function fmt(n) {
+    return Number(n).toLocaleString('ko-KR') + '원';
+  }
+
+  function strip(html) {
+    return html.replace(/<[^>]*>/g, '');
+  }
+
+  function changeSort(sort) {
+    currentSort = sort;
+    document.querySelectorAll('.sort-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById('sort' + sort.charAt(0).toUpperCase() + sort.slice(1))?.classList.add('active');
+    resetAndSearch();
+  }
+
+  function resetAndSearch() {
+    currentStart = 1;
+    allItems = [];
+    currentQuery = document.getElementById('searchInput').value.trim() || '바이러스버스';
+    document.getElementById('productGrid').innerHTML = '';
+    document.getElementById('loadMoreWrap').style.display = 'none';
+    fetchProducts();
+  }
+
+  async function fetchProducts() {
+    showLoading();
+    try {
+      const url = `/api/search?query=${encodeURIComponent(currentQuery)}&sort=${currentSort}&display=${DISPLAY}&start=${currentStart}`;
+      const res = await fetch(url);
+      const data = await res.json();
+
+      if (!res.ok) {
+        showError(data);
+        return;
+      }
+
+      allItems = allItems.concat(data.items || []);
+      renderProducts(data.items || [], currentStart === 1);
+      updateStats(data, allItems);
+
+      document.getElementById('statsBar').style.display = 'flex';
+      document.getElementById('priceSummary').style.display = 'grid';
+      document.getElementById('stateBox').style.display = 'none';
+
+      const hasMore = (currentStart + DISPLAY - 1) < Math.min(data.total, 1000);
+      document.getElementById('loadMoreWrap').style.display = hasMore ? 'block' : 'none';
+
+    } catch (e) {
+      showError({ error: '서버에 연결할 수 없습니다.', message: '서버가 실행 중인지 확인하세요 (node server.js).' });
+    }
+  }
+
+  function loadMore() {
+    currentStart += DISPLAY;
+    fetchProducts();
+  }
+
+  function renderProducts(items, replace) {
+    const grid = document.getElementById('productGrid');
+    if (replace) grid.innerHTML = '';
+
+    if (items.length === 0 && replace) {
+      document.getElementById('stateBox').innerHTML = `
+        <div class="icon">😅</div>
+        <h2>검색 결과가 없습니다</h2>
+        <p>다른 검색어를 시도해보세요.</p>`;
+      document.getElementById('stateBox').style.display = 'block';
+      return;
+    }
+
+    const offset = replace ? 0 : allItems.length - items.length;
+
+    items.forEach((item, i) => {
+      const rank = offset + i + 1;
+      const rankClass = rank <= 3 ? ` rank-${rank}` : '';
+      const price = Number(item.lprice);
+      const title = strip(item.title);
+
+      const card = document.createElement('div');
+      card.className = `product-card${rankClass}`;
+      card.innerHTML = `
+        <div class="card-img-wrap">
+          <span class="rank-badge">${rank}</span>
+          <img src="${item.image}" alt="${title}" loading="lazy" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect width=%22100%22 height=%22100%22 fill=%22%23f3f4f6%22/><text y=%2250%22 x=%2250%22 dominant-baseline=%22middle%22 text-anchor=%22middle%22 font-size=%2240%22>🛒</text></svg>'" />
+        </div>
+        <div class="card-body">
+          <span class="card-mall">${item.mallName}</span>
+          <div class="card-title">${title}</div>
+          <div class="card-price-row">
+            <span class="card-price">${fmt(price)}</span>
+          </div>
+        </div>
+        <a class="card-link" href="${item.link}" target="_blank" rel="noopener">구매하러 가기 →</a>
+      `;
+      grid.appendChild(card);
+    });
+  }
+
+  function updateStats(data, items) {
+    document.getElementById('queryLabel').textContent = currentQuery;
+    document.getElementById('totalCount').textContent = Number(data.total).toLocaleString();
+    document.getElementById('resultCount').textContent = items.length + '개 표시';
+
+    const prices = items.map(i => Number(i.lprice)).filter(p => p > 0);
+    if (prices.length) {
+      document.getElementById('minPrice').textContent = fmt(Math.min(...prices));
+      document.getElementById('maxPrice').textContent = fmt(Math.max(...prices));
+      const avg = Math.round(prices.reduce((a, b) => a + b, 0) / prices.length);
+      document.getElementById('avgPrice').textContent = fmt(avg);
+    }
+  }
+
+  function showLoading() {
+    const box = document.getElementById('stateBox');
+    box.style.display = 'block';
+    box.innerHTML = `<div class="spinner"></div><h2>검색 중...</h2><p>최저가를 찾고 있습니다.</p>`;
+  }
+
+  function showError(data) {
+    const box = document.getElementById('stateBox');
+    box.style.display = 'block';
+
+    if (data.message && data.message.includes('NAVER_CLIENT')) {
+      document.getElementById('apiNotice').style.display = 'block';
+      box.innerHTML = `
+        <div class="icon">🔑</div>
+        <h2>API 키 설정이 필요합니다</h2>
+        <p>위의 안내를 따라 네이버 API 키를 설정해주세요.</p>`;
+    } else {
+      box.innerHTML = `
+        <div class="icon">❌</div>
+        <h2>오류가 발생했습니다</h2>
+        <p>${data.message || data.error || '알 수 없는 오류'}</p>
+        <pre>${JSON.stringify(data, null, 2)}</pre>`;
+    }
+  }
+
+  document.getElementById('searchInput').addEventListener('keydown', e => {
+    if (e.key === 'Enter') resetAndSearch();
+  });
+
+  // 페이지 로드 시 자동 검색
+  window.addEventListener('DOMContentLoaded', resetAndSearch);
+</script>
+</body>
+</html>
