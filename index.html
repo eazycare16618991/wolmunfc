@@ -558,23 +558,25 @@
       overflow-x: auto;
       -webkit-overflow-scrolling: touch;
     }
-    .attend-table { width: 100%; border-collapse: collapse; min-width: 480px; }
+    .attend-table { width: 100%; border-collapse: collapse; min-width: 560px; }
     .attend-table th {
       background: var(--primary);
       color: #fff;
       font-size: 12px;
       font-weight: 600;
-      padding: 12px 18px;
+      padding: 12px 10px;
       text-align: center;
     }
-    .attend-table th:first-child { text-align: left; }
+    .attend-table th:first-child { text-align: left; padding-left: 18px; }
     .attend-table td {
-      padding: 11px 18px;
+      padding: 11px 10px;
       font-size: 13px;
       border-bottom: 1px solid var(--border);
       text-align: center;
+      white-space: nowrap;
     }
-    .attend-table td:first-child { text-align: left; font-weight: 600; }
+    .attend-table td:first-child { text-align: left; font-weight: 600; padding-left: 18px; white-space: nowrap; }
+    .attend-table td:nth-child(2) { white-space: nowrap; }
     .attend-table tr:last-child td { border-bottom: none; }
     .attend-table tr:hover td { background: #f8fafb; }
     .attend-o { color: var(--primary); font-weight: 700; }
