@@ -715,21 +715,25 @@
     .awards-table th {
       background: var(--primary);
       color: #fff;
-      padding: 12px 20px;
+      padding: 12px 16px;
       font-size: 13px;
       font-weight: 700;
       text-align: left;
     }
     .awards-table td {
-      padding: 13px 20px;
+      padding: 13px 16px;
       font-size: 14px;
       border-bottom: 1px solid var(--border);
     }
     .awards-table td:first-child { font-weight: 700; white-space: nowrap; }
-    .awards-table td:last-child { color: var(--muted); }
+    .awards-table td:last-child { color: var(--muted); font-size: 13px; }
     .awards-table tr:last-child td { border-bottom: none; }
     .awards-table tr.dup-row td { color: #6c5ce7; font-size: 13px; }
     .awards-table tbody tr:hover td { background: #f0fafa; }
+    .winner-confirmed { color: var(--primary); font-weight: 700; white-space: nowrap; }
+    .winner-pending { color: var(--muted); font-size: 13px; }
+    .winner-secret { color: #b2b2b2; font-style: italic; font-size: 13px; }
+    .prize-text { font-size: 13px; color: #555; white-space: nowrap; }
 
     /* ── 상품 쇼케이스 ── */
     .prize-showcase {
@@ -1436,18 +1440,19 @@
 
   <table class="awards-table">
     <thead>
-      <tr><th>시상</th><th>선정 방식</th></tr>
+      <tr><th>시상</th><th>수상자</th><th>상품</th><th>선정 방식</th></tr>
     </thead>
     <tbody>
-      <tr><td>🏆 우승팀 시상</td><td>리그 1회 이상 참석 + 야유회 참석자</td></tr>
-      <tr><td>⚽ 득점왕</td><td>최다 골 / 동수 시 비우승팀 → 최소실점팀 순</td></tr>
-      <tr><td>🎯 어시스트상</td><td>최다 어시스트 / 동수 시 동일 기준</td></tr>
-      <tr><td>🛡️ 철벽수비상</td><td>최다 우수선수 / 동수 시 동일 기준</td></tr>
-      <tr><td>🧤 야신상</td><td>최소실점팀 최다 우수선수 / 동수 시 비우승팀 → 팀장선정 순</td></tr>
-      <tr><td>📈 기량발전상</td><td>감독 선정 (1인)</td></tr>
-      <tr><td>👥 최다출석팀상</td><td>리그 1회 이상 참석 + 야유회 참석자</td></tr>
-      <tr><td>🌟 리그 MVP</td><td>운영진 5인 합의 선정</td></tr>
-      <tr class="dup-row"><td>📋 중복수상 안내</td><td>득 → 어 → 수 → 야 우선순위 (중복 시 차석자 수여)</td></tr>
+      <tr><td>🏆 우승팀 시상</td><td><span class="winner-confirmed">기빈팀</span></td><td><span class="prize-text">304스스텐 핸디텀블러 600ml</span></td><td>리그 1회 이상 참석 + 야유회 참석자</td></tr>
+      <tr><td>⚽ 득점왕</td><td><span class="winner-confirmed">정종환</span></td><td><span class="prize-text">특대형 와이드그릴 60cm</span></td><td>최다 골 / 동수 시 비우승팀 → 최소실점팀 순</td></tr>
+      <tr><td>🎯 어시스트상</td><td><span class="winner-confirmed">김태향</span></td><td><span class="prize-text">특대형 와이드그릴 60cm</span></td><td>최다 어시스트 / 동수 시 동일 기준</td></tr>
+      <tr><td>🛡️ 철벽수비상</td><td><span class="winner-pending">심사중</span></td><td><span class="prize-text">무선 텀블러블렌더 600ml</span></td><td>최다 우수선수 / 동수 시 동일 기준</td></tr>
+      <tr><td>🧤 야신상</td><td><span class="winner-pending">심사중</span></td><td><span class="prize-text">무선 텀블러블렌더 600ml</span></td><td>최소실점팀 최다 우수선수 / 동수 시 비우승팀 → 팀장선정 순</td></tr>
+      <tr><td>📈 기량발전상</td><td><span class="winner-pending">심사중</span></td><td><span class="prize-text">14인치스탠드형 5엽날개 선풍기</span></td><td>감독 선정 (1인)</td></tr>
+      <tr><td>👥 최다출석팀상</td><td><span class="winner-confirmed">기빈팀</span></td><td><span class="prize-text">프리미엄 논슬립 축구양말</span></td><td>리그 1회 이상 참석 + 야유회 참석자</td></tr>
+      <tr><td>🌟 리그 MVP</td><td><span class="winner-pending">심사중</span></td><td><span class="prize-text">디지털터치식 에어프라이어 3.5리터</span></td><td>운영진 5인 합의 선정</td></tr>
+      <tr><td>🤬 욕쟁이상</td><td><span class="winner-secret">미공개</span></td><td><span class="winner-secret">미공개</span></td><td>—</td></tr>
+      <tr class="dup-row"><td>📋 중복수상 안내</td><td></td><td></td><td>득 → 어 → 수 → 야 우선순위 (중복 시 차석자 수여)</td></tr>
     </tbody>
   </table>
 
