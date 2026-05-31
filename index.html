@@ -1466,7 +1466,7 @@
   <!-- MVP 라운드 네비게이터 -->
   <div class="round-nav">
     <button class="round-arrow" id="mvp-prev" onclick="changeMvpRound(-1)">◀</button>
-    <span class="round-nav-text" id="mvp-round-label">4라운드</span>
+    <span class="round-nav-text" id="mvp-round-label">5라운드</span>
     <button class="round-arrow" id="mvp-next" onclick="changeMvpRound(1)" disabled>▶</button>
   </div>
 
@@ -1606,7 +1606,7 @@
   </div>
 
   <!-- 4라운드 MVP -->
-  <div class="round-content" data-round="4">
+  <div class="round-content" data-round="4" style="display:none">
     <div class="mvp-grid">
       <div class="mvp-team-card">
         <div class="mvp-team-header"><span class="team-icon">🟢</span><h3>기빈팀</h3></div>
@@ -1631,6 +1631,51 @@
           <div class="mvp-item">
             <div class="mvp-badge defense">🛡️</div>
             <div class="mvp-info"><span class="mvp-label">수비 MVP</span><span class="mvp-name">홍래균</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 5라운드 MVP -->
+  <div class="round-content" data-round="5" style="display:none">
+    <div class="mvp-grid">
+      <div class="mvp-team-card">
+        <div class="mvp-team-header"><span class="team-icon">🟢</span><h3>기빈팀</h3></div>
+        <div class="mvp-items">
+          <div class="mvp-item">
+            <div class="mvp-badge keeper">🧤</div>
+            <div class="mvp-info"><span class="mvp-label">키퍼 MVP</span><span class="mvp-name">채유민</span></div>
+          </div>
+          <div class="mvp-item">
+            <div class="mvp-badge defense">🛡️</div>
+            <div class="mvp-info"><span class="mvp-label">수비 MVP</span><span class="mvp-name">안성균</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="mvp-team-card">
+        <div class="mvp-team-header"><span class="team-icon">🔴</span><h3>영록팀</h3></div>
+        <div class="mvp-items">
+          <div class="mvp-item">
+            <div class="mvp-badge keeper">🧤</div>
+            <div class="mvp-info"><span class="mvp-label">키퍼 MVP</span><span class="mvp-name">김인</span></div>
+          </div>
+          <div class="mvp-item">
+            <div class="mvp-badge defense">🛡️</div>
+            <div class="mvp-info"><span class="mvp-label">수비 MVP</span><span class="mvp-name">홍래균</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="mvp-team-card">
+        <div class="mvp-team-header"><span class="team-icon">🔵</span><h3>선우팀</h3></div>
+        <div class="mvp-items">
+          <div class="mvp-item">
+            <div class="mvp-badge keeper">🧤</div>
+            <div class="mvp-info"><span class="mvp-label">키퍼 MVP</span><span class="mvp-name">정해승</span></div>
+          </div>
+          <div class="mvp-item">
+            <div class="mvp-badge defense">🛡️</div>
+            <div class="mvp-info"><span class="mvp-label">수비 MVP</span><span class="mvp-name">우성길</span></div>
           </div>
         </div>
       </div>
@@ -2124,8 +2169,8 @@
   }
 
   // ── MVP 네비게이터 ──
-  let mvpRound = 4;
-  const mvpMaxRound = 4;
+  let mvpRound = 5;
+  const mvpMaxRound = 5;
 
   function changeMvpRound(dir) {
     mvpRound = Math.max(1, Math.min(mvpMaxRound, mvpRound + dir));
