@@ -726,7 +726,8 @@
       border-bottom: 1px solid var(--border);
     }
     .awards-table td:first-child { font-weight: 700; white-space: nowrap; }
-    .awards-table td:last-child { color: var(--muted); font-size: 13px; }
+    .awards-table td:last-child { color: var(--muted); font-size: 13px; white-space: nowrap; }
+    .awards-table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
     .awards-table tr:last-child td { border-bottom: none; }
     .awards-table tr.dup-row td { color: #6c5ce7; font-size: 13px; }
     .awards-table tbody tr:hover td { background: #f0fafa; }
@@ -1438,6 +1439,7 @@
     <p>리그 종료 후 야유회에서 시상합니다</p>
   </div>
 
+  <div class="awards-table-wrap">
   <table class="awards-table">
     <thead>
       <tr><th>시상</th><th>수상자</th><th>상품</th><th>선정 방식</th></tr>
@@ -1455,6 +1457,7 @@
       <tr class="dup-row"><td>📋 중복수상 안내</td><td></td><td></td><td>득 → 어 → 수 → 야 우선순위 (중복 시 차석자 수여)</td></tr>
     </tbody>
   </table>
+  </div>
 
 </section>
 
