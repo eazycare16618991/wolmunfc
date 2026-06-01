@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>해충·감염병 정보 대시보드</title>
+  <meta name="description" content="해충·감염병 최신 정보 대시보드 - 질병관리청 공식 정보 및 뉴스 실시간 수집" />
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --primary:       #1a7a4a;
+      --primary-light: #2ea865;
+      --primary-bg:    #f0faf5;
+      --accent:        #e74c3c;
+      --accent-soft:   #fff0ef;
+      --warning:       #f39c12;
+      --warning-soft:  #fffbf0;
+      --info:          #2980b9;
+      --info-soft:     #eef6ff;
+      --pest:          #8e44ad;
+      --pest-soft:     #f9f0ff;
+      --card:          #ffffff;
+      --border:        #e0efe8;
+      --text:          #1e2a24;
+      --muted:         #6b7c73;
+      --shadow:        0 2px 12px rgba(0,0,0,0.07);
+      --radius:        12px;
+    }
+
+    body {
+      font-family: 'Segoe UI', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif;
+      background: var(--primary-bg);
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    /* ── HEADER ── */
+    header {
+      background: var(--primary);
+      color: #fff;
+      padding: 16px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 10px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.18);
+    }
+    .header-left { display: flex; align-items: center; gap: 14px; }
+    .header-icon {
+      width: 46px; height: 46px; border-radius: 50%;
+      background: rgba(255,255,255,0.18);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 24px;
+    }
+    header h1 { font-size: 1.25rem; font-weight: 700; letter-spacing: -0.3px; }
+    header h1 span { font-size: 0.8rem; font-weight: 400; opacity: 0.8; display: block; margin-top: 2px; }
+    .header-right { display: flex; align-items: center; gap: 14px; font-size: 0.82rem; opacity: 0.9; }
+    #update-time { font-weight: 600; }
+    .refresh-btn {
+      background: rgba(255,255,255,0.18); border: 1px solid rgba(255,255,255,0.35);
+      color: #fff; padding: 6px 14px; border-radius: 20px; font-size: 0.8rem;
+      cursor: pointer; transition: background 0.2s;
+    }
+    .refresh-btn:hover { background: rgba(255,255,255,0.3); }
+
+    /* ── ALERT BAR ── */
+    .alert-bar {
+      background: #fff8e1; border-bottom: 2px solid #ffd54f;
+      padding: 10px 24px; font-size: 0.85rem; color: #5d4037;
+      display: flex; align-items: center; gap: 10px;
+    }
+    .alert-bar strong { color: #e65100; }
+    .alert-dot {
+      width: 8px; height: 8px; border-radius: 50%;
+      background: #e65100; flex-shrink: 0;
+      animation: blink 1.4s infinite;
+    }
+    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.3} }
+
+    /* ── MAIN ── */
+    main { max-width: 1400px; margin: 0 auto; padding: 24px 20px 40px; }
+
+    /* ── STAT ROW ── */
+    .stats-row {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+      gap: 14px; margin-bottom: 24px;
+    }
+    .stat-card {
+      background: var(--card); border-radius: var(--radius);
+      padding: 18px 20px; box-shadow: var(--shadow);
+      border-left: 4px solid transparent;
+    }
+    .stat-card.red    { border-color: var(--accent); }
+    .stat-card.yellow { border-color: var(--warning); }
+    .stat-card.green  { border-color: var(--primary-light); }
+    .stat-card.blue   { border-color: var(--info); }
+    .stat-card.purple { border-color: var(--pest); }
+    .stat-label { font-size: 0.73rem; color: var(--muted); font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px; }
+    .stat-value { font-size: 1.7rem; font-weight: 700; line-height: 1; margin-bottom: 4px; }
+    .stat-card.red    .stat-value { color: var(--accent); }
+    .stat-card.yellow .stat-value { color: var(--warning); }
+    .stat-card.green  .stat-value { color: var(--primary); }
+    .stat-card.blue   .stat-value { color: var(--info); }
+    .stat-card.purple .stat-value { color: var(--pest); }
+    .stat-sub { font-size: 0.77rem; color: var(--muted); }
+
+    /* ── SEASON WIDGET ── */
+    .season-widget {
+      background: var(--card); border-radius: var(--radius);
+      box-shadow: var(--shadow); padding: 20px; margin-bottom: 20px;
+    }
+    .season-widget h2 { font-size: 0.95rem; font-weight: 700; margin-bottom: 16px; }
+    .season-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(155px, 1fr)); gap: 12px; }
+    .season-item { border-radius: 10px; padding: 14px 16px; border: 2px solid transparent; }
+    .s-name  { font-size: 0.88rem; font-weight: 700; margin-bottom: 5px; }
+    .s-level { font-size: 0.72rem; font-weight: 700; padding: 2px 9px; border-radius: 10px; display: inline-block; margin-bottom: 6px; color: #fff; }
+    .s-desc  { font-size: 0.77rem; color: var(--muted); line-height: 1.4; }
+    .lvl-high   { background: var(--accent-soft); border-color: var(--accent); }
+    .lvl-high   .s-name  { color: var(--accent); }
+    .lvl-high   .s-level { background: var(--accent); }
+    .lvl-mid    { background: var(--warning-soft); border-color: var(--warning); }
+    .lvl-mid    .s-name  { color: var(--warning); }
+    .lvl-mid    .s-level { background: var(--warning); }
+    .lvl-low    { background: #f0faf5; border-color: #aad4bc; }
+    .lvl-low    .s-name  { color: var(--primary); }
+    .lvl-low    .s-level { background: var(--primary-light); }
+
+    /* ── DASHBOARD GRID ── */
+    .dashboard-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
+    }
+    @media (max-width: 860px) { .dashboard-grid { grid-template-columns: 1fr; } }
+
+    /* ── CARD ── */
+    .card { background: var(--card); border-radius: var(--radius); box-shadow: var(--shadow); overflow: hidden; display: flex; flex-direction: column; }
+    .card-header {
+      padding: 15px 20px 12px;
+      display: flex; align-items: center; justify-content: space-between;
+      border-bottom: 1px solid var(--border);
+    }
+    .card-title { display: flex; align-items: center; gap: 9px; font-size: 0.93rem; font-weight: 700; }
+    .card-icon {
+      width: 30px; height: 30px; border-radius: 8px;
+      display: flex; align-items: center; justify-content: center; font-size: 16px;
+    }
+    .i-red    { background: var(--accent-soft); }
+    .i-yellow { background: var(--warning-soft); }
+    .i-green  { background: #e8faf0; }
+    .i-blue   { background: var(--info-soft); }
+    .i-blue   { background: var(--info-soft); }
+    .badge {
+      font-size: 0.68rem; font-weight: 700; padding: 3px 9px;
+      border-radius: 20px; color: #fff;
+    }
+    .badge-live { background: var(--accent); }
+    .badge-new  { background: var(--primary-light); }
+
+    .card-body { flex: 1; overflow-y: auto; max-height: 380px; }
+
+    /* ── NEWS ITEM ── */
+    .news-item {
+      display: flex; flex-direction: column; gap: 4px;
+      padding: 13px 20px; border-bottom: 1px solid var(--border);
+      text-decoration: none; color: inherit;
+      transition: background 0.15s;
+    }
+    .news-item:hover { background: var(--primary-bg); }
+    .news-item:last-child { border-bottom: none; }
+    .news-title {
+      font-size: 0.89rem; font-weight: 600; line-height: 1.45;
+      display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+    }
+    .news-desc {
+      font-size: 0.79rem; color: var(--muted); line-height: 1.4;
+      display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+    }
+    .news-meta { display: flex; gap: 10px; font-size: 0.74rem; color: var(--muted); }
+    .news-source { font-weight: 600; }
+
+    /* ── LOADING / ERROR ── */
+    .loading {
+      padding: 40px 20px; text-align: center;
+      color: var(--muted); font-size: 0.86rem;
+    }
+    .spinner {
+      width: 28px; height: 28px;
+      border: 3px solid var(--border); border-top-color: var(--primary-light);
+      border-radius: 50%; animation: spin 0.8s linear infinite;
+      margin: 0 auto 12px;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .err {
+      padding: 28px 20px; text-align: center;
+      color: #c0392b; font-size: 0.84rem; line-height: 1.6;
+    }
+    .err a { color: var(--info); }
+
+    /* ── FOOTER ── */
+    footer {
+      text-align: center; padding: 20px;
+      font-size: 0.77rem; color: var(--muted);
+      border-top: 1px solid var(--border);
+    }
+    footer a { color: var(--info); text-decoration: none; }
+  </style>
+</head>
+<body>
+
+<!-- ━━━ HEADER ━━━ -->
+<header>
+  <div class="header-left">
+    <div class="header-icon">🦟</div>
+    <h1>
+      해충·감염병 정보 대시보드
+      <span>질병관리청 공식 데이터 &amp; 뉴스 실시간 수집</span>
+    </h1>
+  </div>
+  <div class="header-right">
+    <span>마지막 업데이트: <strong id="update-time">-</strong></span>
+    <button class="refresh-btn" onclick="loadAll()">↺ 새로고침</button>
+  </div>
+</header>
+
+<!-- ━━━ ALERT BAR ━━━ -->
+<div class="alert-bar">
+  <div class="alert-dot"></div>
+  <span id="alert-text"><strong>주의</strong> 기온 상승으로 모기·바퀴벌레·파리 등 해충 활동 증가 시기입니다. 방역 및 소독 강화를 권장합니다.</span>
+</div>
+
+<main>
+
+  <!-- ━━━ 요약 통계 ━━━ -->
+  <div class="stats-row">
+    <div class="stat-card red">
+      <div class="stat-label">질병관리청 공지</div>
+      <div class="stat-value" id="stat-kdca">-</div>
+      <div class="stat-sub">수집된 항목 수</div>
+    </div>
+    <div class="stat-card red">
+      <div class="stat-label">감염병 뉴스</div>
+      <div class="stat-value" id="stat-disease">-</div>
+      <div class="stat-sub">수집된 기사 수</div>
+    </div>
+    <div class="stat-card yellow">
+      <div class="stat-label">해충 관련 뉴스</div>
+      <div class="stat-value" id="stat-pest">-</div>
+      <div class="stat-sub">수집된 기사 수</div>
+    </div>
+    <div class="stat-card green">
+      <div class="stat-label">방역·소독 뉴스</div>
+      <div class="stat-value" id="stat-prev">-</div>
+      <div class="stat-sub">수집된 기사 수</div>
+    </div>
+    <div class="stat-card blue">
+      <div class="stat-label">한국방역협회</div>
+      <div class="stat-value" id="stat-kopca">-</div>
+      <div class="stat-sub">수집된 공지 수</div>
+    </div>
+    <div class="stat-card purple">
+      <div class="stat-label">수집 상태</div>
+      <div class="stat-value" id="stat-status" style="font-size:1.3rem;">●</div>
+      <div class="stat-sub" id="stat-status-sub">로딩중...</div>
+    </div>
+  </div>
+
+  <!-- ━━━ 시즌 해충 위험도 ━━━ -->
+  <div class="season-widget">
+    <h2>🗓️ 현재 시즌 해충 위험도 <small style="color:var(--muted);font-weight:400;font-size:0.8rem;" id="season-label"></small></h2>
+    <div class="season-grid" id="season-grid"></div>
+  </div>
+
+  <!-- ━━━ 뉴스 대시보드 ━━━ -->
+  <div class="dashboard-grid">
+
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title"><div class="card-icon i-red">🏥</div> 질병관리청 공지·경보</div>
+        <span class="badge badge-live">LIVE</span>
+      </div>
+      <div class="card-body" id="feed-kdca">
+        <div class="loading"><div class="spinner"></div>로딩 중...</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title"><div class="card-icon i-red">🦠</div> 감염병 최신 뉴스</div>
+        <span class="badge badge-live">LIVE</span>
+      </div>
+      <div class="card-body" id="feed-disease">
+        <div class="loading"><div class="spinner"></div>로딩 중...</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title"><div class="card-icon i-yellow">🪲</div> 해충 관련 최신 뉴스</div>
+        <span class="badge badge-new">NEW</span>
+      </div>
+      <div class="card-body" id="feed-pest">
+        <div class="loading"><div class="spinner"></div>로딩 중...</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title"><div class="card-icon i-green">🧴</div> 방역·소독 최신 뉴스</div>
+        <span class="badge badge-new">NEW</span>
+      </div>
+      <div class="card-body" id="feed-prev">
+        <div class="loading"><div class="spinner"></div>로딩 중...</div>
+      </div>
+    </div>
+
+    <div class="card" style="grid-column: 1 / -1;">
+      <div class="card-header">
+        <div class="card-title"><div class="card-icon i-blue">🏛️</div> 한국방역협회 공지·자료</div>
+        <span class="badge badge-live">LIVE</span>
+      </div>
+      <div class="card-body" id="feed-kopca" style="max-height:280px;">
+        <div class="loading"><div class="spinner"></div>로딩 중...</div>
+      </div>
+    </div>
+
+  </div>
+</main>
+
+<footer>
+  데이터 출처:
+  <a href="https://www.kdca.go.kr" target="_blank" rel="noopener">질병관리청</a> ·
+  Google 뉴스 ·
+  <a href="https://www.data.go.kr" target="_blank" rel="noopener">공공데이터포털</a>
+  &nbsp;|&nbsp; 30분 자동 갱신 &nbsp;|&nbsp; &copy;2024 소독 정보 센터
+</footer>
+
+<script>
+/* ═══════════════════════════════════════
+   설정
+═══════════════════════════════════════ */
+const RSS2JSON_BASE = 'https://api.rss2json.com/v1/api.json?count=12&rss_url=';
+
+const FEEDS = [
+  {
+    feedId: 'kdca',
+    statId: 'stat-kdca',
+    rss: 'https://www.kdca.go.kr/rss/rss.jsp',
+  },
+  {
+    feedId: 'disease',
+    statId: 'stat-disease',
+    rss: 'https://news.google.com/rss/search?q=%EA%B0%90%EC%97%BC%EB%B3%91+%EB%B0%9C%EC%83%9D&hl=ko&gl=KR&ceid=KR:ko',
+  },
+  {
+    feedId: 'pest',
+    statId: 'stat-pest',
+    rss: 'https://news.google.com/rss/search?q=%ED%95%B4%EC%B6%A9+%EB%B0%A9%EC%A0%9C&hl=ko&gl=KR&ceid=KR:ko',
+  },
+  {
+    feedId: 'prev',
+    statId: 'stat-prev',
+    rss: 'https://news.google.com/rss/search?q=%EB%B0%A9%EC%97%AD+%EC%86%8C%EB%8F%85&hl=ko&gl=KR&ceid=KR:ko',
+  },
+  {
+    feedId: 'kopca',
+    statId: 'stat-kopca',
+    rss: 'https://www.kopca.or.kr/rss/rss.xml',
+    fallbackRss: 'https://www.kopca.or.kr',
+  },
+];
+
+/* ═══════════════════════════════════════
+   시즌 해충 데이터 (월별)
+═══════════════════════════════════════ */
+const PESTS_BY_MONTH = {
+  1:  [{e:'🐀',n:'쥐',l:'보통',d:'겨울철 실내 침입 빈번'},{e:'🪳',n:'바퀴벌레',l:'낮음',d:'실내 따뜻한 곳 서식'},{e:'🦟',n:'모기',l:'없음',d:'월동 중'},{e:'🐜',n:'개미',l:'낮음',d:'실내 서식 주의'},{e:'🕷️',n:'진드기',l:'낮음',d:'실내 먼지 진드기 주의'},{e:'🪰',n:'파리',l:'없음',d:'비활성기'}],
+  2:  [{e:'🐀',n:'쥐',l:'보통',d:'겨울 끝, 이동 시작'},{e:'🪳',n:'바퀴벌레',l:'낮음',d:'실내 서식 지속'},{e:'🦟',n:'모기',l:'없음',d:'월동 중'},{e:'🐜',n:'개미',l:'낮음',d:'서서히 활동 재개'},{e:'🕷️',n:'진드기',l:'낮음',d:'실내 먼지 진드기'},{e:'🪰',n:'파리',l:'없음',d:'비활성기'}],
+  3:  [{e:'🐀',n:'쥐',l:'보통',d:'번식 시작'},{e:'🪳',n:'바퀴벌레',l:'보통',d:'기온 상승으로 활동 증가'},{e:'🦟',n:'모기',l:'낮음',d:'유충 발생 시작'},{e:'🐜',n:'개미',l:'보통',d:'활동 재개, 먹이 탐색'},{e:'🕷️',n:'진드기',l:'보통',d:'야외 활동 주의'},{e:'🪰',n:'파리',l:'낮음',d:'초봄 출현 시작'}],
+  4:  [{e:'🐀',n:'쥐',l:'보통',d:'번식기'},{e:'🪳',n:'바퀴벌레',l:'보통',d:'점차 증가'},{e:'🦟',n:'모기',l:'보통',d:'산란 시작'},{e:'🐜',n:'개미',l:'보통',d:'군체 확장'},{e:'🕷️',n:'진드기',l:'높음',d:'SFTS 주의 시작'},{e:'🪰',n:'파리',l:'보통',d:'증가 시작'}],
+  5:  [{e:'🐀',n:'쥐',l:'높음',d:'번식 최성기'},{e:'🪳',n:'바퀴벌레',l:'높음',d:'급격히 증가'},{e:'🦟',n:'모기',l:'높음',d:'활발한 산란·번식'},{e:'🐜',n:'개미',l:'높음',d:'군체 최대 확장'},{e:'🕷️',n:'진드기',l:'매우 높음',d:'쯔쯔가무시·SFTS 주의'},{e:'🪰',n:'파리',l:'높음',d:'식중독 주의'}],
+  6:  [{e:'🐀',n:'쥐',l:'높음',d:'번식 활발'},{e:'🪳',n:'바퀴벌레',l:'매우 높음',d:'고온다습 → 번식 최고조'},{e:'🦟',n:'모기',l:'매우 높음',d:'말라리아·일본뇌염 주의'},{e:'🐜',n:'개미',l:'높음',d:'먹이 탐색 활발'},{e:'🕷️',n:'진드기',l:'높음',d:'야외 활동 주의'},{e:'🪰',n:'파리',l:'매우 높음',d:'6~8월 최성기, 식중독'}],
+  7:  [{e:'🐀',n:'쥐',l:'높음',d:'장마철 이동 증가'},{e:'🪳',n:'바퀴벌레',l:'매우 높음',d:'최성기'},{e:'🦟',n:'모기',l:'매우 높음',d:'장마 후 폭발적 증가'},{e:'🐜',n:'개미',l:'높음',d:'여름 활동 피크'},{e:'🕷️',n:'진드기',l:'높음',d:'야외 활동 주의'},{e:'🪰',n:'파리',l:'매우 높음',d:'최성기'}],
+  8:  [{e:'🐀',n:'쥐',l:'높음',d:'폭염 피해 실내 침입'},{e:'🪳',n:'바퀴벌레',l:'매우 높음',d:'최성기 지속'},{e:'🦟',n:'모기',l:'매우 높음',d:'일본뇌염 주의'},{e:'🐜',n:'개미',l:'높음',d:'활동 지속'},{e:'🕷️',n:'진드기',l:'높음',d:'쯔쯔가무시 주의'},{e:'🪰',n:'파리',l:'매우 높음',d:'최성기'}],
+  9:  [{e:'🐀',n:'쥐',l:'높음',d:'가을 이동 준비'},{e:'🪳',n:'바퀴벌레',l:'높음',d:'실내 이동 증가'},{e:'🦟',n:'모기',l:'높음',d:'9월까지 활동 지속'},{e:'🐜',n:'개미',l:'보통',d:'월동 준비 시작'},{e:'🕷️',n:'진드기',l:'매우 높음',d:'쯔쯔가무시 최성기'},{e:'🪰',n:'파리',l:'보통',d:'감소 시작'}],
+  10: [{e:'🐀',n:'쥐',l:'높음',d:'실내 월동처 탐색'},{e:'🪳',n:'바퀴벌레',l:'보통',d:'실내 이동'},{e:'🦟',n:'모기',l:'보통',d:'기온 하강으로 감소'},{e:'🐜',n:'개미',l:'낮음',d:'월동 준비'},{e:'🕷️',n:'진드기',l:'높음',d:'털진드기 최성기'},{e:'🪰',n:'파리',l:'낮음',d:'급감'}],
+  11: [{e:'🐀',n:'쥐',l:'매우 높음',d:'실내 침입 최고조'},{e:'🪳',n:'바퀴벌레',l:'낮음',d:'실내 서식'},{e:'🦟',n:'모기',l:'없음',d:'비활성'},{e:'🐜',n:'개미',l:'없음',d:'월동 중'},{e:'🕷️',n:'진드기',l:'낮음',d:'실내 진드기 주의'},{e:'🪰',n:'파리',l:'없음',d:'비활성'}],
+  12: [{e:'🐀',n:'쥐',l:'매우 높음',d:'실내 월동, 방역 필수'},{e:'🪳',n:'바퀴벌레',l:'낮음',d:'실내 서식 지속'},{e:'🦟',n:'모기',l:'없음',d:'월동 중'},{e:'🐜',n:'개미',l:'없음',d:'월동 중'},{e:'🕷️',n:'진드기',l:'낮음',d:'실내 먼지 진드기'},{e:'🪰',n:'파리',l:'없음',d:'비활성'}],
+};
+
+const LEVEL_CLASS = { '매우 높음': 'lvl-high', '높음': 'lvl-high', '보통': 'lvl-mid', '낮음': 'lvl-low', '없음': 'lvl-low' };
+const MONTH_KO    = ['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'];
+
+function renderSeason() {
+  const now   = new Date();
+  const month = now.getMonth() + 1;
+  document.getElementById('season-label').textContent = `(${MONTH_KO[month-1]} 기준)`;
+  const items = PESTS_BY_MONTH[month] || [];
+  document.getElementById('season-grid').innerHTML = items.map(p => `
+    <div class="season-item ${LEVEL_CLASS[p.l] || 'lvl-low'}">
+      <div class="s-name">${p.e} ${p.n}</div>
+      <span class="s-level">${p.l}</span>
+      <div class="s-desc">${p.d}</div>
+    </div>`).join('');
+}
+
+/* ═══════════════════════════════════════
+   RSS 로더
+═══════════════════════════════════════ */
+function timeAgo(dateStr) {
+  if (!dateStr) return '';
+  const d    = new Date(dateStr);
+  if (isNaN(d)) return dateStr;
+  const diff = (Date.now() - d) / 1000;
+  if (diff < 60)    return '방금 전';
+  if (diff < 3600)  return `${Math.floor(diff / 60)}분 전`;
+  if (diff < 86400) return `${Math.floor(diff / 3600)}시간 전`;
+  return `${Math.floor(diff / 86400)}일 전`;
+}
+
+function stripHtml(html) {
+  const el = document.createElement('div');
+  el.innerHTML = html || '';
+  return el.textContent || el.innerText || '';
+}
+
+function renderFeed(items, containerId) {
+  const el = document.getElementById(containerId);
+  if (!items || items.length === 0) {
+    el.innerHTML = '<div class="err">항목이 없습니다.</div>';
+    return;
+  }
+  el.innerHTML = items.slice(0, 10).map(item => {
+    const title  = stripHtml(item.title || '').trim() || '(제목 없음)';
+    const desc   = stripHtml(item.description || item.content || '').slice(0, 110).trim();
+    const source = (item.author || '').trim();
+    const date   = timeAgo(item.pubDate || '');
+    const href   = item.link || '#';
+    return `
+      <a class="news-item" href="${href}" target="_blank" rel="noopener noreferrer">
+        <div class="news-title">${title}</div>
+        ${desc ? `<div class="news-desc">${desc}…</div>` : ''}
+        <div class="news-meta">
+          ${source ? `<span class="news-source">${source}</span>` : ''}
+          ${date   ? `<span>${date}</span>` : ''}
+        </div>
+      </a>`;
+  }).join('');
+}
+
+async function loadFeed({ feedId, statId, rss, fallbackRss }) {
+  const el     = document.getElementById('feed-' + feedId);
+  const statEl = document.getElementById(statId);
+  try {
+    const url  = RSS2JSON_BASE + encodeURIComponent(rss);
+    const res  = await fetch(url, { cache: 'no-cache' });
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    const data = await res.json();
+    if (data.status === 'ok' && Array.isArray(data.items)) {
+      renderFeed(data.items, 'feed-' + feedId);
+      if (statEl) statEl.textContent = data.items.length;
+      return true;
+    }
+    throw new Error(data.message || '피드 파싱 실패');
+  } catch (e) {
+    const siteLink = fallbackRss || rss;
+    el.innerHTML = `<div class="err">
+      RSS를 불러올 수 없습니다.<br><small>${e.message}</small><br><br>
+      <a href="${siteLink}" target="_blank" rel="noopener">사이트 직접 방문 →</a>
+    </div>`;
+    if (statEl) statEl.textContent = '–';
+    return false;
+  }
+}
+
+async function loadAll() {
+  document.getElementById('update-time').textContent = '로딩중...';
+  FEEDS.forEach(f => {
+    document.getElementById('feed-' + f.feedId).innerHTML =
+      '<div class="loading"><div class="spinner"></div>데이터 불러오는 중...</div>';
+  });
+
+  const results = await Promise.allSettled(FEEDS.map(f => loadFeed(f)));
+  const allOk   = results.every(r => r.status === 'fulfilled' && r.value === true);
+
+  const statusEl  = document.getElementById('stat-status');
+  const statusSub = document.getElementById('stat-status-sub');
+  statusEl.style.color = allOk ? 'var(--primary-light)' : 'var(--warning)';
+  statusSub.textContent = allOk ? '정상 수집 중' : '일부 오류 발생';
+
+  document.getElementById('update-time').textContent =
+    new Date().toLocaleTimeString('ko-KR', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+}
+
+/* ═══════════════════════════════════════
+   초기화
+═══════════════════════════════════════ */
+renderSeason();
+loadAll();
+setInterval(loadAll, 30 * 60 * 1000);   // 30분 자동 갱신
+</script>
+
+</body>
+</html>
