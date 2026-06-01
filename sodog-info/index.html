@@ -342,34 +342,36 @@
 /* ═══════════════════════════════════════
    설정
 ═══════════════════════════════════════ */
-const RSS2JSON_BASE = 'https://api.rss2json.com/v1/api.json?count=12&rss_url=';
-
 const FEEDS = [
   {
     feedId: 'kdca',
     statId: 'stat-kdca',
     rss: 'https://www.kdca.go.kr/rss/rss.jsp',
+    fallback: 'https://www.kdca.go.kr',
   },
   {
     feedId: 'disease',
     statId: 'stat-disease',
     rss: 'https://news.google.com/rss/search?q=%EA%B0%90%EC%97%BC%EB%B3%91+%EB%B0%9C%EC%83%9D&hl=ko&gl=KR&ceid=KR:ko',
+    fallback: 'https://news.google.com/search?q=감염병',
   },
   {
     feedId: 'pest',
     statId: 'stat-pest',
     rss: 'https://news.google.com/rss/search?q=%ED%95%B4%EC%B6%A9+%EB%B0%A9%EC%A0%9C&hl=ko&gl=KR&ceid=KR:ko',
+    fallback: 'https://news.google.com/search?q=해충',
   },
   {
     feedId: 'prev',
     statId: 'stat-prev',
     rss: 'https://news.google.com/rss/search?q=%EB%B0%A9%EC%97%AD+%EC%86%8C%EB%8F%85&hl=ko&gl=KR&ceid=KR:ko',
+    fallback: 'https://news.google.com/search?q=방역소독',
   },
   {
     feedId: 'kopca',
     statId: 'stat-kopca',
     rss: 'https://www.kopca.or.kr/rss/rss.xml',
-    fallbackRss: 'https://www.kopca.or.kr',
+    fallback: 'https://www.kopca.or.kr',
   },
 ];
 
@@ -451,25 +453,58 @@ function renderFeed(items, containerId) {
   }).join('');
 }
 
-async function loadFeed({ feedId, statId, rss, fallbackRss }) {
+/* CORS 프록시 순서대로 시도 */
+async function fetchXML(rssUrl) {
+  const proxies = [
+    async u => {
+      const r = await fetch(`https://api.allorigins.win/get?url=${encodeURIComponent(u)}`, { cache: 'no-cache' });
+      if (!r.ok) throw new Error('allorigins ' + r.status);
+      const j = await r.json();
+      return j.contents;
+    },
+    async u => {
+      const r = await fetch(`https://corsproxy.io/?${encodeURIComponent(u)}`, { cache: 'no-cache' });
+      if (!r.ok) throw new Error('corsproxy ' + r.status);
+      return r.text();
+    },
+  ];
+  for (const proxy of proxies) {
+    try {
+      const xml = await proxy(rssUrl);
+      if (xml && xml.trim().length > 0) return xml;
+    } catch (_) { /* 다음 프록시 시도 */ }
+  }
+  throw new Error('모든 프록시 실패');
+}
+
+function parseRSS(xmlStr) {
+  const doc = new DOMParser().parseFromString(xmlStr, 'text/xml');
+  return Array.from(doc.querySelectorAll('item')).map(item => {
+    const get = tag => item.querySelector(tag)?.textContent?.trim() || '';
+    return {
+      title:       get('title'),
+      link:        get('link') || get('guid'),
+      description: get('description') || get('summary'),
+      pubDate:     get('pubDate') || get('published') || get('dc\\:date'),
+      author:      get('author') || get('dc\\:creator') || get('creator'),
+    };
+  });
+}
+
+async function loadFeed({ feedId, statId, rss, fallback }) {
   const el     = document.getElementById('feed-' + feedId);
   const statEl = document.getElementById(statId);
   try {
-    const url  = RSS2JSON_BASE + encodeURIComponent(rss);
-    const res  = await fetch(url, { cache: 'no-cache' });
-    if (!res.ok) throw new Error('HTTP ' + res.status);
-    const data = await res.json();
-    if (data.status === 'ok' && Array.isArray(data.items)) {
-      renderFeed(data.items, 'feed-' + feedId);
-      if (statEl) statEl.textContent = data.items.length;
-      return true;
-    }
-    throw new Error(data.message || '피드 파싱 실패');
+    const xml   = await fetchXML(rss);
+    const items = parseRSS(xml);
+    if (items.length === 0) throw new Error('항목 0건');
+    renderFeed(items, 'feed-' + feedId);
+    if (statEl) statEl.textContent = items.length;
+    return true;
   } catch (e) {
-    const siteLink = fallbackRss || rss;
     el.innerHTML = `<div class="err">
       RSS를 불러올 수 없습니다.<br><small>${e.message}</small><br><br>
-      <a href="${siteLink}" target="_blank" rel="noopener">사이트 직접 방문 →</a>
+      <a href="${fallback || rss}" target="_blank" rel="noopener">사이트 직접 방문 →</a>
     </div>`;
     if (statEl) statEl.textContent = '–';
     return false;
