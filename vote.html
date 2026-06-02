@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>리그 MVP 투표 · 월문FC</title>
+  <style>
+    :root {
+      --primary: #2bbfbf;
+      --primary-dark: #1a9a9a;
+      --bg: #f0fafa;
+      --card: #fff;
+      --border: #e0f0f0;
+      --muted: #8a9aaa;
+      --text: #1a2a3a;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif;
+      background: var(--bg); color: var(--text);
+      min-height: 100vh; padding: 0 0 60px;
+    }
+
+    /* 헤더 */
+    .vote-header {
+      background: var(--primary);
+      padding: 20px 20px 24px;
+      text-align: center;
+      color: #fff;
+    }
+    .vote-header .back {
+      display: inline-block; font-size: 13px; color: rgba(255,255,255,0.8);
+      text-decoration: none; margin-bottom: 12px;
+    }
+    .vote-header .tag {
+      font-size: 11px; letter-spacing: 2px; font-weight: 700;
+      opacity: 0.75; margin-bottom: 6px;
+    }
+    .vote-header h1 { font-size: 24px; font-weight: 900; margin-bottom: 6px; }
+    .vote-header p { font-size: 13px; opacity: 0.85; }
+
+    /* 상태 배너 */
+    .status-banner {
+      margin: 20px 16px 0;
+      background: #fff3cd; border-radius: 12px;
+      padding: 12px 16px; font-size: 13px; color: #856404;
+      text-align: center; display: none;
+    }
+    .status-banner.voted { background: #d1f5ea; color: #0a6640; display: block; }
+
+    /* 후보 카드 */
+    .candidates { padding: 20px 16px 0; display: flex; flex-direction: column; gap: 14px; }
+
+    .candidate-card {
+      background: var(--card); border-radius: 18px;
+      border: 2.5px solid var(--border);
+      padding: 20px 20px 16px;
+      cursor: pointer; transition: all 0.2s;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.05);
+      position: relative; overflow: hidden;
+    }
+    .candidate-card:active { transform: scale(0.98); }
+    .candidate-card.selected {
+      border-color: var(--primary);
+      box-shadow: 0 4px 20px rgba(43,191,191,0.25);
+    }
+    .candidate-card.selected::after {
+      content: '✓'; position: absolute; top: 14px; right: 16px;
+      width: 28px; height: 28px; border-radius: 50%;
+      background: var(--primary); color: #fff;
+      font-size: 14px; font-weight: 900;
+      display: flex; align-items: center; justify-content: center;
+    }
+
+    .card-top { display: flex; align-items: center; gap: 14px; margin-bottom: 14px; }
+    .candidate-num {
+      width: 36px; height: 36px; border-radius: 50%;
+      background: var(--bg); border: 2px solid var(--border);
+      font-size: 14px; font-weight: 700; color: var(--primary);
+      display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+    }
+    .selected .candidate-num { background: var(--primary); border-color: var(--primary); color: #fff; }
+    .candidate-info { flex: 1; }
+    .candidate-name { font-size: 20px; font-weight: 900; }
+    .candidate-team { font-size: 12px; color: var(--muted); margin-top: 2px; }
+
+    /* 결과 바 */
+    .result-wrap { display: none; }
+    .result-label { display: flex; justify-content: space-between; font-size: 12px; color: var(--muted); margin-bottom: 5px; }
+    .result-bar-bg { background: var(--bg); border-radius: 99px; height: 8px; overflow: hidden; }
+    .result-bar { height: 100%; border-radius: 99px; background: var(--border); transition: width 0.6s ease; }
+    .selected .result-bar { background: var(--primary); }
+
+    /* 투표 버튼 */
+    .vote-section { padding: 24px 16px 0; }
+    .vote-btn {
+      width: 100%; padding: 16px;
+      background: var(--primary); color: #fff;
+      border: none; border-radius: 14px;
+      font-size: 17px; font-weight: 800;
+      cursor: pointer; transition: all 0.2s;
+      box-shadow: 0 4px 16px rgba(43,191,191,0.3);
+    }
+    .vote-btn:disabled {
+      background: #ccc; box-shadow: none; cursor: default;
+    }
+    .vote-btn:not(:disabled):active { transform: scale(0.98); }
+    .vote-hint { text-align: center; font-size: 12px; color: var(--muted); margin-top: 10px; }
+
+    /* 총 투표수 */
+    .total-votes {
+      text-align: center; font-size: 13px; color: var(--muted);
+      margin-top: 20px; padding: 0 16px;
+    }
+    .total-votes strong { color: var(--primary); }
+
+    /* 재투표 버튼 */
+    .revote-btn {
+      display: none; margin: 16px auto 0;
+      background: none; border: 2px solid var(--border);
+      border-radius: 10px; padding: 10px 24px;
+      font-size: 13px; color: var(--muted);
+      cursor: pointer;
+    }
+    .revote-btn.show { display: block; }
+  </style>
+</head>
+<body>
+
+<div class="vote-header">
+  <a href="index.html" class="back">← 홈으로</a>
+  <div class="tag">VOTE</div>
+  <h1>🌟 리그 MVP 투표</h1>
+  <p>2026 월문FC · 무기명 투표</p>
+</div>
+
+<div class="status-banner" id="statusBanner"></div>
+
+<div class="candidates" id="candidateList">
+
+  <div class="candidate-card" id="card-0" onclick="selectCandidate(0)">
+    <div class="card-top">
+      <div class="candidate-num">1</div>
+      <div class="candidate-info">
+        <div class="candidate-name">후보 1</div>
+        <div class="candidate-team">○○팀</div>
+      </div>
+    </div>
+    <div class="result-wrap" id="result-0">
+      <div class="result-label"><span>득표</span><span id="pct-0">0%</span></div>
+      <div class="result-bar-bg"><div class="result-bar" id="bar-0" style="width:0%"></div></div>
+    </div>
+  </div>
+
+  <div class="candidate-card" id="card-1" onclick="selectCandidate(1)">
+    <div class="card-top">
+      <div class="candidate-num">2</div>
+      <div class="candidate-info">
+        <div class="candidate-name">후보 2</div>
+        <div class="candidate-team">○○팀</div>
+      </div>
+    </div>
+    <div class="result-wrap" id="result-1">
+      <div class="result-label"><span>득표</span><span id="pct-1">0%</span></div>
+      <div class="result-bar-bg"><div class="result-bar" id="bar-1" style="width:0%"></div></div>
+    </div>
+  </div>
+
+  <div class="candidate-card" id="card-2" onclick="selectCandidate(2)">
+    <div class="card-top">
+      <div class="candidate-num">3</div>
+      <div class="candidate-info">
+        <div class="candidate-name">후보 3</div>
+        <div class="candidate-team">○○팀</div>
+      </div>
+    </div>
+    <div class="result-wrap" id="result-2">
+      <div class="result-label"><span>득표</span><span id="pct-2">0%</span></div>
+      <div class="result-bar-bg"><div class="result-bar" id="bar-2" style="width:0%"></div></div>
+    </div>
+  </div>
+
+</div>
+
+<div class="vote-section">
+  <button class="vote-btn" id="voteBtn" disabled onclick="submitVote()">후보를 선택해주세요</button>
+  <p class="vote-hint" id="voteHint">한 번만 투표할 수 있습니다</p>
+  <div class="total-votes" id="totalVotes" style="display:none"></div>
+  <button class="revote-btn" id="revoteBtn" onclick="resetVote()">투표 다시 하기</button>
+</div>
+
+<script>
+  const STORAGE_KEY = 'wolmun_mvp_vote';
+  let selected = -1;
+  let votes = JSON.parse(localStorage.getItem(STORAGE_KEY + '_counts') || '[0,0,0]');
+  let myVote = localStorage.getItem(STORAGE_KEY);
+
+  function selectCandidate(idx) {
+    if (myVote !== null) return;
+    selected = idx;
+    document.querySelectorAll('.candidate-card').forEach((c, i) => {
+      c.classList.toggle('selected', i === idx);
+    });
+    const btn = document.getElementById('voteBtn');
+    btn.disabled = false;
+    btn.textContent = '투표하기 ✓';
+  }
+
+  function submitVote() {
+    if (selected === -1 || myVote !== null) return;
+    votes[selected]++;
+    localStorage.setItem(STORAGE_KEY + '_counts', JSON.stringify(votes));
+    localStorage.setItem(STORAGE_KEY, String(selected));
+    myVote = String(selected);
+    showResults();
+  }
+
+  function showResults() {
+    const total = votes.reduce((a, b) => a + b, 0);
+    document.querySelectorAll('.result-wrap').forEach(el => el.style.display = 'block');
+    votes.forEach((v, i) => {
+      const pct = total > 0 ? Math.round(v / total * 100) : 0;
+      document.getElementById('pct-' + i).textContent = pct + '%';
+      setTimeout(() => { document.getElementById('bar-' + i).style.width = pct + '%'; }, 50);
+    });
+    const btn = document.getElementById('voteBtn');
+    btn.disabled = true;
+    btn.textContent = '투표 완료!';
+    document.getElementById('voteHint').style.display = 'none';
+    document.getElementById('totalVotes').style.display = 'block';
+    document.getElementById('totalVotes').innerHTML = '내 기기 기준 총 <strong>' + total + '표</strong>';
+    const banner = document.getElementById('statusBanner');
+    banner.classList.add('voted');
+    banner.textContent = '✅ 투표해주셔서 감사합니다!';
+    document.getElementById('revoteBtn').classList.add('show');
+    document.querySelectorAll('.candidate-card').forEach(c => c.style.cursor = 'default');
+  }
+
+  function resetVote() {
+    localStorage.removeItem(STORAGE_KEY);
+    myVote = null;
+    selected = -1;
+    document.querySelectorAll('.candidate-card').forEach(c => {
+      c.classList.remove('selected');
+      c.style.cursor = 'pointer';
+    });
+    document.querySelectorAll('.result-wrap').forEach(el => el.style.display = 'none');
+    const btn = document.getElementById('voteBtn');
+    btn.disabled = true;
+    btn.textContent = '후보를 선택해주세요';
+    document.getElementById('voteHint').style.display = 'block';
+    document.getElementById('totalVotes').style.display = 'none';
+    document.getElementById('statusBanner').classList.remove('voted');
+    document.getElementById('revoteBtn').classList.remove('show');
+  }
+
+  if (myVote !== null) {
+    selected = parseInt(myVote);
+    document.getElementById('card-' + selected).classList.add('selected');
+    showResults();
+  }
+</script>
+
+</body>
+</html>
