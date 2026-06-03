@@ -62,7 +62,7 @@
       font-weight: 700; text-align: center; white-space: nowrap;
       cursor: pointer; user-select: none;
     }
-    thead th:first-child { text-align: left; padding-left: 16px; }
+    thead th:first-child { text-align: left; padding-left: 16px; position: sticky; left: 0; z-index: 2; background: var(--primary); }
     thead th.sort-asc::after  { content: ' ▲'; font-size: 10px; opacity: 0.9; }
     thead th.sort-desc::after { content: ' ▼'; font-size: 10px; opacity: 0.9; }
     tbody tr { border-bottom: 1px solid var(--border); transition: background 0.1s; }
@@ -70,7 +70,9 @@
     tbody tr:last-child { border-bottom: none; }
     tbody tr:hover td { background: #f7fdfd; }
     tbody td { padding: 10px 10px; font-size: 13px; text-align: center; white-space: nowrap; }
-    tbody td:first-child { text-align: left; padding-left: 16px; font-weight: 700; font-size: 14px; }
+    tbody td:first-child { text-align: left; padding-left: 16px; font-weight: 700; font-size: 14px; position: sticky; left: 0; background: var(--card); z-index: 1; }
+    tbody tr:hover td:first-child { background: #f7fdfd; }
+    tbody tr.paid-row td:first-child { background: var(--card); }
 
     .toggle-btn {
       display: inline-block; padding: 4px 10px; border-radius: 20px;
@@ -91,7 +93,7 @@
       border-top: 2px solid var(--primary);
       text-align: center; padding: 10px 10px; white-space: nowrap;
     }
-    .subtotal-row td:first-child { color: var(--primary); text-align: left; padding-left: 16px; }
+    .subtotal-row td:first-child { color: var(--primary); text-align: left; padding-left: 16px; position: sticky; left: 0; background: #e8f8f8; z-index: 1; }
     .note { padding: 10px 16px 0; font-size: 11px; color: var(--muted); text-align: center; }
   </style>
 </head>
