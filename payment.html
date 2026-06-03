@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>야유회·컨테이너 납부 현황 · 월문FC</title>
+  <style>
+    :root {
+      --primary: #2bbfbf;
+      --bg: #f0fafa;
+      --card: #fff;
+      --border: #e0f0f0;
+      --muted: #8a9aaa;
+      --text: #1a2a3a;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif;
+      background: var(--bg); color: var(--text); min-height: 100vh; padding-bottom: 40px;
+    }
+    .page-header {
+      background: var(--primary); color: #fff;
+      padding: 20px 20px 24px; text-align: center;
+    }
+    .page-header a { display: inline-block; font-size: 13px; color: rgba(255,255,255,0.8); text-decoration: none; margin-bottom: 10px; }
+    .page-header .tag { font-size: 11px; letter-spacing: 2px; font-weight: 700; opacity: 0.75; margin-bottom: 6px; }
+    .page-header h1 { font-size: 22px; font-weight: 900; margin-bottom: 4px; }
+    .page-header p { font-size: 13px; opacity: 0.85; }
+
+    .fee-info {
+      display: flex; gap: 10px; padding: 16px 16px 0;
+    }
+    .fee-badge {
+      flex: 1; background: var(--card); border-radius: 12px;
+      padding: 12px 14px; text-align: center;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    }
+    .fee-badge .label { font-size: 11px; color: var(--muted); margin-bottom: 4px; }
+    .fee-badge .amount { font-size: 18px; font-weight: 900; color: var(--primary); }
+
+    .table-wrap {
+      margin: 16px; background: var(--card);
+      border-radius: 16px; overflow: hidden;
+      box-shadow: 0 2px 16px rgba(0,0,0,0.07);
+      overflow-x: auto;
+    }
+    table { width: 100%; border-collapse: collapse; min-width: 460px; }
+    thead tr { background: var(--primary); }
+    thead th {
+      color: #fff; padding: 11px 12px; font-size: 12px;
+      font-weight: 700; text-align: center; white-space: nowrap;
+    }
+    thead th:first-child { text-align: left; padding-left: 16px; }
+    tbody tr { border-bottom: 1px solid var(--border); }
+    tbody tr:last-child { border-bottom: none; }
+    tbody tr:hover td { background: #f7fdfd; }
+    tbody td {
+      padding: 11px 12px; font-size: 14px; text-align: center; white-space: nowrap;
+    }
+    tbody td:first-child { text-align: left; padding-left: 16px; font-weight: 700; }
+
+    /* 야유회 참가 토글 */
+    .toggle-btn {
+      display: inline-block; padding: 4px 12px; border-radius: 20px;
+      font-size: 12px; font-weight: 700; cursor: pointer;
+      border: none; transition: all 0.15s;
+    }
+    .toggle-btn.join { background: #d1f5ea; color: #0a6640; }
+    .toggle-btn.nojoin { background: #f5e0e0; color: #a02020; }
+
+    /* 금액 */
+    .amount { font-variant-numeric: tabular-nums; }
+    .amount.zero { color: var(--muted); }
+
+    /* 합계 강조 */
+    td.total-col { font-weight: 800; color: var(--primary); }
+
+    /* 소계 행 */
+    .subtotal-row td {
+      background: #e8f8f8; font-weight: 800;
+      font-size: 14px; border-top: 2px solid var(--primary);
+    }
+    .subtotal-row td:first-child { color: var(--primary); }
+
+    .note { padding: 12px 16px; font-size: 12px; color: var(--muted); text-align: center; }
+  </style>
+</head>
+<body>
+
+<div class="page-header">
+  <a href="index.html">← 홈으로</a>
+  <div class="tag">PAYMENT</div>
+  <h1>💰 야유회·컨테이너 납부 현황</h1>
+  <p>2026 월문FC · 야유회 참가여부 탭으로 변경 가능</p>
+</div>
+
+<div class="fee-info">
+  <div class="fee-badge">
+    <div class="label">🏕️ 야유회비</div>
+    <div class="amount">30,000원</div>
+  </div>
+  <div class="fee-badge">
+    <div class="label">🔧 컨테이너수리비</div>
+    <div class="amount">10,000원</div>
+  </div>
+</div>
+
+<div class="table-wrap">
+  <table id="payTable">
+    <thead>
+      <tr>
+        <th>회원명</th>
+        <th>야유회참가</th>
+        <th>야유회비</th>
+        <th>컨테이너비</th>
+        <th>합계액</th>
+      </tr>
+    </thead>
+    <tbody id="payBody"></tbody>
+    <tfoot>
+      <tr class="subtotal-row">
+        <td>소 계</td>
+        <td id="sub-join"></td>
+        <td id="sub-outing" class="amount"></td>
+        <td id="sub-container" class="amount"></td>
+        <td id="sub-total" class="amount total-col"></td>
+      </tr>
+    </tfoot>
+  </table>
+</div>
+<p class="note">* 야유회참가 항목을 탭하면 참가/불참 변경 · 변경사항은 이 기기에 저장됩니다</p>
+
+<script>
+  const MEMBERS = [
+    '강기빈','김동수','김성록','김성현','김인','김준현','김지훈','김찬희',
+    '김태향','김태홍','김현','남궁기남','남궁훈','도지성','박상현','박영록',
+    '박영수','박찬빈','방선우','우성길','이인표','이형일','이형준','전원표',
+    '전재민','정종환','정해승','조성인','채동훈','채유민','채은일','최만식',
+    '홍래균','황인성'
+  ];
+  const OUTING_FEE = 30000;
+  const CONTAINER_FEE = 10000;
+  const STORAGE_KEY = 'wolmun_payment_join';
+
+  function fmt(n) { return n === 0 ? '<span class="amount zero">—</span>' : n.toLocaleString() + '원'; }
+
+  function loadState() {
+    try { return JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}'); } catch { return {}; }
+  }
+  function saveState(state) { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }
+
+  function toggle(name) {
+    const state = loadState();
+    state[name] = !state[name];
+    saveState(state);
+    render();
+  }
+
+  function render() {
+    const state = loadState();
+    const tbody = document.getElementById('payBody');
+    let sumOuting = 0, sumContainer = 0, sumTotal = 0, joinCount = 0;
+
+    tbody.innerHTML = MEMBERS.map(name => {
+      const join = state[name] !== false; // 기본값: 참가
+      const outing = join ? OUTING_FEE : 0;
+      const container = CONTAINER_FEE;
+      const total = outing + container;
+      sumOuting += outing; sumContainer += container; sumTotal += total;
+      if (join) joinCount++;
+      return `<tr>
+        <td>${name}</td>
+        <td><button class="toggle-btn ${join ? 'join' : 'nojoin'}" onclick="toggle('${name}')">${join ? '✅ 참가' : '❌ 불참'}</button></td>
+        <td class="amount">${fmt(outing)}</td>
+        <td class="amount">${fmt(container)}</td>
+        <td class="amount total-col">${total.toLocaleString()}원</td>
+      </tr>`;
+    }).join('');
+
+    document.getElementById('sub-join').textContent = joinCount + '명 참가';
+    document.getElementById('sub-outing').innerHTML = sumOuting.toLocaleString() + '원';
+    document.getElementById('sub-container').innerHTML = sumContainer.toLocaleString() + '원';
+    document.getElementById('sub-total').innerHTML = sumTotal.toLocaleString() + '원';
+  }
+
+  render();
+</script>
+</body>
+</html>
