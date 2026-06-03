@@ -323,7 +323,7 @@
       const total = outing + container;
       const amt = getAmt(name, ps, total);
       sumOuting += outing; sumContainer += container; sumTotal += total;
-      if (!exempt && join) joinCount++;
+      if (join) joinCount++;
       const payClass = ps === 2 ? 'paid' : ps === 1 ? 'partial' : 'unpaid';
       const payLabel = ps === 2 ? '✅납부' : ps === 1 ? '🔸일부납' : '⏳미납';
       const joinCell = exempt
