@@ -46,8 +46,9 @@
     }
     .sum-badge .sl { font-size: 11px; color: var(--muted); margin-bottom: 3px; }
     .sum-badge .sv { font-size: 15px; font-weight: 900; color: var(--text); }
-    .sum-badge.paid .sv { color: #0a6640; }
-    .sum-badge.unpaid .sv { color: #a02020; }
+    .sum-badge.paid .sv    { color: #0a6640; }
+    .sum-badge.partial .sv { color: #c45000; }
+    .sum-badge.unpaid .sv  { color: #a02020; }
 
     .table-wrap {
       margin: 14px 16px; background: var(--card);
@@ -81,8 +82,9 @@
     }
     .toggle-btn.join  { background: #d1f5ea; color: #0a6640; }
     .toggle-btn.nojoin{ background: #f5e0e0; color: #a02020; }
-    .toggle-btn.paid  { background: #d1f5ea; color: #0a6640; }
-    .toggle-btn.unpaid{ background: #ffeeba; color: #856404; }
+    .toggle-btn.paid   { background: #d1f5ea; color: #0a6640; }
+    .toggle-btn.partial{ background: #ffe0b2; color: #c45000; }
+    .toggle-btn.unpaid { background: #ffeeba; color: #856404; }
 
     .amount { font-variant-numeric: tabular-nums; }
     .amount.zero { color: #ccc; }
@@ -121,6 +123,10 @@
   <div class="sum-badge paid">
     <div class="sl">✅ 납부완료</div>
     <div class="sv" id="sum-paid">0명</div>
+  </div>
+  <div class="sum-badge partial">
+    <div class="sl">🔸 일부납</div>
+    <div class="sv" id="sum-partial">0명</div>
   </div>
   <div class="sum-badge unpaid">
     <div class="sl">⏳ 미납</div>
@@ -161,7 +167,7 @@
 
 <script>
   const MEMBERS = [
-    '강기빈','김동수','김병묵','김성록','김성현','김인','김준현','김지훈','김찬희',
+    '강기빈','강성현','김동수','김병묵','김성록','김인','김준현','김지훈',
     '김태향','김태홍','김현','남궁기남','남궁훈','도지성','박상현','박영록',
     '박영수','박찬빈','방선우','우성길','이인표','이형일','이형준','전원표',
     '전재민','정종환','정해승','조성인','채동훈','채유민','채은일','최만식',
@@ -172,10 +178,11 @@
   const KEY_JOIN = 'wm_pay_join';
   const KEY_PAID = 'wm_pay_paid';
 
-  // 입금내역 기반 초기값
-  const DEFAULT_NOJOIN = new Set(['김동수','방선우','도지성','박영록','정종환','박상현','김태향','김인','채은일','김지훈','김성록','홍래균']);
-  const DEFAULT_PAID   = new Set(['강기빈','최만식','전재민','우성길','김동수','방선우','도지성','박영록','정종환','박상현','조성인','김태향','김인','채은일','김지훈','김성록']);
-  const EXEMPT_OUTING  = new Set(['김지훈','김태향','박상현','정종환']); // 운영진 야유회비 면제
+  // 입금내역 기반 초기값 (0=미납, 1=일부납, 2=납부완료)
+  const DEFAULT_NOJOIN   = new Set(['김동수','방선우','도지성','박영록','정종환','박상현','김태향','김인','채은일','김지훈','김성록','홍래균']);
+  const DEFAULT_PAID     = new Set(['강기빈','최만식','전재민','우성길','김동수','방선우','도지성','박영록','정종환','박상현','조성인','김태향','김인','채은일','김지훈','김성록']);
+  const DEFAULT_PARTIAL  = new Set([]);
+  const EXEMPT_OUTING    = new Set(['김지훈','김태향','박상현','정종환']); // 운영진 야유회비 면제
 
   function load(key) { try { return JSON.parse(localStorage.getItem(key) || 'null'); } catch { return null; } }
   function save(key, val) { localStorage.setItem(key, JSON.stringify(val)); }
@@ -187,16 +194,25 @@
     if (name in joinState) return joinState[name];
     return !DEFAULT_NOJOIN.has(name);
   }
-  function isPaid(name, paidState) {
-    if (name in paidState) return paidState[name];
-    return DEFAULT_PAID.has(name);
+  function getPayState(name, paidState) {
+    if (name in paidState) {
+      const v = paidState[name];
+      if (v === true)  return 2;
+      if (v === false) return 0;
+      return v;
+    }
+    if (DEFAULT_PAID.has(name))    return 2;
+    if (DEFAULT_PARTIAL.has(name)) return 1;
+    return 0;
   }
 
   function toggleJoin(name) {
     const s = getJoin(); s[name] = !isJoin(name, s); save(KEY_JOIN, s); render();
   }
   function togglePaid(name) {
-    const s = getPaid(); s[name] = !isPaid(name, s); save(KEY_PAID, s); render();
+    const s = getPaid();
+    s[name] = (getPayState(name, s) + 1) % 3;
+    save(KEY_PAID, s); render();
   }
 
   function fmt(n) { return n === 0 ? '<span class="amount zero">—</span>' : n.toLocaleString() + '원'; }
@@ -216,7 +232,7 @@
   function getSortKey(name, col, joinState, paidState) {
     const exempt = EXEMPT_OUTING.has(name);
     const join = isJoin(name, joinState);
-    const paid = isPaid(name, paidState);
+    const ps = getPayState(name, paidState);
     const outing = exempt ? 0 : (join ? OUTING_FEE : 0);
     const total = outing + CONTAINER_FEE;
     if (col === 0) return name;
@@ -224,14 +240,14 @@
     if (col === 2) return outing;
     if (col === 3) return CONTAINER_FEE;
     if (col === 4) return total;
-    if (col === 5) return paid ? 1 : 0;
+    if (col === 5) return ps;
     return name;
   }
 
   function render() {
     const joinState = getJoin(), paidState = getPaid();
     const tbody = document.getElementById('payBody');
-    let sumOuting=0, sumContainer=0, sumTotal=0, joinCount=0, paidCount=0, paidAmt=0;
+    let sumOuting=0, sumContainer=0, sumTotal=0, joinCount=0, paidCount=0, partialCount=0, paidAmt=0;
 
     const sorted = [...MEMBERS].sort((a, b) => {
       if (sortCol === -1) return 0;
@@ -245,23 +261,26 @@
     tbody.innerHTML = sorted.map(name => {
       const exempt = EXEMPT_OUTING.has(name);
       const join = isJoin(name, joinState);
-      const paid = isPaid(name, paidState);
+      const ps = getPayState(name, paidState);
       const outing = exempt ? 0 : (join ? OUTING_FEE : 0);
       const container = CONTAINER_FEE;
       const total = outing + container;
       sumOuting += outing; sumContainer += container; sumTotal += total;
       if (!exempt && join) joinCount++;
-      if (paid) { paidCount++; paidAmt += total; }
+      if (ps === 2) { paidCount++; paidAmt += total; }
+      else if (ps === 1) { partialCount++; paidAmt += CONTAINER_FEE; }
+      const payClass = ps === 2 ? 'paid' : ps === 1 ? 'partial' : 'unpaid';
+      const payLabel = ps === 2 ? '✅납부' : ps === 1 ? '🔸일부납' : '⏳미납';
       const joinCell = exempt
         ? `<span class="toggle-btn" style="background:#e8f0ff;color:#3355aa;cursor:default;">🎖️운영진</span>`
         : `<button class="toggle-btn ${join?'join':'nojoin'}" onclick="toggleJoin('${name}')">${join?'✅참가':'❌불참'}</button>`;
-      return `<tr class="${paid ? 'paid-row' : ''}">
+      return `<tr class="${ps === 2 ? 'paid-row' : ''}">
         <td>${name}</td>
         <td>${joinCell}</td>
         <td class="amount">${exempt ? '<span style="color:#3355aa;font-size:11px;">면제</span>' : fmt(outing)}</td>
         <td class="amount">${fmt(container)}</td>
         <td class="amount total-col">${total.toLocaleString()}원</td>
-        <td><button class="toggle-btn ${paid?'paid':'unpaid'}" onclick="togglePaid('${name}')">${paid?'✅납부':'⏳미납'}</button></td>
+        <td><button class="toggle-btn ${payClass}" onclick="togglePaid('${name}')">${payLabel}</button></td>
       </tr>`;
     }).join('');
 
@@ -271,7 +290,8 @@
     document.getElementById('sub-total').innerHTML = sumTotal.toLocaleString() + '원';
     document.getElementById('sub-paid').textContent = paidCount + '명 완료';
     document.getElementById('sum-paid').textContent = paidCount + '명';
-    document.getElementById('sum-unpaid').textContent = (MEMBERS.length - paidCount) + '명';
+    document.getElementById('sum-partial').textContent = partialCount + '명';
+    document.getElementById('sum-unpaid').textContent = (MEMBERS.length - paidCount - partialCount) + '명';
     document.getElementById('sum-amount').textContent = paidAmt.toLocaleString() + '원';
   }
 
