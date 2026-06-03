@@ -55,7 +55,7 @@
       box-shadow: 0 2px 16px rgba(0,0,0,0.07);
       overflow-x: auto;
     }
-    table { width: 100%; border-collapse: collapse; min-width: 520px; }
+    table { width: 100%; border-collapse: collapse; min-width: 640px; }
     thead tr { background: var(--primary); }
     thead th {
       color: #fff; padding: 11px 10px; font-size: 12px;
@@ -168,7 +168,7 @@
 
   // 입금내역 기반 초기값
   const DEFAULT_NOJOIN = new Set(['김동수','방선우','도지성','박영록','정종환','박상현','김태향','김인','채은일','김지훈','김성록']);
-  const DEFAULT_PAID   = new Set(['강기빈','최만식','전재민','우성길','김동수','방선우','도지성','박영록','정종환','박상현','조성인','김태향','김인','채은일','김지훈','김성록','김병묵']);
+  const DEFAULT_PAID   = new Set(['강기빈','최만식','전재민','우성길','김동수','방선우','도지성','박영록','정종환','박상현','조성인','김태향','김인','채은일','김지훈','김성록']);
   const EXEMPT_OUTING  = new Set(['김지훈','김태향','박상현','정종환']); // 운영진 야유회비 면제
 
   function load(key) { try { return JSON.parse(localStorage.getItem(key) || 'null'); } catch { return null; } }
