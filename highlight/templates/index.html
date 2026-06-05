@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+  <title>월문FC 하이라이트 편집기</title>
+  <style>
+    :root {
+      --primary: #3abcb8;
+      --primary-dark: #2a9a96;
+      --accent: #f5c842;
+      --accent-dark: #d4a800;
+      --bg: #f0fafa;
+      --card: #ffffff;
+      --text: #2d3436;
+      --muted: #636e72;
+      --border: #d4eeee;
+      --danger: #e74c3c;
+      --success: #27ae60;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    /* ── Header ── */
+    header {
+      background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+      color: #fff;
+      padding: 20px 16px 16px;
+      text-align: center;
+      box-shadow: 0 2px 12px rgba(58,188,184,.35);
+    }
+    header .logo { font-size: 28px; margin-bottom: 4px; }
+    header h1 { font-size: 18px; font-weight: 700; letter-spacing: -.3px; }
+    header p  { font-size: 13px; opacity: .85; margin-top: 3px; }
+
+    /* ── Card ── */
+    .card {
+      background: var(--card);
+      border-radius: 16px;
+      box-shadow: 0 2px 16px rgba(0,0,0,.08);
+      margin: 20px 16px;
+      padding: 24px 20px;
+    }
+
+    /* ── How-it-works steps ── */
+    .steps {
+      display: flex;
+      gap: 0;
+      margin: 0 16px 4px;
+    }
+    .step {
+      flex: 1;
+      text-align: center;
+      padding: 16px 8px;
+      background: var(--card);
+      border-radius: 12px;
+      margin: 0 4px;
+      box-shadow: 0 1px 8px rgba(0,0,0,.06);
+    }
+    .step .icon { font-size: 28px; display: block; margin-bottom: 6px; }
+    .step .label { font-size: 11px; color: var(--muted); line-height: 1.3; }
+
+    /* ── Upload drop-zone ── */
+    .drop-zone {
+      border: 2.5px dashed var(--border);
+      border-radius: 14px;
+      padding: 32px 16px;
+      text-align: center;
+      cursor: pointer;
+      transition: border-color .2s, background .2s;
+      position: relative;
+    }
+    .drop-zone.highlight { border-color: var(--primary); background: #eafafa; }
+    .drop-zone input[type=file] {
+      position: absolute; inset: 0; opacity: 0; cursor: pointer;
+      width: 100%; height: 100%;
+    }
+    .drop-zone .dz-icon { font-size: 44px; line-height: 1; }
+    .drop-zone .dz-title { font-size: 16px; font-weight: 600; margin: 10px 0 4px; }
+    .drop-zone .dz-sub   { font-size: 13px; color: var(--muted); }
+    .drop-zone .dz-name  {
+      margin-top: 12px; font-size: 14px; font-weight: 600;
+      color: var(--primary-dark); display: none;
+    }
+
+    /* ── Options ── */
+    .option-row {
+      display: flex; align-items: center;
+      justify-content: space-between;
+      margin-top: 20px;
+    }
+    .option-row label { font-size: 14px; font-weight: 600; }
+    .option-row small { font-size: 12px; color: var(--muted); }
+    .option-row select {
+      border: 1.5px solid var(--border); border-radius: 8px;
+      padding: 7px 12px; font-size: 14px;
+      background: #fff; color: var(--text);
+      outline: none; cursor: pointer;
+    }
+    .option-row select:focus { border-color: var(--primary); }
+
+    /* ── Buttons ── */
+    .btn {
+      display: block; width: 100%;
+      padding: 15px;
+      border: none; border-radius: 12px;
+      font-size: 16px; font-weight: 700;
+      cursor: pointer; transition: opacity .15s, transform .1s;
+    }
+    .btn:active { transform: scale(.98); }
+    .btn-primary {
+      background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+      color: #fff; margin-top: 20px;
+      box-shadow: 0 4px 14px rgba(58,188,184,.4);
+    }
+    .btn-primary:disabled { opacity: .5; cursor: not-allowed; transform: none; }
+    .btn-accent {
+      background: linear-gradient(135deg, var(--accent) 0%, var(--accent-dark) 100%);
+      color: #1a1a1a; margin-top: 16px;
+      box-shadow: 0 4px 14px rgba(245,200,66,.4);
+    }
+
+    /* ── Progress ── */
+    #progress-section { display: none; }
+    .prog-bar-wrap {
+      background: var(--border); border-radius: 99px;
+      height: 14px; overflow: hidden; margin: 14px 0 8px;
+    }
+    .prog-bar {
+      height: 100%;
+      background: linear-gradient(90deg, var(--primary), var(--accent));
+      border-radius: 99px;
+      transition: width .4s ease;
+      width: 0%;
+    }
+    .prog-label { font-size: 13px; color: var(--muted); text-align: center; }
+
+    /* ── Result ── */
+    #result-section { display: none; }
+    .result-box {
+      background: linear-gradient(135deg, #eafaf9 0%, #fffdf0 100%);
+      border: 1.5px solid var(--border);
+      border-radius: 12px; padding: 20px;
+      text-align: center;
+    }
+    .result-box .big-icon { font-size: 48px; }
+    .result-box h3 { font-size: 17px; font-weight: 700; margin: 10px 0 4px; }
+    .result-box p  { font-size: 13px; color: var(--muted); }
+    .segments-list {
+      text-align: left; margin-top: 16px;
+      border-top: 1px solid var(--border); padding-top: 14px;
+    }
+    .segments-list h4 { font-size: 13px; color: var(--muted); margin-bottom: 8px; }
+    .seg-item {
+      display: inline-block; margin: 3px 4px;
+      background: var(--primary); color: #fff;
+      border-radius: 20px; font-size: 12px; padding: 4px 10px;
+    }
+
+    /* ── Error ── */
+    #error-section { display: none; }
+    .error-box {
+      background: #fff5f5; border: 1.5px solid #ffc5c5;
+      border-radius: 12px; padding: 16px; text-align: center;
+    }
+    .error-box .icon { font-size: 32px; }
+    .error-box p { font-size: 14px; color: var(--danger); margin-top: 8px; }
+
+    /* ── Footer ── */
+    footer {
+      text-align: center; padding: 24px 16px;
+      font-size: 12px; color: var(--muted);
+    }
+    footer a { color: var(--primary); text-decoration: none; }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="logo">⚽</div>
+  <h1>월문FC 하이라이트 편집기</h1>
+  <p>경기 영상 → AI 자동 감지 → 유튜브 업로드용 하이라이트</p>
+</header>
+
+<!-- How it works -->
+<div class="steps" style="margin-top:20px;">
+  <div class="step">
+    <span class="icon">📱</span>
+    <div class="label">영상<br>업로드</div>
+  </div>
+  <div class="step">
+    <span class="icon">🤖</span>
+    <div class="label">AI<br>분석</div>
+  </div>
+  <div class="step">
+    <span class="icon">✂️</span>
+    <div class="label">자동<br>편집</div>
+  </div>
+  <div class="step">
+    <span class="icon">▶️</span>
+    <div class="label">유튜브<br>저장</div>
+  </div>
+</div>
+
+<!-- Upload Card -->
+<div class="card" id="upload-section">
+  <div class="drop-zone" id="dropZone">
+    <input type="file" id="fileInput" accept="video/*" />
+    <div class="dz-icon">🎬</div>
+    <div class="dz-title">영상을 선택하거나 끌어다 놓으세요</div>
+    <div class="dz-sub">MP4 · MOV · AVI · MKV 지원 · 최대 4GB</div>
+    <div class="dz-name" id="fileName"></div>
+  </div>
+
+  <div class="option-row">
+    <div>
+      <label>하이라이트 길이</label><br>
+      <small>짧을수록 핵심 장면만</small>
+    </div>
+    <select id="durationSelect">
+      <option value="90">1분 30초</option>
+      <option value="180" selected>3분</option>
+      <option value="300">5분</option>
+      <option value="420">7분</option>
+      <option value="600">10분</option>
+    </select>
+  </div>
+
+  <button class="btn btn-primary" id="uploadBtn" disabled>
+    하이라이트 만들기
+  </button>
+</div>
+
+<!-- Progress Card -->
+<div class="card" id="progress-section">
+  <p style="font-weight:700; font-size:15px; text-align:center;">
+    ⚙️ AI가 하이라이트를 분석 중입니다…
+  </p>
+  <div class="prog-bar-wrap">
+    <div class="prog-bar" id="progBar"></div>
+  </div>
+  <div class="prog-label" id="progLabel">준비 중...</div>
+  <p style="font-size:12px;color:var(--muted);text-align:center;margin-top:12px;">
+    영상 길이에 따라 1~5분 소요됩니다. 화면을 닫지 마세요.
+  </p>
+</div>
+
+<!-- Result Card -->
+<div class="card" id="result-section">
+  <div class="result-box">
+    <div class="big-icon">🎉</div>
+    <h3>하이라이트 완성!</h3>
+    <p>유튜브 업로드 최적화 (1920×1080 · H.264 · AAC)</p>
+
+    <div class="segments-list">
+      <h4>편집된 구간</h4>
+      <div id="segmentsList"></div>
+    </div>
+  </div>
+  <button class="btn btn-accent" id="downloadBtn">
+    ⬇️ 하이라이트 다운로드
+  </button>
+  <button class="btn btn-primary" id="newVideoBtn" style="margin-top:10px;">
+    다른 영상 편집하기
+  </button>
+</div>
+
+<!-- Error Card -->
+<div class="card" id="error-section">
+  <div class="error-box">
+    <div class="icon">⚠️</div>
+    <p id="errorMsg">오류가 발생했습니다.</p>
+  </div>
+  <button class="btn btn-primary" id="retryBtn" style="margin-top:16px;">
+    다시 시도하기
+  </button>
+</div>
+
+<footer>
+  <a href="/">← 월문FC 메인으로</a><br><br>
+  오디오 에너지 + 모션 분석으로 골·세이브·환호 순간을 자동 감지합니다
+</footer>
+
+<script>
+  const fileInput    = document.getElementById('fileInput');
+  const dropZone     = document.getElementById('dropZone');
+  const fileName     = document.getElementById('fileName');
+  const uploadBtn    = document.getElementById('uploadBtn');
+  const durationSel  = document.getElementById('durationSelect');
+
+  const uploadSec    = document.getElementById('upload-section');
+  const progressSec  = document.getElementById('progress-section');
+  const resultSec    = document.getElementById('result-section');
+  const errorSec     = document.getElementById('error-section');
+
+  const progBar      = document.getElementById('progBar');
+  const progLabel    = document.getElementById('progLabel');
+  const segmentsList = document.getElementById('segmentsList');
+  const downloadBtn  = document.getElementById('downloadBtn');
+  const errorMsg     = document.getElementById('errorMsg');
+
+  let currentJobId = null;
+  let pollInterval = null;
+
+  // File select
+  fileInput.addEventListener('change', () => {
+    const f = fileInput.files[0];
+    if (f) {
+      fileName.textContent = `✓ ${f.name}  (${(f.size / 1024 / 1024).toFixed(0)} MB)`;
+      fileName.style.display = 'block';
+      uploadBtn.disabled = false;
+    }
+  });
+
+  // Drag & drop
+  dropZone.addEventListener('dragover', e => { e.preventDefault(); dropZone.classList.add('highlight'); });
+  dropZone.addEventListener('dragleave', () => dropZone.classList.remove('highlight'));
+  dropZone.addEventListener('drop', e => {
+    e.preventDefault();
+    dropZone.classList.remove('highlight');
+    const f = e.dataTransfer.files[0];
+    if (f && f.type.startsWith('video/')) {
+      fileInput.files = e.dataTransfer.files;
+      fileName.textContent = `✓ ${f.name}  (${(f.size / 1024 / 1024).toFixed(0)} MB)`;
+      fileName.style.display = 'block';
+      uploadBtn.disabled = false;
+    }
+  });
+
+  // Upload
+  uploadBtn.addEventListener('click', async () => {
+    const f = fileInput.files[0];
+    if (!f) return;
+
+    show(progressSec);
+    setProgress(2, '영상 업로드 중...');
+
+    const form = new FormData();
+    form.append('video', f);
+    form.append('duration', durationSel.value);
+
+    try {
+      const xhr = new XMLHttpRequest();
+      xhr.open('POST', '/upload');
+
+      xhr.upload.onprogress = e => {
+        if (e.lengthComputable) {
+          const pct = Math.round(e.loaded / e.total * 20);
+          setProgress(pct, `업로드 중... ${Math.round(e.loaded / e.total * 100)}%`);
+        }
+      };
+
+      xhr.onload = () => {
+        const data = JSON.parse(xhr.responseText);
+        if (xhr.status !== 200 || data.error) {
+          showError(data.error || '업로드 실패');
+          return;
+        }
+        currentJobId = data.job_id;
+        startPolling();
+      };
+
+      xhr.onerror = () => showError('네트워크 오류가 발생했습니다.');
+      xhr.send(form);
+    } catch (err) {
+      showError(err.message);
+    }
+  });
+
+  function startPolling() {
+    pollInterval = setInterval(pollStatus, 1500);
+  }
+
+  async function pollStatus() {
+    try {
+      const res  = await fetch(`/status/${currentJobId}`);
+      const data = await res.json();
+
+      if (data.error && !data.status) {
+        clearInterval(pollInterval);
+        showError(data.error);
+        return;
+      }
+
+      const p = data.progress || 0;
+      let label = '처리 중...';
+      if (p < 12)       label = '영상 정보 분석 중...';
+      else if (p < 32)  label = '오디오 에너지 분석 중... (군중 소리 감지)';
+      else if (p < 48)  label = '모션 분석 중... (역동적 장면 감지)';
+      else if (p < 52)  label = '하이라이트 구간 선정 중...';
+      else if (p < 92)  label = `클립 렌더링 중... (${p}%)`;
+      else if (p < 100) label = '최종 영상 합치는 중...';
+      else              label = '완료!';
+
+      setProgress(p, label);
+
+      if (data.status === 'done') {
+        clearInterval(pollInterval);
+        showResult(data.segments || []);
+      } else if (data.status === 'error') {
+        clearInterval(pollInterval);
+        showError(data.error || '처리 중 오류 발생');
+      }
+    } catch (e) {
+      // network hiccup — keep polling
+    }
+  }
+
+  function setProgress(pct, label) {
+    progBar.style.width = pct + '%';
+    progLabel.textContent = label;
+  }
+
+  function fmtTime(secs) {
+    const m = Math.floor(secs / 60);
+    const s = Math.floor(secs % 60).toString().padStart(2, '0');
+    return `${m}:${s}`;
+  }
+
+  function showResult(segments) {
+    show(resultSec);
+    segmentsList.innerHTML = segments.length
+      ? segments.map(([s, e]) =>
+          `<span class="seg-item">${fmtTime(s)} – ${fmtTime(e)}</span>`
+        ).join('')
+      : '<span style="color:var(--muted);font-size:13px">구간 정보 없음</span>';
+
+    downloadBtn.onclick = () => {
+      window.location.href = `/download/${currentJobId}`;
+    };
+  }
+
+  function showError(msg) {
+    show(errorSec);
+    errorMsg.textContent = msg;
+    document.getElementById('retryBtn').onclick = resetAll;
+  }
+
+  document.getElementById('newVideoBtn').addEventListener('click', resetAll);
+
+  function resetAll() {
+    clearInterval(pollInterval);
+    currentJobId = null;
+    fileInput.value = '';
+    fileName.style.display = 'none';
+    uploadBtn.disabled = true;
+    progBar.style.width = '0%';
+    show(uploadSec);
+  }
+
+  function show(el) {
+    [uploadSec, progressSec, resultSec, errorSec].forEach(s => {
+      s.style.display = s === el ? 'block' : 'none';
+    });
+  }
+
+  // Init
+  show(uploadSec);
+</script>
+</body>
+</html>
