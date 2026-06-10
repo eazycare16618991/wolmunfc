@@ -214,6 +214,7 @@
   <div class="total-votes" id="totalVotes" style="display:none"></div>
   <div class="voter-list" id="voterList" style="display:none"></div>
   <button class="admin-btn" id="adminBtn" onclick="showResults()">📊 결과 보기 (집계자)</button>
+  <button class="admin-btn" id="resetBtn" onclick="resetVotes()">🗑️ 투표 초기화 (집계자)</button>
 </div>
 
 <script>
@@ -326,6 +327,26 @@
       return '<div class="voter-row"><b>' + label + '</b><span>: ' + value + '</span></div>';
     }).join('');
     listEl.style.display = 'block';
+  }
+
+  async function resetVotes() {
+    const pin = prompt('집계자 PIN을 입력하세요');
+    if (pin === null) return;
+    if (!confirm('정말 모든 투표 기록을 초기화할까요? 되돌릴 수 없습니다.')) return;
+    try {
+      const res = await fetch('/api/reset?pin=' + encodeURIComponent(pin));
+      if (res.status === 403) {
+        alert('PIN이 올바르지 않습니다.');
+        return;
+      }
+      if (!res.ok) {
+        alert('초기화에 실패했습니다.');
+        return;
+      }
+      alert('투표 기록이 초기화되었습니다.');
+    } catch (e) {
+      alert('네트워크 오류가 발생했습니다.');
+    }
   }
 
   if (myVote !== null) {
