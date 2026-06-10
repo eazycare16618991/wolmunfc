@@ -126,16 +126,6 @@
     }
     .total-votes strong { color: var(--primary); }
 
-    /* 재투표 버튼 */
-    .revote-btn {
-      display: none; margin: 16px auto 0;
-      background: none; border: 2px solid var(--border);
-      border-radius: 10px; padding: 10px 24px;
-      font-size: 13px; color: var(--muted);
-      cursor: pointer;
-    }
-    .revote-btn.show { display: block; }
-
     /* 관리자 결과보기 */
     .admin-btn {
       display: block; margin: 10px auto 0;
@@ -211,7 +201,6 @@
   <button class="vote-btn" id="voteBtn" disabled onclick="submitVote()">후보를 선택해주세요</button>
   <p class="vote-hint" id="voteHint">한 사람당 한 번만 투표할 수 있습니다</p>
   <div class="total-votes" id="totalVotes" style="display:none"></div>
-  <button class="revote-btn" id="revoteBtn" onclick="nextVoter()">다음 분 투표하기</button>
   <button class="admin-btn" id="adminBtn" onclick="showResults()">📊 결과 보기 (집계자)</button>
 </div>
 
@@ -219,9 +208,10 @@
   const STORAGE_KEY = 'wolmun_mvp_vote';
   let selected = -1;
   let votes = JSON.parse(localStorage.getItem(STORAGE_KEY + '_counts') || '[0,0,0]');
-  let votedNames = JSON.parse(localStorage.getItem(STORAGE_KEY + '_names') || '[]');
+  let myVote = localStorage.getItem(STORAGE_KEY);
 
   function selectCandidate(idx) {
+    if (myVote !== null) return;
     selected = idx;
     document.querySelectorAll('.candidate-card').forEach((c, i) => {
       c.classList.toggle('selected', i === idx);
@@ -230,6 +220,7 @@
   }
 
   function checkReady() {
+    if (myVote !== null) return;
     const name = document.getElementById('voterName').value.trim();
     const btn = document.getElementById('voteBtn');
     if (selected !== -1 && name !== '') {
@@ -243,46 +234,24 @@
 
   function submitVote() {
     const name = document.getElementById('voterName').value.trim();
-    if (selected === -1 || name === '') return;
-    if (votedNames.includes(name)) {
-      alert('이미 투표한 이름입니다.');
-      return;
-    }
+    if (selected === -1 || name === '' || myVote !== null) return;
     votes[selected]++;
-    votedNames.push(name);
     localStorage.setItem(STORAGE_KEY + '_counts', JSON.stringify(votes));
-    localStorage.setItem(STORAGE_KEY + '_names', JSON.stringify(votedNames));
-    markVoted(name);
+    localStorage.setItem(STORAGE_KEY, String(selected));
+    myVote = String(selected);
+    markVoted();
   }
 
-  function markVoted(name) {
+  function markVoted() {
     const btn = document.getElementById('voteBtn');
     btn.disabled = true;
     btn.textContent = '투표 완료!';
     document.getElementById('voteHint').style.display = 'none';
     const banner = document.getElementById('statusBanner');
     banner.classList.add('voted');
-    banner.textContent = '✅ ' + name + '님, 투표해주셔서 감사합니다!';
-    document.getElementById('revoteBtn').classList.add('show');
+    banner.textContent = '✅ 투표가 완료되었습니다. 수고하셨습니다.';
     document.querySelectorAll('.candidate-card').forEach(c => c.style.cursor = 'default');
     document.getElementById('voterName').disabled = true;
-  }
-
-  function nextVoter() {
-    selected = -1;
-    document.querySelectorAll('.candidate-card').forEach(c => {
-      c.classList.remove('selected');
-      c.style.cursor = 'pointer';
-    });
-    const nameInput = document.getElementById('voterName');
-    nameInput.value = '';
-    nameInput.disabled = false;
-    const btn = document.getElementById('voteBtn');
-    btn.disabled = true;
-    btn.textContent = '후보를 선택해주세요';
-    document.getElementById('voteHint').style.display = 'block';
-    document.getElementById('statusBanner').classList.remove('voted');
-    document.getElementById('revoteBtn').classList.remove('show');
   }
 
   function showResults() {
@@ -299,7 +268,13 @@
       setTimeout(() => { document.getElementById('bar-' + i).style.width = pct + '%'; }, 50);
     });
     document.getElementById('totalVotes').style.display = 'block';
-    document.getElementById('totalVotes').innerHTML = '총 <strong>' + total + '표</strong> · 투표자 ' + votedNames.length + '명';
+    document.getElementById('totalVotes').innerHTML = '총 <strong>' + total + '표</strong>';
+  }
+
+  if (myVote !== null) {
+    selected = parseInt(myVote);
+    document.getElementById('card-' + selected).classList.add('selected');
+    markVoted();
   }
 </script>
 
