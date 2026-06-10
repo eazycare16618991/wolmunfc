@@ -126,6 +126,17 @@
     }
     .total-votes strong { color: var(--primary); }
 
+    /* 투표자 명단 (집계자 전용) */
+    .voter-list {
+      margin: 14px 16px 0; background: var(--card);
+      border: 2px solid var(--border); border-radius: 14px;
+      padding: 14px 16px; font-size: 13px;
+    }
+    .voter-list .voter-row { display: flex; gap: 8px; line-height: 1.6; }
+    .voter-list .voter-row + .voter-row { margin-top: 6px; }
+    .voter-list .voter-row b { color: var(--primary); flex-shrink: 0; }
+    .voter-list .voter-row span { color: var(--text); }
+
     /* 관리자 결과보기 */
     .admin-btn {
       display: block; margin: 10px auto 0;
@@ -201,6 +212,7 @@
   <button class="vote-btn" id="voteBtn" disabled onclick="submitVote()">후보를 선택해주세요</button>
   <p class="vote-hint" id="voteHint">한 사람당 한 번만 투표할 수 있습니다</p>
   <div class="total-votes" id="totalVotes" style="display:none"></div>
+  <div class="voter-list" id="voterList" style="display:none"></div>
   <button class="admin-btn" id="adminBtn" onclick="showResults()">📊 결과 보기 (집계자)</button>
 </div>
 
@@ -208,6 +220,7 @@
   const STORAGE_KEY = 'wolmun_mvp_vote';
   let selected = -1;
   let votes = JSON.parse(localStorage.getItem(STORAGE_KEY + '_counts') || '[0,0,0]');
+  let voters = JSON.parse(localStorage.getItem(STORAGE_KEY + '_voters') || '[[],[],[]]');
   let myVote = localStorage.getItem(STORAGE_KEY);
 
   function selectCandidate(idx) {
@@ -236,7 +249,9 @@
     const name = document.getElementById('voterName').value.trim();
     if (selected === -1 || name === '' || myVote !== null) return;
     votes[selected]++;
+    voters[selected].push(name);
     localStorage.setItem(STORAGE_KEY + '_counts', JSON.stringify(votes));
+    localStorage.setItem(STORAGE_KEY + '_voters', JSON.stringify(voters));
     localStorage.setItem(STORAGE_KEY, String(selected));
     myVote = String(selected);
     markVoted();
@@ -270,6 +285,15 @@
     });
     document.getElementById('totalVotes').style.display = 'block';
     document.getElementById('totalVotes').innerHTML = '총 <strong>' + total + '표</strong>';
+
+    const names = document.querySelectorAll('.candidate-name');
+    const listEl = document.getElementById('voterList');
+    listEl.innerHTML = voters.map((list, i) => {
+      const label = names[i] ? names[i].textContent : ('후보 ' + (i + 1));
+      const value = list.length > 0 ? list.join(', ') : '-';
+      return '<div class="voter-row"><b>' + label + '</b><span>: ' + value + '</span></div>';
+    }).join('');
+    listEl.style.display = 'block';
   }
 
   if (myVote !== null) {
