@@ -219,8 +219,6 @@
 <script>
   const STORAGE_KEY = 'wolmun_mvp_vote_v2';
   let selected = -1;
-  let votes = JSON.parse(localStorage.getItem(STORAGE_KEY + '_counts') || '[0,0,0]');
-  let voters = JSON.parse(localStorage.getItem(STORAGE_KEY + '_voters') || '[[],[],[]]');
   let myVote = localStorage.getItem(STORAGE_KEY);
 
   function selectCandidate(idx) {
@@ -245,16 +243,35 @@
     }
   }
 
-  function submitVote() {
+  async function submitVote() {
     const name = document.getElementById('voterName').value.trim();
     if (selected === -1 || name === '' || myVote !== null) return;
-    votes[selected]++;
-    voters[selected].push(name);
-    localStorage.setItem(STORAGE_KEY + '_counts', JSON.stringify(votes));
-    localStorage.setItem(STORAGE_KEY + '_voters', JSON.stringify(voters));
-    localStorage.setItem(STORAGE_KEY, String(selected));
-    myVote = String(selected);
-    markVoted();
+    const btn = document.getElementById('voteBtn');
+    btn.disabled = true;
+    btn.textContent = '처리 중...';
+    try {
+      const res = await fetch('/api/vote', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ candidate: selected, name })
+      });
+      if (res.status === 409) {
+        alert('이미 투표한 이름입니다.');
+        checkReady();
+        return;
+      }
+      if (!res.ok) {
+        alert('오류가 발생했습니다. 다시 시도해주세요.');
+        checkReady();
+        return;
+      }
+      localStorage.setItem(STORAGE_KEY, String(selected));
+      myVote = String(selected);
+      markVoted();
+    } catch (e) {
+      alert('네트워크 오류가 발생했습니다. 다시 시도해주세요.');
+      checkReady();
+    }
   }
 
   function markVoted() {
@@ -269,12 +286,27 @@
     document.getElementById('voterName').disabled = true;
   }
 
-  function showResults() {
+  async function showResults() {
     const pin = prompt('집계자 PIN을 입력하세요');
-    if (pin !== '1234') {
-      if (pin !== null) alert('PIN이 올바르지 않습니다.');
+    if (pin === null) return;
+    let data;
+    try {
+      const res = await fetch('/api/results?pin=' + encodeURIComponent(pin));
+      if (res.status === 403) {
+        alert('PIN이 올바르지 않습니다.');
+        return;
+      }
+      if (!res.ok) {
+        alert('결과를 불러오지 못했습니다.');
+        return;
+      }
+      data = await res.json();
+    } catch (e) {
+      alert('네트워크 오류가 발생했습니다.');
       return;
     }
+
+    const { votes, voters } = data;
     const total = votes.reduce((a, b) => a + b, 0);
     document.querySelectorAll('.result-wrap').forEach(el => el.style.display = 'block');
     votes.forEach((v, i) => {
