@@ -91,6 +91,18 @@
     .result-bar { height: 100%; border-radius: 99px; background: var(--border); transition: width 0.6s ease; }
     .selected .result-bar { background: var(--primary); }
 
+    /* 투표자 이름 */
+    .voter-name-wrap { margin-bottom: 14px; }
+    .voter-label { display: block; font-size: 12px; color: var(--muted); margin-bottom: 6px; font-weight: 700; }
+    .voter-input {
+      width: 100%; padding: 14px 16px; font-size: 15px;
+      border: 2px solid var(--border); border-radius: 12px;
+      font-family: inherit; color: var(--text); background: var(--card);
+      outline: none; transition: border-color 0.2s;
+    }
+    .voter-input:focus { border-color: var(--primary); }
+    .voter-input:disabled { background: var(--bg); color: var(--muted); }
+
     /* 투표 버튼 */
     .vote-section { padding: 24px 16px 0; }
     .vote-btn {
@@ -131,7 +143,7 @@
   <a href="index.html" class="back">← 홈으로</a>
   <div class="tag">VOTE</div>
   <h1>🌟 리그 MVP 투표</h1>
-  <p>2026 월문FC · 무기명 투표</p>
+  <p>2026 월문FC · 이름 확인 후 1인 1표</p>
 </div>
 
 <div class="status-banner" id="statusBanner"></div>
@@ -142,8 +154,8 @@
     <div class="card-top">
       <div class="candidate-num">1</div>
       <div class="candidate-info">
-        <div class="candidate-name">후보 1</div>
-        <div class="candidate-team">○○팀</div>
+        <div class="candidate-name">강기빈</div>
+        <div class="candidate-team">기빈팀</div>
       </div>
     </div>
     <div class="result-wrap" id="result-0">
@@ -156,8 +168,8 @@
     <div class="card-top">
       <div class="candidate-num">2</div>
       <div class="candidate-info">
-        <div class="candidate-name">후보 2</div>
-        <div class="candidate-team">○○팀</div>
+        <div class="candidate-name">김태향</div>
+        <div class="candidate-team">기빈팀</div>
       </div>
     </div>
     <div class="result-wrap" id="result-1">
@@ -170,8 +182,8 @@
     <div class="card-top">
       <div class="candidate-num">3</div>
       <div class="candidate-info">
-        <div class="candidate-name">후보 3</div>
-        <div class="candidate-team">○○팀</div>
+        <div class="candidate-name">박상현</div>
+        <div class="candidate-team">영록팀</div>
       </div>
     </div>
     <div class="result-wrap" id="result-2">
@@ -183,6 +195,10 @@
 </div>
 
 <div class="vote-section">
+  <div class="voter-name-wrap">
+    <label for="voterName" class="voter-label">투표자 이름</label>
+    <input type="text" id="voterName" class="voter-input" placeholder="이름을 입력하세요" oninput="checkReady()">
+  </div>
   <button class="vote-btn" id="voteBtn" disabled onclick="submitVote()">후보를 선택해주세요</button>
   <p class="vote-hint" id="voteHint">한 번만 투표할 수 있습니다</p>
   <div class="total-votes" id="totalVotes" style="display:none"></div>
@@ -201,16 +217,29 @@
     document.querySelectorAll('.candidate-card').forEach((c, i) => {
       c.classList.toggle('selected', i === idx);
     });
+    checkReady();
+  }
+
+  function checkReady() {
+    if (myVote !== null) return;
+    const name = document.getElementById('voterName').value.trim();
     const btn = document.getElementById('voteBtn');
-    btn.disabled = false;
-    btn.textContent = '투표하기 ✓';
+    if (selected !== -1 && name !== '') {
+      btn.disabled = false;
+      btn.textContent = '투표하기 ✓';
+    } else {
+      btn.disabled = true;
+      btn.textContent = selected === -1 ? '후보를 선택해주세요' : '이름을 입력해주세요';
+    }
   }
 
   function submitVote() {
-    if (selected === -1 || myVote !== null) return;
+    const name = document.getElementById('voterName').value.trim();
+    if (selected === -1 || name === '' || myVote !== null) return;
     votes[selected]++;
     localStorage.setItem(STORAGE_KEY + '_counts', JSON.stringify(votes));
     localStorage.setItem(STORAGE_KEY, String(selected));
+    localStorage.setItem(STORAGE_KEY + '_name', name);
     myVote = String(selected);
     showResults();
   }
@@ -229,15 +258,20 @@
     document.getElementById('voteHint').style.display = 'none';
     document.getElementById('totalVotes').style.display = 'block';
     document.getElementById('totalVotes').innerHTML = '내 기기 기준 총 <strong>' + total + '표</strong>';
+    const voterName = localStorage.getItem(STORAGE_KEY + '_name') || '';
     const banner = document.getElementById('statusBanner');
     banner.classList.add('voted');
-    banner.textContent = '✅ 투표해주셔서 감사합니다!';
+    banner.textContent = '✅ ' + voterName + '님, 투표해주셔서 감사합니다!';
     document.getElementById('revoteBtn').classList.add('show');
     document.querySelectorAll('.candidate-card').forEach(c => c.style.cursor = 'default');
+    const nameInput = document.getElementById('voterName');
+    nameInput.value = voterName;
+    nameInput.disabled = true;
   }
 
   function resetVote() {
     localStorage.removeItem(STORAGE_KEY);
+    localStorage.removeItem(STORAGE_KEY + '_name');
     myVote = null;
     selected = -1;
     document.querySelectorAll('.candidate-card').forEach(c => {
@@ -252,6 +286,9 @@
     document.getElementById('totalVotes').style.display = 'none';
     document.getElementById('statusBanner').classList.remove('voted');
     document.getElementById('revoteBtn').classList.remove('show');
+    const nameInput = document.getElementById('voterName');
+    nameInput.value = '';
+    nameInput.disabled = false;
   }
 
   if (myVote !== null) {
