@@ -232,6 +232,10 @@
 
 <script>
   const STORAGE_KEY = 'wolmun_mvp_vote_v2';
+  if (location.search.indexOf('reset=1') !== -1) {
+    localStorage.removeItem(STORAGE_KEY);
+    history.replaceState(null, '', location.pathname);
+  }
   let selected = -1;
   let myVote = localStorage.getItem(STORAGE_KEY);
 
