@@ -964,6 +964,19 @@
     <button class="award-btn" onclick="closeDefenseAward()">확인 👍</button>
   </div>
 </div>
+
+<!-- ── 야신상 팝업 ── -->
+<div class="award-overlay" id="goalkeeperAwardOverlay" style="display:none;">
+  <div class="award-box">
+    <button class="award-close" onclick="closeGoalkeeperAward()">✕</button>
+    <div class="award-emoji">🧤</div>
+    <div class="award-title">2026 월문FC · 야신상</div>
+    <img src="IMG_3346.jpeg" class="award-photo" alt="채유민" />
+    <div class="award-name">채유민</div>
+    <div class="award-team">기빈팀</div>
+    <button class="award-btn" onclick="closeGoalkeeperAward()">확인 👍</button>
+  </div>
+</div>
 <script>
   function closeAward() {
     const el = document.getElementById('awardOverlay');
@@ -1006,6 +1019,16 @@
   }
   function showDefenseAward() {
     const el = document.getElementById('defenseAwardOverlay');
+    el.style.display = 'flex';
+    el.classList.remove('hide');
+  }
+  function closeGoalkeeperAward() {
+    const el = document.getElementById('goalkeeperAwardOverlay');
+    el.classList.add('hide');
+    setTimeout(() => { el.style.display = 'none'; el.classList.remove('hide'); }, 350);
+  }
+  function showGoalkeeperAward() {
+    const el = document.getElementById('goalkeeperAwardOverlay');
     el.style.display = 'flex';
     el.classList.remove('hide');
   }
@@ -1593,7 +1616,7 @@
       <tr><td>⚽ 득점왕</td><td><span class="winner-confirmed" onclick="showGoalAward()" style="cursor:pointer;text-decoration:underline dotted;">정종환 ⚽</span></td><td><span class="prize-text">특대형 와이드그릴 60cm</span></td><td>최다 골 / 동수 시 비우승팀 → 최소실점팀 순</td></tr>
       <tr><td>🎯 어시스트상</td><td><span class="winner-confirmed" onclick="showAssistAward()" style="cursor:pointer;text-decoration:underline dotted;">김태향 🎯</span></td><td><span class="prize-text">특대형 와이드그릴 60cm</span></td><td>최다 어시스트 / 동수 시 동일 기준</td></tr>
       <tr><td>🛡️ 철벽수비상</td><td><span class="winner-confirmed" onclick="showDefenseAward()" style="cursor:pointer;text-decoration:underline dotted;">홍래균 🛡️</span></td><td><span class="prize-text">무선 텀블러블렌더 600ml</span></td><td>최다 우수선수 / 동수 시 동일 기준</td></tr>
-      <tr><td>🧤 야신상</td><td><span class="winner-confirmed">채유민</span></td><td><span class="prize-text">무선 텀블러블렌더 600ml</span></td><td>최소실점팀 최다 우수선수 / 동수 시 비우승팀 → 팀장선정 순</td></tr>
+      <tr><td>🧤 야신상</td><td><span class="winner-confirmed" onclick="showGoalkeeperAward()" style="cursor:pointer;text-decoration:underline dotted;">채유민 🧤</span></td><td><span class="prize-text">무선 텀블러블렌더 600ml</span></td><td>최소실점팀 최다 우수선수 / 동수 시 비우승팀 → 팀장선정 순</td></tr>
       <tr><td>📈 기량발전상</td><td><span class="winner-pending">심사중</span></td><td><span class="prize-text">14인치스탠드형 5엽날개 선풍기</span></td><td>감독 선정 (1인)</td></tr>
       <tr><td>👥 최다출석팀상</td><td><span class="winner-confirmed">기빈팀</span></td><td><span class="prize-text">프리미엄 논슬립 축구양말</span></td><td>리그 1회 이상 참석 + 야유회 참석자</td></tr>
       <tr><td>🌟 리그 MVP</td><td><span class="winner-pending">심사중</span></td><td><span class="prize-text">디지털터치식 에어프라이어 3.5리터</span></td><td>운영진 5인 합의 선정</td></tr>
