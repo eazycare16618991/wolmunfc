@@ -919,7 +919,7 @@
     <button class="award-close" onclick="closeAward()">✕</button>
     <div class="award-emoji">🤬</div>
     <div class="award-title">2026 월문FC · 욕쟁이상</div>
-    <img src="IMG_3227.jpeg" class="award-photo" alt="김지훈" />
+    <img src="IMG_3353.jpeg" class="award-photo" alt="김지훈" />
     <div class="award-name">김지훈</div>
     <div class="award-team">영록팀</div>
     <button class="award-btn" onclick="closeAward()">확인 👍</button>
@@ -936,6 +936,32 @@
     <div class="award-name">정종환</div>
     <div class="award-team">선우팀</div>
     <button class="award-btn" onclick="closeGoalAward()">확인 👍</button>
+  </div>
+</div>
+
+<!-- ── 어시스트상 팝업 ── -->
+<div class="award-overlay" id="assistAwardOverlay" style="display:none;">
+  <div class="award-box">
+    <button class="award-close" onclick="closeAssistAward()">✕</button>
+    <div class="award-emoji">🎯</div>
+    <div class="award-title">2026 월문FC · 어시스트상</div>
+    <img src="IMG_3350.jpeg" class="award-photo" alt="김태향" />
+    <div class="award-name">김태향</div>
+    <div class="award-team">기빈팀</div>
+    <button class="award-btn" onclick="closeAssistAward()">확인 👍</button>
+  </div>
+</div>
+
+<!-- ── 철벽수비상 팝업 ── -->
+<div class="award-overlay" id="defenseAwardOverlay" style="display:none;">
+  <div class="award-box">
+    <button class="award-close" onclick="closeDefenseAward()">✕</button>
+    <div class="award-emoji">🛡️</div>
+    <div class="award-title">2026 월문FC · 철벽수비상</div>
+    <img src="IMG_3347.jpeg" class="award-photo" alt="홍래균" />
+    <div class="award-name">홍래균</div>
+    <div class="award-team">영록팀</div>
+    <button class="award-btn" onclick="closeDefenseAward()">확인 👍</button>
   </div>
 </div>
 <script>
@@ -960,6 +986,26 @@
   }
   function showGoalAward() {
     const el = document.getElementById('goalAwardOverlay');
+    el.style.display = 'flex';
+    el.classList.remove('hide');
+  }
+  function closeAssistAward() {
+    const el = document.getElementById('assistAwardOverlay');
+    el.classList.add('hide');
+    setTimeout(() => { el.style.display = 'none'; el.classList.remove('hide'); }, 350);
+  }
+  function showAssistAward() {
+    const el = document.getElementById('assistAwardOverlay');
+    el.style.display = 'flex';
+    el.classList.remove('hide');
+  }
+  function closeDefenseAward() {
+    const el = document.getElementById('defenseAwardOverlay');
+    el.classList.add('hide');
+    setTimeout(() => { el.style.display = 'none'; el.classList.remove('hide'); }, 350);
+  }
+  function showDefenseAward() {
+    const el = document.getElementById('defenseAwardOverlay');
     el.style.display = 'flex';
     el.classList.remove('hide');
   }
@@ -1545,8 +1591,8 @@
     <tbody>
       <tr><td>🏆 우승팀 시상</td><td><span class="winner-confirmed">기빈팀</span></td><td><span class="prize-text">304스스텐 핸디텀블러 600ml</span></td><td>리그 1회 이상 참석 + 야유회 참석자</td></tr>
       <tr><td>⚽ 득점왕</td><td><span class="winner-confirmed" onclick="showGoalAward()" style="cursor:pointer;text-decoration:underline dotted;">정종환 ⚽</span></td><td><span class="prize-text">특대형 와이드그릴 60cm</span></td><td>최다 골 / 동수 시 비우승팀 → 최소실점팀 순</td></tr>
-      <tr><td>🎯 어시스트상</td><td><span class="winner-confirmed">김태향</span></td><td><span class="prize-text">특대형 와이드그릴 60cm</span></td><td>최다 어시스트 / 동수 시 동일 기준</td></tr>
-      <tr><td>🛡️ 철벽수비상</td><td><span class="winner-confirmed">홍래균</span></td><td><span class="prize-text">무선 텀블러블렌더 600ml</span></td><td>최다 우수선수 / 동수 시 동일 기준</td></tr>
+      <tr><td>🎯 어시스트상</td><td><span class="winner-confirmed" onclick="showAssistAward()" style="cursor:pointer;text-decoration:underline dotted;">김태향 🎯</span></td><td><span class="prize-text">특대형 와이드그릴 60cm</span></td><td>최다 어시스트 / 동수 시 동일 기준</td></tr>
+      <tr><td>🛡️ 철벽수비상</td><td><span class="winner-confirmed" onclick="showDefenseAward()" style="cursor:pointer;text-decoration:underline dotted;">홍래균 🛡️</span></td><td><span class="prize-text">무선 텀블러블렌더 600ml</span></td><td>최다 우수선수 / 동수 시 동일 기준</td></tr>
       <tr><td>🧤 야신상</td><td><span class="winner-confirmed">채유민</span></td><td><span class="prize-text">무선 텀블러블렌더 600ml</span></td><td>최소실점팀 최다 우수선수 / 동수 시 비우승팀 → 팀장선정 순</td></tr>
       <tr><td>📈 기량발전상</td><td><span class="winner-pending">심사중</span></td><td><span class="prize-text">14인치스탠드형 5엽날개 선풍기</span></td><td>감독 선정 (1인)</td></tr>
       <tr><td>👥 최다출석팀상</td><td><span class="winner-confirmed">기빈팀</span></td><td><span class="prize-text">프리미엄 논슬립 축구양말</span></td><td>리그 1회 이상 참석 + 야유회 참석자</td></tr>
