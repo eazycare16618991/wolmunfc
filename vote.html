@@ -227,6 +227,7 @@
   <div class="voter-list" id="voterList" style="display:none"></div>
   <button class="admin-btn" id="adminBtn" onclick="showResults()">📊 결과 보기 (집계자)</button>
   <button class="admin-btn" id="resetBtn" onclick="resetVotes()">🗑️ 투표 초기화 (집계자)</button>
+  <button class="admin-btn" id="removeBtn" onclick="removeVote()">✂️ 특정 투표자 삭제 (집계자)</button>
 </div>
 
 <script>
@@ -356,6 +357,42 @@
         return;
       }
       alert('투표 기록이 초기화되었습니다.');
+    } catch (e) {
+      alert('네트워크 오류가 발생했습니다.');
+    }
+  }
+
+  async function removeVote() {
+    const pin = prompt('집계자 PIN을 입력하세요');
+    if (pin === null) return;
+    const num = prompt('삭제할 투표의 후보 번호를 입력하세요 (1, 2, 3)');
+    if (num === null) return;
+    const idx = parseInt(num, 10) - 1;
+    if (![0, 1, 2].includes(idx)) {
+      alert('1~3 사이의 번호를 입력해주세요.');
+      return;
+    }
+    const name = prompt('삭제할 투표자 이름을 입력하세요');
+    if (name === null || !name.trim()) return;
+    if (!confirm(name.trim() + '님의 ' + (idx + 1) + '번 후보 투표를 삭제할까요?')) return;
+    try {
+      const url = '/api/remove-vote?pin=' + encodeURIComponent(pin) +
+        '&candidate=' + idx + '&name=' + encodeURIComponent(name.trim());
+      const res = await fetch(url);
+      if (res.status === 403) {
+        alert('PIN이 올바르지 않습니다.');
+        return;
+      }
+      if (!res.ok) {
+        alert('삭제에 실패했습니다.');
+        return;
+      }
+      const data = await res.json();
+      if (data.removed > 0) {
+        alert('삭제되었습니다. 해당 투표자는 다시 투표할 수 있습니다.');
+      } else {
+        alert('해당 이름의 투표 기록을 찾지 못했습니다.');
+      }
     } catch (e) {
       alert('네트워크 오류가 발생했습니다.');
     }
