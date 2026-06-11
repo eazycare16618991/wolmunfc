@@ -925,6 +925,19 @@
     <button class="award-btn" onclick="closeAward()">확인 👍</button>
   </div>
 </div>
+
+<!-- ── 득점왕 팝업 ── -->
+<div class="award-overlay" id="goalAwardOverlay" style="display:none;">
+  <div class="award-box">
+    <button class="award-close" onclick="closeGoalAward()">✕</button>
+    <div class="award-emoji">⚽</div>
+    <div class="award-title">2026 월문FC · 득점왕</div>
+    <img src="IMG_3348.jpeg" class="award-photo" alt="정종환" />
+    <div class="award-name">정종환</div>
+    <div class="award-team">선우팀</div>
+    <button class="award-btn" onclick="closeGoalAward()">확인 👍</button>
+  </div>
+</div>
 <script>
   function closeAward() {
     const el = document.getElementById('awardOverlay');
@@ -939,6 +952,16 @@
   }
   if (sessionStorage.getItem('awardSeen')) {
     document.getElementById('awardOverlay').style.display = 'none';
+  }
+  function closeGoalAward() {
+    const el = document.getElementById('goalAwardOverlay');
+    el.classList.add('hide');
+    setTimeout(() => { el.style.display = 'none'; el.classList.remove('hide'); }, 350);
+  }
+  function showGoalAward() {
+    const el = document.getElementById('goalAwardOverlay');
+    el.style.display = 'flex';
+    el.classList.remove('hide');
   }
 </script>
 
@@ -1521,7 +1544,7 @@
     </thead>
     <tbody>
       <tr><td>🏆 우승팀 시상</td><td><span class="winner-confirmed">기빈팀</span></td><td><span class="prize-text">304스스텐 핸디텀블러 600ml</span></td><td>리그 1회 이상 참석 + 야유회 참석자</td></tr>
-      <tr><td>⚽ 득점왕</td><td><span class="winner-confirmed">정종환</span></td><td><span class="prize-text">특대형 와이드그릴 60cm</span></td><td>최다 골 / 동수 시 비우승팀 → 최소실점팀 순</td></tr>
+      <tr><td>⚽ 득점왕</td><td><span class="winner-confirmed" onclick="showGoalAward()" style="cursor:pointer;text-decoration:underline dotted;">정종환 ⚽</span></td><td><span class="prize-text">특대형 와이드그릴 60cm</span></td><td>최다 골 / 동수 시 비우승팀 → 최소실점팀 순</td></tr>
       <tr><td>🎯 어시스트상</td><td><span class="winner-confirmed">김태향</span></td><td><span class="prize-text">특대형 와이드그릴 60cm</span></td><td>최다 어시스트 / 동수 시 동일 기준</td></tr>
       <tr><td>🛡️ 철벽수비상</td><td><span class="winner-confirmed">홍래균</span></td><td><span class="prize-text">무선 텀블러블렌더 600ml</span></td><td>최다 우수선수 / 동수 시 동일 기준</td></tr>
       <tr><td>🧤 야신상</td><td><span class="winner-confirmed">채유민</span></td><td><span class="prize-text">무선 텀블러블렌더 600ml</span></td><td>최소실점팀 최다 우수선수 / 동수 시 비우승팀 → 팀장선정 순</td></tr>
