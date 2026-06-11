@@ -83,12 +83,16 @@
     .candidate-info { flex: 1; }
     .candidate-name { font-size: 20px; font-weight: 900; }
     .candidate-team { font-size: 12px; color: var(--muted); margin-top: 2px; }
-    .candidate-photo {
-      width: 56px; height: 56px; border-radius: 50%; object-fit: cover;
-      object-position: center top; flex-shrink: 0;
-      border: 2px solid var(--border);
+    .candidate-photo-wrap {
+      width: 56px; height: 56px; border-radius: 50%; flex-shrink: 0;
+      border: 2px solid var(--border); overflow: hidden;
     }
-    .selected .candidate-photo { border-color: var(--primary); }
+    .selected .candidate-photo-wrap { border-color: var(--primary); }
+    .candidate-photo {
+      width: 100%; height: 100%; object-fit: cover;
+      object-position: center top;
+    }
+    .candidate-photo.zoom { transform: scale(1.7); transform-origin: 50% 25%; }
 
     /* 결과 바 */
     .result-wrap { display: none; }
@@ -173,7 +177,7 @@
         <div class="candidate-name">강기빈</div>
         <div class="candidate-team">탱크로 밀어붙이는 강력한 공격본능</div>
       </div>
-      <img src="IMG_3456.jpeg" class="candidate-photo" alt="강기빈" />
+      <div class="candidate-photo-wrap"><img src="IMG_3456.jpeg" class="candidate-photo" alt="강기빈" /></div>
     </div>
     <div class="result-wrap" id="result-0">
       <div class="result-label"><span>득표</span><span><strong id="cnt-0">0</strong>표 (<span id="pct-0">0%</span>)</span></div>
@@ -188,7 +192,7 @@
         <div class="candidate-name">김태향</div>
         <div class="candidate-team">활발한 운동량 공수 멀티플레이어</div>
       </div>
-      <img src="IMG_3350.jpeg" class="candidate-photo" alt="김태향" />
+      <div class="candidate-photo-wrap"><img src="IMG_3350.jpeg" class="candidate-photo zoom" alt="김태향" /></div>
     </div>
     <div class="result-wrap" id="result-1">
       <div class="result-label"><span>득표</span><span><strong id="cnt-1">0</strong>표 (<span id="pct-1">0%</span>)</span></div>
@@ -203,7 +207,7 @@
         <div class="candidate-name">박상현</div>
         <div class="candidate-team">환상적인 골키핑능력 중원의 지휘자</div>
       </div>
-      <img src="IMG_3455.jpeg" class="candidate-photo" alt="박상현" />
+      <div class="candidate-photo-wrap"><img src="IMG_3455.jpeg" class="candidate-photo zoom" alt="박상현" /></div>
     </div>
     <div class="result-wrap" id="result-2">
       <div class="result-label"><span>득표</span><span><strong id="cnt-2">0</strong>표 (<span id="pct-2">0%</span>)</span></div>
