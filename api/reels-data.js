@@ -31,7 +31,7 @@ module.exports = async (req, res) => {
 
   // 24시간 캐시
   const bucket = Math.floor(Date.now() / (CACHE_TTL * 1000));
-  const cacheKey = `reels_v5_${category}_${bucket}`;
+  const cacheKey = `reels_v6_${category}_${bucket}`;
 
   let rawItems;
   try { rawItems = await kv.get(cacheKey); } catch (_) {}
