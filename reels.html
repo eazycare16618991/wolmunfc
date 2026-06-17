@@ -776,11 +776,15 @@ function renderAdminAccountsData(accounts) {
   document.getElementById('adminCatLabel').textContent = `${meta.label} 계정 (${accounts.length}개)`;
   document.getElementById('accountList').innerHTML = accounts.length === 0
     ? '<p style="font-size:12px;color:var(--text-muted)">등록된 계정이 없습니다.</p>'
-    : accounts.map(u => `
-        <div class="account-row">
-          <span>@${u}</span>
-          <button class="btn-danger" onclick="removeAccount('${u}')">삭제</button>
-        </div>`).join('');
+    : accounts.map(a => {
+        const username = a.username ?? a;
+        const uid = a.user_id ? `<span style="font-size:10px;color:var(--text-muted);margin-left:4px">ID: ${a.user_id}</span>` : '';
+        return `
+          <div class="account-row">
+            <span>@${username}${uid}</span>
+            <button class="btn-danger" onclick="removeAccount('${username}')">삭제</button>
+          </div>`;
+      }).join('');
   document.getElementById('accountCountLabel').textContent = `${accounts.length}개 계정 추적 중`;
 }
 

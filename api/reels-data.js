@@ -20,22 +20,21 @@ module.exports = async (req, res) => {
     });
   }
 
-  // KV에 저장된 커스텀 계정 목록 조회 (없으면 DEFAULT_ACCOUNTS 사용)
+  // KV에 저장된 계정 목록 로드 (신규 포맷: [{username, user_id}])
   let accounts;
-  try {
-    accounts = await kv.get(`reels_accounts_${category}`);
-  } catch (_) {}
+  try { accounts = await kv.get(`reels_accounts_v2_${category}`); } catch (_) {}
   accounts = accounts ?? DEFAULT_ACCOUNTS[category] ?? [];
 
   if (accounts.length === 0) {
     return res.json({
       items: [],
       total: 0,
-      notice: `"${category}" 카테고리에 등록된 계정이 없습니다. /api/reels-manage 로 계정을 추가하세요.`
+      accountCount: 0,
+      notice: `"${category}" 카테고리에 등록된 계정이 없습니다.`
     });
   }
 
-  // 2시간 캐시 키
+  // 2시간 캐시
   const timeBucket = Math.floor(Date.now() / (CACHE_TTL * 1000));
   const cacheKey = `reels_v2_${category}_${timeBucket}`;
 
@@ -43,19 +42,17 @@ module.exports = async (req, res) => {
   try { rawItems = await kv.get(cacheKey); } catch (_) {}
 
   if (!rawItems) {
-    // 계정별 릴스 병렬 조회
+    // 계정별 릴스 병렬 조회 (user_id 기준)
     const results = await Promise.allSettled(
-      accounts.map(username => fetchUserReels(username))
+      accounts.map(acc => fetchUserReels(acc.user_id ?? acc, acc.username ?? acc))
     );
 
     rawItems = [];
     for (const r of results) {
-      if (r.status === 'fulfilled') {
-        rawItems.push(...r.value);
-      }
+      if (r.status === 'fulfilled') rawItems.push(...r.value);
     }
 
-    // id 기준 중복 제거
+    // 중복 제거
     const seen = new Set();
     rawItems = rawItems.filter(item => {
       if (seen.has(item.id)) return false;
@@ -66,20 +63,21 @@ module.exports = async (req, res) => {
     try { await kv.setex(cacheKey, CACHE_TTL, rawItems); } catch (_) {}
   }
 
-  return res.json({ ...applyFilter(rawItems, parseInt(period, 10), sort), accountCount: accounts.length });
+  const result = applyFilter(rawItems, parseInt(period, 10), sort);
+  return res.json({ ...result, accountCount: accounts.length });
 };
 
-async function fetchUserReels(username) {
-  const url = `${BASE_URL}/user_reels?username_or_id_or_url=${encodeURIComponent(username)}`;
-  const res = await fetch(url, {
+async function fetchUserReels(user_id, fallbackUsername) {
+  const url = `${BASE_URL}/user_reels?user_id=${encodeURIComponent(user_id)}`;
+  const apiRes = await fetch(url, {
     headers: {
       'X-RapidAPI-Key': RAPIDAPI_KEY,
       'X-RapidAPI-Host': RAPIDAPI_HOST,
     },
   });
-  if (!res.ok) throw new Error(`${username} 조회 실패: ${res.status}`);
-  const data = await res.json();
-  return extractItems(data, username);
+  if (!apiRes.ok) throw new Error(`${fallbackUsername} (${user_id}) 조회 실패: ${apiRes.status}`);
+  const data = await apiRes.json();
+  return extractItems(data, fallbackUsername);
 }
 
 function extractItems(data, fallbackUsername) {
@@ -111,11 +109,6 @@ function extractItems(data, fallbackUsername) {
 function applyFilter(items, periodDays, sort) {
   const cutoff = periodDays > 0 ? Date.now() / 1000 - periodDays * 86400 : 0;
   let list = periodDays > 0 ? items.filter(i => i.takenAt >= cutoff) : [...items];
-
-  list.sort((a, b) => sort === 'views'
-    ? b.viewCount - a.viewCount
-    : b.takenAt - a.takenAt
-  );
-
+  list.sort((a, b) => sort === 'views' ? b.viewCount - a.viewCount : b.takenAt - a.takenAt);
   return { items: list.slice(0, 24), total: list.length };
 }
