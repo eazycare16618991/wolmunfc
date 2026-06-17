@@ -327,6 +327,66 @@
     @media (min-width: 769px) {
       .mobile-cats { display: none !important; }
     }
+
+    /* ── 어드민 모달 ── */
+    .modal-backdrop {
+      display: none; position: fixed; inset: 0;
+      background: rgba(0,0,0,.55); z-index: 200;
+      align-items: center; justify-content: center;
+    }
+    .modal-backdrop.open { display: flex; }
+    .modal {
+      background: #fff; border-radius: 18px;
+      padding: 28px; width: 420px; max-width: 92vw;
+      max-height: 80vh; overflow-y: auto;
+      box-shadow: 0 20px 60px rgba(0,0,0,.25);
+    }
+    .modal h2 { font-size: 16px; font-weight: 800; margin-bottom: 4px; }
+    .modal .modal-sub { font-size: 12px; color: var(--text-muted); margin-bottom: 20px; }
+    .modal .pin-row { display: flex; gap: 8px; margin-bottom: 20px; }
+    .modal input[type=text], .modal input[type=password] {
+      flex: 1; padding: 9px 12px; border: 1.5px solid var(--border);
+      border-radius: 8px; font-size: 13px; outline: none;
+    }
+    .modal input:focus { border-color: var(--accent); }
+    .modal .btn-primary {
+      background: var(--accent); color: #fff; border: none;
+      padding: 9px 18px; border-radius: 8px; font-size: 13px;
+      font-weight: 700; cursor: pointer;
+    }
+    .modal .btn-primary:hover { opacity: .9; }
+    .modal .btn-danger {
+      background: #FEE2E2; color: #DC2626; border: none;
+      padding: 5px 10px; border-radius: 6px; font-size: 11.5px;
+      font-weight: 700; cursor: pointer;
+    }
+    .modal .section-label {
+      font-size: 11px; font-weight: 700; letter-spacing: .8px;
+      text-transform: uppercase; color: var(--text-muted);
+      margin-bottom: 10px;
+    }
+    .account-list { display: flex; flex-direction: column; gap: 6px; margin-bottom: 18px; }
+    .account-row {
+      display: flex; align-items: center; gap: 8px;
+      background: var(--bg); border-radius: 8px; padding: 7px 10px;
+    }
+    .account-row span { flex: 1; font-size: 13px; font-weight: 600; }
+    .add-row { display: flex; gap: 8px; }
+    .modal .close-btn {
+      position: absolute; top: 16px; right: 16px;
+      background: var(--bg); border: none; width: 30px; height: 30px;
+      border-radius: 50%; font-size: 16px; cursor: pointer; line-height: 30px; text-align: center;
+    }
+    .modal-inner { position: relative; }
+    .admin-btn {
+      background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.12);
+      color: rgba(255,255,255,.7); font-size: 18px; padding: 5px 10px;
+      border-radius: 8px; cursor: pointer; line-height: 1;
+    }
+    .admin-btn:hover { background: rgba(255,255,255,.15); color: #fff; }
+    .account-count {
+      font-size: 11.5px; color: var(--text-muted); font-weight: 500;
+    }
   </style>
 </head>
 <body>
@@ -339,8 +399,40 @@
   <h1>릴스 레퍼런스</h1>
   <span class="badge">BETA</span>
   <div class="spacer"></div>
+  <button class="admin-btn" onclick="openAdmin()" title="계정 관리">⚙️</button>
   <button class="refresh-btn" onclick="refresh()">새로고침</button>
 </header>
+
+<!-- ── 어드민 모달 ── -->
+<div class="modal-backdrop" id="adminBackdrop" onclick="closeAdminIfBackdrop(event)">
+  <div class="modal modal-inner">
+    <button class="close-btn" onclick="closeAdmin()">×</button>
+    <h2>계정 관리</h2>
+    <p class="modal-sub">카테고리별 추적할 인스타그램 계정을 추가/삭제합니다</p>
+
+    <!-- PIN 입력 (잠금 상태) -->
+    <div id="pinSection">
+      <div class="pin-row">
+        <input type="password" id="pinInput" placeholder="관리자 PIN" maxlength="10"
+          onkeydown="if(event.key==='Enter')verifyPin()">
+        <button class="btn-primary" onclick="verifyPin()">확인</button>
+      </div>
+      <p id="pinError" style="color:#DC2626;font-size:12px;display:none">PIN이 틀렸습니다.</p>
+    </div>
+
+    <!-- PIN 통과 후 계정 관리 UI -->
+    <div id="adminSection" style="display:none">
+      <div class="section-label" id="adminCatLabel">음식/맛집 계정</div>
+      <div class="account-list" id="accountList"></div>
+      <div class="add-row">
+        <input type="text" id="newUsername" placeholder="@username (@ 없이 입력)" maxlength="50"
+          onkeydown="if(event.key==='Enter')addAccount()">
+        <button class="btn-primary" onclick="addAccount()">추가</button>
+      </div>
+      <p id="addMsg" style="font-size:12px;margin-top:8px;color:var(--text-muted)"></p>
+    </div>
+  </div>
+</div>
 
 <div class="layout">
 
@@ -410,7 +502,7 @@
     <!-- 현재 카테고리 태그 -->
     <div class="current-category" id="currentCatRow">
       <span class="cat-tag" id="catTag">🍜 음식/맛집</span>
-      <span class="hashtag" id="hashtagLabel">#맛집</span>
+      <span class="account-count" id="accountCountLabel">계정 불러오는 중…</span>
     </div>
 
     <!-- 릴스 그리드 -->
@@ -424,20 +516,20 @@
 <script>
 // ── 카테고리 메타데이터 ──
 const CATEGORIES = {
-  food:        { label: '음식/맛집', emoji: '🍜', hashtag: '맛집' },
-  beauty:      { label: '뷰티/메이크업', emoji: '💄', hashtag: '뷰티' },
-  fashion:     { label: '패션/스타일', emoji: '👗', hashtag: '패션' },
-  fitness:     { label: '피트니스/운동', emoji: '💪', hashtag: '운동' },
-  travel:      { label: '여행', emoji: '✈️', hashtag: '여행' },
-  lifestyle:   { label: '라이프스타일', emoji: '☀️', hashtag: '일상' },
-  pet:         { label: '반려동물', emoji: '🐶', hashtag: '반려견' },
-  parenting:   { label: '육아', emoji: '👶', hashtag: '육아' },
-  tutorial:    { label: '튜토리얼', emoji: '📋', hashtag: 'tutorial' },
-  beforeafter: { label: 'Before & After', emoji: '🔄', hashtag: 'beforeandafter' },
-  challenge:   { label: '챌린지/트렌드', emoji: '🔥', hashtag: 'challenge' },
-  vlog:        { label: 'Vlog', emoji: '📹', hashtag: 'vlog' },
-  unboxing:    { label: '언박싱', emoji: '📦', hashtag: 'unboxing' },
-  storytime:   { label: '스토리텔링', emoji: '💬', hashtag: 'storytime' },
+  food:        { label: '음식/맛집',     emoji: '🍜' },
+  beauty:      { label: '뷰티/메이크업', emoji: '💄' },
+  fashion:     { label: '패션/스타일',   emoji: '👗' },
+  fitness:     { label: '피트니스/운동', emoji: '💪' },
+  travel:      { label: '여행',          emoji: '✈️' },
+  lifestyle:   { label: '라이프스타일',  emoji: '☀️' },
+  pet:         { label: '반려동물',      emoji: '🐶' },
+  parenting:   { label: '육아',          emoji: '👶' },
+  tutorial:    { label: '튜토리얼',      emoji: '📋' },
+  beforeafter: { label: 'Before & After',emoji: '🔄' },
+  challenge:   { label: '챌린지/트렌드', emoji: '🔥' },
+  vlog:        { label: 'Vlog',          emoji: '📹' },
+  unboxing:    { label: '언박싱',        emoji: '📦' },
+  storytime:   { label: '스토리텔링',    emoji: '💬' },
 };
 
 // ── 상태 ──
@@ -543,14 +635,16 @@ function renderError(msg) {
     </div>`;
 }
 
-function renderEmpty() {
-  const cat = CATEGORIES[state.cat] || {};
+function renderEmpty(notice) {
+  const isNoAccounts = notice && notice.includes('등록된 계정이 없습니다');
   document.getElementById('reelsGrid').innerHTML = `
     <div class="state-box">
-      <div class="icon">🔍</div>
-      <h3>해당 기간에 결과가 없어요</h3>
-      <p>조회 기간을 늘리거나 다른 카테고리를 선택해보세요.<br>
-      API가 반환하는 게시물 범위는 최근 수십 개로 제한될 수 있습니다.</p>
+      <div class="icon">${isNoAccounts ? '📋' : '🔍'}</div>
+      <h3>${isNoAccounts ? '추적 계정이 없어요' : '해당 기간에 결과가 없어요'}</h3>
+      <p>${isNoAccounts
+        ? `⚙️ 우측 상단 <b>설정 버튼</b>을 눌러 이 카테고리에 인스타그램 계정을 추가해주세요.`
+        : '조회 기간을 늘리거나 다른 카테고리를 선택해보세요.'
+      }</p>
     </div>`;
 }
 
@@ -574,8 +668,12 @@ async function loadReels() {
     }
     const data = await res.json();
     if (!data.items || data.items.length === 0) {
-      renderEmpty();
+      renderEmpty(data.notice);
       return;
+    }
+    // 계정 수 업데이트
+    if (data.accountCount !== undefined) {
+      document.getElementById('accountCountLabel').textContent = `${data.accountCount}개 계정 추적 중`;
     }
     document.getElementById('reelsGrid').innerHTML = data.items.map(renderCard).join('');
   } catch (e) {
@@ -621,10 +719,104 @@ function refresh() {
 }
 
 function updateCatUI() {
-  const meta = CATEGORIES[state.cat] || { label: state.cat, emoji: '🔍', hashtag: state.cat };
+  const meta = CATEGORIES[state.cat] || { label: state.cat, emoji: '🔍' };
   document.getElementById('sectionTitle').innerHTML = `${meta.label} <span>릴스</span>`;
   document.getElementById('catTag').textContent = `${meta.emoji} ${meta.label}`;
-  document.getElementById('hashtagLabel').textContent = `#${meta.hashtag}`;
+  document.getElementById('accountCountLabel').textContent = '계정 불러오는 중…';
+}
+
+// ── 어드민 모달 ──
+let adminPin = null;
+
+function openAdmin() {
+  document.getElementById('adminBackdrop').classList.add('open');
+  document.getElementById('pinInput').value = '';
+  document.getElementById('pinError').style.display = 'none';
+  if (adminPin) {
+    document.getElementById('pinSection').style.display = 'none';
+    document.getElementById('adminSection').style.display = 'block';
+    renderAdminAccounts();
+  } else {
+    document.getElementById('pinSection').style.display = 'block';
+    document.getElementById('adminSection').style.display = 'none';
+    setTimeout(() => document.getElementById('pinInput').focus(), 100);
+  }
+}
+
+function closeAdmin() {
+  document.getElementById('adminBackdrop').classList.remove('open');
+}
+
+function closeAdminIfBackdrop(e) {
+  if (e.target === document.getElementById('adminBackdrop')) closeAdmin();
+}
+
+async function verifyPin() {
+  const pin = document.getElementById('pinInput').value;
+  const res = await fetch(`/api/reels-manage?pin=${pin}&category=${state.cat}`);
+  if (res.status === 401) {
+    document.getElementById('pinError').style.display = 'block';
+    return;
+  }
+  adminPin = pin;
+  const data = await res.json();
+  document.getElementById('pinSection').style.display = 'none';
+  document.getElementById('adminSection').style.display = 'block';
+  renderAdminAccountsData(data.accounts || []);
+}
+
+async function renderAdminAccounts() {
+  const res = await fetch(`/api/reels-manage?pin=${adminPin}&category=${state.cat}`);
+  const data = await res.json();
+  renderAdminAccountsData(data.accounts || []);
+}
+
+function renderAdminAccountsData(accounts) {
+  const meta = CATEGORIES[state.cat] || { label: state.cat };
+  document.getElementById('adminCatLabel').textContent = `${meta.label} 계정 (${accounts.length}개)`;
+  document.getElementById('accountList').innerHTML = accounts.length === 0
+    ? '<p style="font-size:12px;color:var(--text-muted)">등록된 계정이 없습니다.</p>'
+    : accounts.map(u => `
+        <div class="account-row">
+          <span>@${u}</span>
+          <button class="btn-danger" onclick="removeAccount('${u}')">삭제</button>
+        </div>`).join('');
+  document.getElementById('accountCountLabel').textContent = `${accounts.length}개 계정 추적 중`;
+}
+
+async function addAccount() {
+  const username = document.getElementById('newUsername').value.replace(/^@/, '').trim();
+  if (!username) return;
+  const msg = document.getElementById('addMsg');
+  msg.textContent = '추가 중…';
+  msg.style.color = 'var(--text-muted)';
+  const res = await fetch('/api/reels-manage', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ pin: adminPin, category: state.cat, username }),
+  });
+  const data = await res.json();
+  if (res.ok) {
+    document.getElementById('newUsername').value = '';
+    msg.textContent = `@${username} 추가됨!`;
+    msg.style.color = '#059669';
+    renderAdminAccountsData(data.accounts);
+    loadReels();
+  } else {
+    msg.textContent = data.error || '오류 발생';
+    msg.style.color = '#DC2626';
+  }
+}
+
+async function removeAccount(username) {
+  const res = await fetch(`/api/reels-manage?pin=${adminPin}&category=${state.cat}&username=${username}`, {
+    method: 'DELETE',
+  });
+  const data = await res.json();
+  if (res.ok) {
+    renderAdminAccountsData(data.accounts);
+    loadReels();
+  }
 }
 
 // ── 초기 로드 ──
