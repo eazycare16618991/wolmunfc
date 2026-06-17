@@ -1,5 +1,6 @@
 const { kv } = require('@vercel/kv');
 const { DEFAULT_ACCOUNTS } = require('./reels-accounts');
+const { resolveUserId } = require('./reels-userinfo');
 
 const RAPIDAPI_KEY = process.env.RAPIDAPI_KEY;
 const RAPIDAPI_HOST = 'instagram-cheapest.p.rapidapi.com';
@@ -16,35 +17,45 @@ module.exports = async (req, res) => {
 
   if (!RAPIDAPI_KEY) {
     return res.status(500).json({
-      error: 'RAPIDAPI_KEY 환경변수가 없습니다. Vercel 대시보드 → Settings → Environment Variables에서 추가하세요.'
+      error: 'RAPIDAPI_KEY 환경변수가 없습니다. Vercel 대시보드에서 추가하세요.'
     });
   }
 
-  // KV에 저장된 계정 목록 로드 (신규 포맷: [{username, user_id}])
+  // KV 커스텀 계정 → 없으면 DEFAULT 사용
   let accounts;
   try { accounts = await kv.get(`reels_accounts_v2_${category}`); } catch (_) {}
   accounts = accounts ?? DEFAULT_ACCOUNTS[category] ?? [];
 
   if (accounts.length === 0) {
-    return res.json({
-      items: [],
-      total: 0,
-      accountCount: 0,
-      notice: `"${category}" 카테고리에 등록된 계정이 없습니다.`
-    });
+    return res.json({ items: [], total: 0, accountCount: 0,
+      notice: `"${category}" 카테고리에 등록된 계정이 없습니다.` });
+  }
+
+  // user_id 없는 계정 자동 resolve (병렬)
+  const resolved = await Promise.all(
+    accounts.map(async (acc) => {
+      if (acc.user_id) return acc;
+      const uid = await resolveUserId(acc.username ?? acc);
+      return uid ? { username: acc.username ?? acc, user_id: uid } : null;
+    })
+  );
+  const validAccounts = resolved.filter(Boolean);
+
+  if (validAccounts.length === 0) {
+    return res.json({ items: [], total: 0, accountCount: accounts.length,
+      notice: 'user_id를 조회할 수 없습니다. userinfo 엔드포인트를 확인해주세요.' });
   }
 
   // 2시간 캐시
-  const timeBucket = Math.floor(Date.now() / (CACHE_TTL * 1000));
-  const cacheKey = `reels_v2_${category}_${timeBucket}`;
+  const bucket = Math.floor(Date.now() / (CACHE_TTL * 1000));
+  const cacheKey = `reels_v2_${category}_${bucket}`;
 
   let rawItems;
   try { rawItems = await kv.get(cacheKey); } catch (_) {}
 
   if (!rawItems) {
-    // 계정별 릴스 병렬 조회 (user_id 기준)
     const results = await Promise.allSettled(
-      accounts.map(acc => fetchUserReels(acc.user_id ?? acc, acc.username ?? acc))
+      validAccounts.map(acc => fetchUserReels(acc.user_id, acc.username))
     );
 
     rawItems = [];
@@ -64,10 +75,10 @@ module.exports = async (req, res) => {
   }
 
   const result = applyFilter(rawItems, parseInt(period, 10), sort);
-  return res.json({ ...result, accountCount: accounts.length });
+  return res.json({ ...result, accountCount: validAccounts.length });
 };
 
-async function fetchUserReels(user_id, fallbackUsername) {
+async function fetchUserReels(user_id, username) {
   const url = `${BASE_URL}/user_reels?user_id=${encodeURIComponent(user_id)}`;
   const apiRes = await fetch(url, {
     headers: {
@@ -75,9 +86,9 @@ async function fetchUserReels(user_id, fallbackUsername) {
       'X-RapidAPI-Host': RAPIDAPI_HOST,
     },
   });
-  if (!apiRes.ok) throw new Error(`${fallbackUsername} (${user_id}) 조회 실패: ${apiRes.status}`);
+  if (!apiRes.ok) throw new Error(`${username} 조회 실패: ${apiRes.status}`);
   const data = await apiRes.json();
-  return extractItems(data, fallbackUsername);
+  return extractItems(data, username);
 }
 
 function extractItems(data, fallbackUsername) {
@@ -93,13 +104,10 @@ function extractItems(data, fallbackUsername) {
       commentCount: item.comment_count ?? 0,
       thumbnail:
         item.image_versions2?.candidates?.[0]?.url ??
-        item.thumbnail_url ??
-        item.display_url ??
-        '',
+        item.thumbnail_url ?? item.display_url ?? '',
       caption:
         item.caption?.text ??
-        item.edge_media_to_caption?.edges?.[0]?.node?.text ??
-        '',
+        item.edge_media_to_caption?.edges?.[0]?.node?.text ?? '',
       username: item.user?.username ?? item.owner?.username ?? fallbackUsername,
       fullName: item.user?.full_name ?? item.owner?.full_name ?? '',
       profilePic: item.user?.profile_pic_url ?? item.owner?.profile_pic_url ?? '',
