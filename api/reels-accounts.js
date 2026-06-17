@@ -93,6 +93,14 @@ const DEFAULT_ACCOUNTS = {
     { username: 'samsung' },            // 삼성 (공식)
     { username: 'apple' },              // 애플 (공식)
   ],
+  cleaning: [
+    { username: 'cleanwithme' },        // 청소 브이로그 계정
+    { username: 'mrclean' },            // Mr. Clean 공식 (P&G)
+    { username: 'lysol' },              // 라이솔 공식 (소독 브랜드)
+    { username: 'method' },             // Method 세제 브랜드
+    { username: 'mariekondo' },         // 마리 콘도 (정리 정돈)
+    { username: 'cleaningmotivation' }, // 청소 동기부여 계정
+  ],
   storytime: [
     { username: 'natgeo' },             // 내셔널지오그래픽
     { username: 'bbcnews' },            // BBC 뉴스
