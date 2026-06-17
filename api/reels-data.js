@@ -1,11 +1,15 @@
 const { kv } = require('@vercel/kv');
 const { DEFAULT_ACCOUNTS } = require('./reels-accounts');
-const { resolveUserId } = require('./reels-userinfo');
 
 const RAPIDAPI_KEY = process.env.RAPIDAPI_KEY;
 const RAPIDAPI_HOST = 'instagram-cheapest.p.rapidapi.com';
 const BASE_URL = `https://${RAPIDAPI_HOST}/api/v1/instagram`;
 const CACHE_TTL = 2 * 60 * 60; // 2시간
+
+const API_HEADERS = {
+  'X-RapidAPI-Key': RAPIDAPI_KEY,
+  'X-RapidAPI-Host': RAPIDAPI_HOST,
+};
 
 module.exports = async (req, res) => {
   res.setHeader('Access-Control-Allow-Origin', '*');
@@ -31,31 +35,18 @@ module.exports = async (req, res) => {
       notice: `"${category}" 카테고리에 등록된 계정이 없습니다.` });
   }
 
-  // user_id 없는 계정 자동 resolve (병렬)
-  const resolved = await Promise.all(
-    accounts.map(async (acc) => {
-      if (acc.user_id) return acc;
-      const uid = await resolveUserId(acc.username ?? acc);
-      return uid ? { username: acc.username ?? acc, user_id: uid } : null;
-    })
-  );
-  const validAccounts = resolved.filter(Boolean);
-
-  if (validAccounts.length === 0) {
-    return res.json({ items: [], total: 0, accountCount: accounts.length,
-      notice: 'user_id를 조회할 수 없습니다. userinfo 엔드포인트를 확인해주세요.' });
-  }
+  const usernames = accounts.map(a => a.username ?? a).filter(Boolean);
 
   // 2시간 캐시
   const bucket = Math.floor(Date.now() / (CACHE_TTL * 1000));
-  const cacheKey = `reels_v3_${category}_${bucket}`;
+  const cacheKey = `reels_v4_${category}_${bucket}`;
 
   let rawItems;
   try { rawItems = await kv.get(cacheKey); } catch (_) {}
 
   if (!rawItems) {
     const results = await Promise.allSettled(
-      validAccounts.map(acc => fetchUserReels(acc.user_id, acc.username))
+      usernames.map(username => fetchUserMedias(username))
     );
 
     rawItems = [];
@@ -75,24 +66,21 @@ module.exports = async (req, res) => {
   }
 
   const result = applyFilter(rawItems, parseInt(period, 10), sort);
-  return res.json({ ...result, accountCount: validAccounts.length });
+  return res.json({ ...result, accountCount: usernames.length });
 };
 
-async function fetchUserReels(user_id, username) {
-  const url = `${BASE_URL}/user_reels?user_id=${encodeURIComponent(user_id)}`;
-  const apiRes = await fetch(url, {
-    headers: {
-      'X-RapidAPI-Key': RAPIDAPI_KEY,
-      'X-RapidAPI-Host': RAPIDAPI_HOST,
-    },
-  });
-  if (!apiRes.ok) throw new Error(`${username} 조회 실패: ${apiRes.status}`);
+// user_medias로 username 직접 조회 (user_id 불필요)
+async function fetchUserMedias(username) {
+  const url = `${BASE_URL}/user_medias?username_or_id_or_url=${encodeURIComponent(username)}&count=24`;
+  const apiRes = await fetch(url, { headers: API_HEADERS });
+  if (!apiRes.ok) throw new Error(`${username}: ${apiRes.status}`);
   const data = await apiRes.json();
   return extractItems(data, username);
 }
 
 function extractItems(data, fallbackUsername) {
-  // user_reels 실제 응답 구조: data.xdt_api__v1__clips__user__connection_v2.edges[].node.media
+  // user_medias: data.items[]
+  // user_reels:  data.xdt_api__v1__clips__user__connection_v2.edges[].node.media
   const edges = data?.data?.xdt_api__v1__clips__user__connection_v2?.edges ?? [];
   const raw = edges.length > 0
     ? edges.map(e => e?.node?.media).filter(Boolean)
