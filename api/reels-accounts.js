@@ -94,12 +94,14 @@ const DEFAULT_ACCOUNTS = {
     { username: 'apple' },              // 애플 (공식)
   ],
   cleaning: [
-    { username: 'cleanwithme' },        // 청소 브이로그 계정
-    { username: 'mrclean' },            // Mr. Clean 공식 (P&G)
-    { username: 'lysol' },              // 라이솔 공식 (소독 브랜드)
-    { username: 'method' },             // Method 세제 브랜드
-    { username: 'mariekondo' },         // 마리 콘도 (정리 정돈)
-    { username: 'cleaningmotivation' }, // 청소 동기부여 계정
+    { username: 'mariekondo' },         // 마리 콘도 (4.1M, 정리정돈)
+    { username: 'mrshinchhome' },       // Mrs. Hinch (4.2M, 영국 청소 인플루언서)
+    { username: 'thehomeedit' },        // The Home Edit (5.7M, 정리수납)
+    { username: 'scrubdaddy' },         // 스크럽 대디 (청소용품 브랜드)
+    { username: 'clean_bros_kr' },      // 청소 브로스 (한국)
+    { username: 'cleaningbros' },       // 청소 브로스
+    { username: 'housekeeper_clean' },  // 한국 청소 계정
+    { username: 'sodasoda_clean' },     // 소다소다 (한국 청소)
   ],
   storytime: [
     { username: 'natgeo' },             // 내셔널지오그래픽
