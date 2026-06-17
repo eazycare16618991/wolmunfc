@@ -637,14 +637,15 @@ function renderError(msg) {
 
 function renderEmpty(notice) {
   const isNoAccounts = notice && notice.includes('등록된 계정이 없습니다');
+  const isUidFail = notice && notice.includes('user_id');
+  let icon = '🔍', title = '해당 기간에 결과가 없어요', desc = '"전체" 탭을 눌러서 기간 제한 없이 조회해보세요.';
+  if (isNoAccounts) { icon = '📋'; title = '추적 계정이 없어요'; desc = '⚙️ 설정 버튼을 눌러 계정을 추가해주세요.'; }
+  if (isUidFail)   { icon = '⚠️'; title = 'user_id 조회 실패'; desc = 'userinfo API 엔드포인트를 찾지 못했어요.<br><code style="font-size:11px;background:#f4f4f4;padding:2px 6px;border-radius:4px">/api/reels-debug?pin=PIN&username=paik_jk</code><br>에 접속해서 작동하는 URL을 확인해주세요.'; }
   document.getElementById('reelsGrid').innerHTML = `
     <div class="state-box">
-      <div class="icon">${isNoAccounts ? '📋' : '🔍'}</div>
-      <h3>${isNoAccounts ? '추적 계정이 없어요' : '해당 기간에 결과가 없어요'}</h3>
-      <p>${isNoAccounts
-        ? `⚙️ 우측 상단 <b>설정 버튼</b>을 눌러 이 카테고리에 인스타그램 계정을 추가해주세요.`
-        : '조회 기간을 늘리거나 다른 카테고리를 선택해보세요.'
-      }</p>
+      <div class="icon">${icon}</div>
+      <h3>${title}</h3>
+      <p>${desc}</p>
     </div>`;
 }
 
