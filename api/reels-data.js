@@ -2,14 +2,9 @@ const { kv } = require('@vercel/kv');
 const { DEFAULT_ACCOUNTS } = require('./reels-accounts');
 
 const RAPIDAPI_KEY = process.env.RAPIDAPI_KEY;
-const RAPIDAPI_HOST = 'instagram-cheapest.p.rapidapi.com';
-const BASE_URL = `https://${RAPIDAPI_HOST}/api/v1/instagram`;
-const CACHE_TTL = 2 * 60 * 60; // 2시간
-
-const API_HEADERS = {
-  'X-RapidAPI-Key': RAPIDAPI_KEY,
-  'X-RapidAPI-Host': RAPIDAPI_HOST,
-};
+const RAPIDAPI_HOST = 'instagram120.p.rapidapi.com';
+const REELS_API_URL = `https://${RAPIDAPI_HOST}/api/instagram/reels`;
+const CACHE_TTL = 24 * 60 * 60; // 24시간 (무료 1,000 req/월 절약)
 
 module.exports = async (req, res) => {
   res.setHeader('Access-Control-Allow-Origin', '*');
@@ -20,12 +15,9 @@ module.exports = async (req, res) => {
   const { category = 'food', period = '30', sort = 'views' } = req.query;
 
   if (!RAPIDAPI_KEY) {
-    return res.status(500).json({
-      error: 'RAPIDAPI_KEY 환경변수가 없습니다. Vercel 대시보드에서 추가하세요.'
-    });
+    return res.status(500).json({ error: 'RAPIDAPI_KEY 환경변수가 없습니다.' });
   }
 
-  // KV 커스텀 계정 → 없으면 DEFAULT 사용
   let accounts;
   try { accounts = await kv.get(`reels_accounts_v2_${category}`); } catch (_) {}
   accounts = accounts ?? DEFAULT_ACCOUNTS[category] ?? [];
@@ -37,16 +29,16 @@ module.exports = async (req, res) => {
 
   const usernames = accounts.map(a => a.username ?? a).filter(Boolean);
 
-  // 2시간 캐시
+  // 24시간 캐시
   const bucket = Math.floor(Date.now() / (CACHE_TTL * 1000));
-  const cacheKey = `reels_v4_${category}_${bucket}`;
+  const cacheKey = `reels_v5_${category}_${bucket}`;
 
   let rawItems;
   try { rawItems = await kv.get(cacheKey); } catch (_) {}
 
   if (!rawItems) {
     const results = await Promise.allSettled(
-      usernames.map(username => fetchUserMedias(username))
+      usernames.map(username => fetchUserReels(username))
     );
 
     rawItems = [];
@@ -54,7 +46,6 @@ module.exports = async (req, res) => {
       if (r.status === 'fulfilled') rawItems.push(...r.value);
     }
 
-    // 중복 제거
     const seen = new Set();
     rawItems = rawItems.filter(item => {
       if (seen.has(item.id)) return false;
@@ -69,47 +60,54 @@ module.exports = async (req, res) => {
   return res.json({ ...result, accountCount: usernames.length });
 };
 
-// user_medias로 username 직접 조회 (user_id 불필요)
-async function fetchUserMedias(username) {
-  const url = `${BASE_URL}/user_medias?username_or_id_or_url=${encodeURIComponent(username)}&count=24`;
-  const apiRes = await fetch(url, { headers: API_HEADERS });
+async function fetchUserReels(username) {
+  const apiRes = await fetch(REELS_API_URL, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'X-RapidAPI-Key': RAPIDAPI_KEY,
+      'X-RapidAPI-Host': RAPIDAPI_HOST,
+    },
+    body: JSON.stringify({ username, maxId: '' }),
+  });
   if (!apiRes.ok) throw new Error(`${username}: ${apiRes.status}`);
   const data = await apiRes.json();
   return extractItems(data, username);
 }
 
 function extractItems(data, fallbackUsername) {
-  // user_medias: data.items[]
-  // user_reels:  data.xdt_api__v1__clips__user__connection_v2.edges[].node.media
-  const edges = data?.data?.xdt_api__v1__clips__user__connection_v2?.edges ?? [];
-  const raw = edges.length > 0
-    ? edges.map(e => e?.node?.media).filter(Boolean)
-    : (data?.data?.items ?? data?.items ?? []);
+  // instagram120 응답: result.edges[].node.media
+  const edges = data?.result?.edges ?? [];
+  const raw = edges.map(e => e?.node?.media).filter(Boolean);
 
   return raw
-    .filter(item => item.media_type === 2 || item.product_type === 'clips' || item.is_video === true || item.video_url)
-    .map(item => ({
-      id: String(item.id ?? item.pk ?? Math.random()),
-      shortcode: item.code ?? item.shortcode ?? '',
-      takenAt: item.taken_at ?? 0,
-      viewCount: item.play_count ?? item.video_view_count ?? item.view_count ?? 0,
-      likeCount: item.like_count ?? 0,
-      commentCount: item.comment_count ?? 0,
-      thumbnail:
-        item.image_versions2?.candidates?.[0]?.url ??
-        item.thumbnail_url ?? item.display_url ?? '',
-      caption:
-        item.caption?.text ??
-        item.edge_media_to_caption?.edges?.[0]?.node?.text ?? '',
-      username: item.user?.username ?? item.owner?.username ?? fallbackUsername,
-      fullName: item.user?.full_name ?? item.owner?.full_name ?? '',
-      profilePic: item.user?.profile_pic_url ?? item.owner?.profile_pic_url ?? '',
-    }));
+    .filter(item => item.media_type === 2 || item.product_type === 'clips')
+    .map(item => {
+      // Instagram pk에서 게시일시 추출 (pk >> 23 + 1314220021 = Unix timestamp)
+      let takenAt = 0;
+      try { takenAt = Number(BigInt(String(item.pk)) >> 23n) + 1314220021; } catch (_) {}
+
+      return {
+        id: String(item.id ?? item.pk ?? Math.random()),
+        shortcode: item.code ?? item.shortcode ?? '',
+        takenAt,
+        viewCount: item.play_count ?? item.video_view_count ?? 0,
+        likeCount: item.like_count ?? 0,
+        commentCount: item.comment_count ?? 0,
+        thumbnail: item.image_versions2?.candidates?.[0]?.url ?? '',
+        caption: item.caption?.text ?? '',
+        username: item.user?.username ?? fallbackUsername,
+        fullName: item.user?.full_name ?? '',
+        profilePic: item.user?.profile_pic_url ?? '',
+      };
+    });
 }
 
 function applyFilter(items, periodDays, sort) {
   const cutoff = periodDays > 0 ? Date.now() / 1000 - periodDays * 86400 : 0;
-  let list = periodDays > 0 ? items.filter(i => i.takenAt >= cutoff) : [...items];
+  let list = periodDays > 0
+    ? items.filter(i => i.takenAt > 0 && i.takenAt >= cutoff)
+    : [...items];
   list.sort((a, b) => sort === 'views' ? b.viewCount - a.viewCount : b.takenAt - a.takenAt);
   return { items: list.slice(0, 24), total: list.length };
 }
