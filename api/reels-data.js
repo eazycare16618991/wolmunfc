@@ -48,7 +48,7 @@ module.exports = async (req, res) => {
 
   // 2시간 캐시
   const bucket = Math.floor(Date.now() / (CACHE_TTL * 1000));
-  const cacheKey = `reels_v2_${category}_${bucket}`;
+  const cacheKey = `reels_v3_${category}_${bucket}`;
 
   let rawItems;
   try { rawItems = await kv.get(cacheKey); } catch (_) {}
@@ -92,14 +92,19 @@ async function fetchUserReels(user_id, username) {
 }
 
 function extractItems(data, fallbackUsername) {
-  const raw = data?.data?.items ?? data?.items ?? [];
+  // user_reels 실제 응답 구조: data.xdt_api__v1__clips__user__connection_v2.edges[].node.media
+  const edges = data?.data?.xdt_api__v1__clips__user__connection_v2?.edges ?? [];
+  const raw = edges.length > 0
+    ? edges.map(e => e?.node?.media).filter(Boolean)
+    : (data?.data?.items ?? data?.items ?? []);
+
   return raw
-    .filter(item => item.media_type === 2 || item.is_video === true || item.video_url)
+    .filter(item => item.media_type === 2 || item.product_type === 'clips' || item.is_video === true || item.video_url)
     .map(item => ({
       id: String(item.id ?? item.pk ?? Math.random()),
       shortcode: item.code ?? item.shortcode ?? '',
       takenAt: item.taken_at ?? 0,
-      viewCount: item.video_view_count ?? item.play_count ?? item.view_count ?? 0,
+      viewCount: item.play_count ?? item.video_view_count ?? item.view_count ?? 0,
       likeCount: item.like_count ?? 0,
       commentCount: item.comment_count ?? 0,
       thumbnail:

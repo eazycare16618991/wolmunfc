@@ -63,6 +63,6 @@ module.exports = async (req, res) => {
 function clearCache(category) {
   try {
     const bucket = Math.floor(Date.now() / (2 * 60 * 60 * 1000));
-    kv.del(`reels_v2_${category}_${bucket}`).catch(() => {});
+    kv.del(`reels_v3_${category}_${bucket}`).catch(() => {});
   } catch (_) {}
 }
