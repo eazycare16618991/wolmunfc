@@ -83,9 +83,21 @@ function extractItems(data, fallbackUsername) {
   return raw
     .filter(item => item.media_type === 2 || item.product_type === 'clips')
     .map(item => {
-      // Instagram pk에서 게시일시 추출 (pk >> 23 + 1314220021 = Unix timestamp)
       let takenAt = 0;
-      try { takenAt = Number(BigInt(String(item.pk)) >> 23n) + 1314220021; } catch (_) {}
+      if (item.taken_at > 0) {
+        takenAt = item.taken_at;
+      } else {
+        try {
+          const pk = BigInt(String(item.pk).replace(/\D/g, ''));
+          const now = Math.floor(Date.now() / 1000);
+          // 새 Instagram ID(~62비트): 상위 31비트가 Unix seconds 직접 표현
+          const ts31 = Number(pk >> 31n);
+          // 구 Instagram ID: >> 23 + Instagram epoch
+          const ts23 = Number(pk >> 23n) + 1314220021;
+          if (ts31 > 1300000000 && ts31 <= now + 86400) takenAt = ts31;
+          else if (ts23 > 1300000000 && ts23 <= now + 86400) takenAt = ts23;
+        } catch (_) {}
+      }
 
       return {
         id: String(item.id ?? item.pk ?? Math.random()),
