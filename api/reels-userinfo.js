@@ -24,14 +24,10 @@ async function resolveUserId(username) {
     if (cached) return String(cached);
   } catch (_) {}
 
-  // userinfo 엔드포인트 여러 URL 패턴 시도
+  // userinfo 엔드포인트 — 올바른 URL: /user/{username} (경로 파라미터)
   const patterns = [
-    `${BASE}/userinfo?username_or_id_or_url=${encodeURIComponent(username)}`,
-    `${BASE}/userinfo?username=${encodeURIComponent(username)}`,
-    `${BASE}/userinfo?user_id=${encodeURIComponent(username)}`,
-    `${BASE}/user_info?username=${encodeURIComponent(username)}`,
-    `${BASE}/userinfo/${encodeURIComponent(username)}`,
-    // user_medias로 폴백 (응답에서 user.id 추출)
+    `${BASE}/user/${encodeURIComponent(username)}`,
+    // 폴백: user_medias로 user.id 추출
     `${BASE}/user_medias?username_or_id_or_url=${encodeURIComponent(username)}&count=1`,
     `${BASE}/user_medias?username=${encodeURIComponent(username)}&count=1`,
   ];

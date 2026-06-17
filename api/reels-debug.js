@@ -20,20 +20,12 @@ module.exports = async (req, res) => {
     'Content-Type': 'application/json',
   };
 
-  const BASE = `https://${RAPIDAPI_HOST}`;
+  const BASE = `https://${RAPIDAPI_HOST}/api/v1/instagram`;
   const patterns = [
-    `${BASE}/api/v1/instagram/userinfo?username_or_id_or_url=${username}`,
-    `${BASE}/api/v1/instagram/userinfo?username=${username}`,
-    `${BASE}/api/v1/instagram/user_info?username=${username}`,
-    `${BASE}/api/v1/instagram/userinfo?user=${username}`,
-    `${BASE}/api/v1/instagram/userinfo/${username}`,
-    `${BASE}/api/v1/userinfo?username=${username}`,
-    `${BASE}/api/v1/instagram/user_medias?username_or_id_or_url=${username}&count=1`,
-    `${BASE}/api/v1/instagram/user_medias?username=${username}&count=1`,
-    `${BASE}/api/v1/instagram/users?username=${username}`,
-    `${BASE}/api/v1/instagram/account?username=${username}`,
-    `${BASE}/api/v1/instagram/profile?username=${username}`,
-    `${BASE}/api/v1/instagram/get_user?username=${username}`,
+    `${BASE}/user/${username}`,
+    `${BASE}/user_medias?username_or_id_or_url=${username}&count=1`,
+    `${BASE}/user_medias?username=${username}&count=1`,
+    `${BASE}/user_reels?username=${username}&count=1`,
   ];
 
   const results = [];
