@@ -98,10 +98,7 @@ const DEFAULT_ACCOUNTS = {
     { username: 'mrshinchhome' },       // Mrs. Hinch (4.2M, 영국 청소 인플루언서)
     { username: 'thehomeedit' },        // The Home Edit (5.7M, 정리수납)
     { username: 'scrubdaddy' },         // 스크럽 대디 (청소용품 브랜드)
-    { username: 'clean_bros_kr' },      // 청소 브로스 (한국)
-    { username: 'cleaningbros' },       // 청소 브로스
-    { username: 'housekeeper_clean' },  // 한국 청소 계정
-    { username: 'sodasoda_clean' },     // 소다소다 (한국 청소)
+    { username: 'bros_works' },          // 브로스웍스 (한국 청소)
   ],
   storytime: [
     { username: 'natgeo' },             // 내셔널지오그래픽
