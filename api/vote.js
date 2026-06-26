@@ -10,7 +10,7 @@ module.exports = async (req, res) => {
   const idx = Number(candidate);
   const voterName = typeof name === 'string' ? name.trim() : '';
 
-  if (![0, 1, 2].includes(idx) || !voterName) {
+  if (![0, 1].includes(idx) || !voterName) {
     res.status(400).json({ error: 'invalid request' });
     return;
   }

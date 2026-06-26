@@ -9,7 +9,7 @@ module.exports = async (req, res) => {
   const idx = Number(req.query.candidate);
   const name = typeof req.query.name === 'string' ? req.query.name.trim() : '';
 
-  if (![0, 1, 2].includes(idx) || !name) {
+  if (![0, 1].includes(idx) || !name) {
     res.status(400).json({ error: 'invalid request' });
     return;
   }

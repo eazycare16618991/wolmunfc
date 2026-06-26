@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>리그 MVP 투표 · 월문FC</title>
+  <title>컨테이너 유지보수 찬반투표 · 월문FC</title>
   <style>
     :root {
       --primary: #2bbfbf;
@@ -36,7 +36,7 @@
       font-size: 11px; letter-spacing: 2px; font-weight: 700;
       opacity: 0.75; margin-bottom: 6px;
     }
-    .vote-header h1 { font-size: 24px; font-weight: 900; margin-bottom: 6px; }
+    .vote-header h1 { font-size: 22px; font-weight: 900; margin-bottom: 6px; }
     .vote-header p { font-size: 13px; opacity: 0.85; }
 
     /* 상태 배너 */
@@ -83,15 +83,13 @@
     .candidate-info { flex: 1; }
     .candidate-name { font-size: 20px; font-weight: 900; }
     .candidate-team { font-size: 12px; color: var(--muted); margin-top: 2px; }
-    .candidate-photo-wrap {
+    .vote-emoji {
       width: 56px; height: 56px; border-radius: 50%; flex-shrink: 0;
-      border: 2px solid var(--border); overflow: hidden;
+      border: 2px solid var(--border); background: var(--bg);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 26px;
     }
-    .selected .candidate-photo-wrap { border-color: var(--primary); }
-    .candidate-photo {
-      width: 100%; height: 100%; object-fit: cover;
-      object-position: center center;
-    }
+    .selected .vote-emoji { border-color: var(--primary); }
 
     /* 결과 바 */
     .result-wrap { display: none; }
@@ -161,7 +159,7 @@
 <div class="vote-header">
   <a href="index.html" class="back">← 홈으로</a>
   <div class="tag">VOTE</div>
-  <h1>🌟 리그 MVP 투표</h1>
+  <h1>🔧 컨테이너 유지보수 찬반투표</h1>
   <p>2026 월문FC · 이름 확인 후 1인 1표</p>
 </div>
 
@@ -173,10 +171,10 @@
     <div class="card-top">
       <div class="candidate-num">1</div>
       <div class="candidate-info">
-        <div class="candidate-name">강기빈</div>
-        <div class="candidate-team">탱크로 밀어붙이는 강력한 공격본능</div>
+        <div class="candidate-name">보수 찬성</div>
+        <div class="candidate-team">컨테이너 유지보수를 진행합니다</div>
       </div>
-      <div class="candidate-photo-wrap"><img src="IMG_3456.jpeg" class="candidate-photo" alt="강기빈" /></div>
+      <div class="vote-emoji">✅</div>
     </div>
     <div class="result-wrap" id="result-0">
       <div class="result-label"><span>득표</span><span><strong id="cnt-0">0</strong>표 (<span id="pct-0">0%</span>)</span></div>
@@ -188,29 +186,14 @@
     <div class="card-top">
       <div class="candidate-num">2</div>
       <div class="candidate-info">
-        <div class="candidate-name">김태향</div>
-        <div class="candidate-team">활발한 운동량 공수 멀티플레이어</div>
+        <div class="candidate-name">보수 반대</div>
+        <div class="candidate-team">컨테이너 유지보수를 진행하지 않습니다</div>
       </div>
-      <div class="candidate-photo-wrap"><img src="IMG_3350_face.jpg" class="candidate-photo" alt="김태향" /></div>
+      <div class="vote-emoji">❌</div>
     </div>
     <div class="result-wrap" id="result-1">
       <div class="result-label"><span>득표</span><span><strong id="cnt-1">0</strong>표 (<span id="pct-1">0%</span>)</span></div>
       <div class="result-bar-bg"><div class="result-bar" id="bar-1" style="width:0%"></div></div>
-    </div>
-  </div>
-
-  <div class="candidate-card" id="card-2" onclick="selectCandidate(2)">
-    <div class="card-top">
-      <div class="candidate-num">3</div>
-      <div class="candidate-info">
-        <div class="candidate-name">박상현</div>
-        <div class="candidate-team">환상적인 골키핑능력 중원의 지휘자</div>
-      </div>
-      <div class="candidate-photo-wrap"><img src="IMG_3455_face.jpg" class="candidate-photo" alt="박상현" /></div>
-    </div>
-    <div class="result-wrap" id="result-2">
-      <div class="result-label"><span>득표</span><span><strong id="cnt-2">0</strong>표 (<span id="pct-2">0%</span>)</span></div>
-      <div class="result-bar-bg"><div class="result-bar" id="bar-2" style="width:0%"></div></div>
     </div>
   </div>
 
@@ -221,7 +204,7 @@
     <label for="voterName" class="voter-label">투표자 이름</label>
     <input type="text" id="voterName" class="voter-input" placeholder="이름을 입력하세요" oninput="checkReady()">
   </div>
-  <button class="vote-btn" id="voteBtn" disabled onclick="submitVote()">후보를 선택해주세요</button>
+  <button class="vote-btn" id="voteBtn" disabled onclick="submitVote()">항목을 선택해주세요</button>
   <p class="vote-hint" id="voteHint">한 사람당 한 번만 투표할 수 있습니다</p>
   <div class="total-votes" id="totalVotes" style="display:none"></div>
   <div class="voter-list" id="voterList" style="display:none"></div>
@@ -231,7 +214,7 @@
 </div>
 
 <script>
-  const STORAGE_KEY = 'wolmun_mvp_vote_v2';
+  const STORAGE_KEY = 'wolmun_maintenance_vote_v1';
   if (location.search.indexOf('reset=1') !== -1) {
     localStorage.removeItem(STORAGE_KEY);
     history.replaceState(null, '', location.pathname);
@@ -257,7 +240,7 @@
       btn.textContent = '투표하기 ✓';
     } else {
       btn.disabled = true;
-      btn.textContent = selected === -1 ? '후보를 선택해주세요' : '이름을 입력해주세요';
+      btn.textContent = selected === -1 ? '항목을 선택해주세요' : '이름을 입력해주세요';
     }
   }
 
@@ -339,7 +322,7 @@
     const names = document.querySelectorAll('.candidate-name');
     const listEl = document.getElementById('voterList');
     listEl.innerHTML = voters.map((list, i) => {
-      const label = names[i] ? names[i].textContent : ('후보 ' + (i + 1));
+      const label = names[i] ? names[i].textContent : ('항목 ' + (i + 1));
       const value = list.length > 0 ? list.join(', ') : '-';
       return '<div class="voter-row"><b>' + label + '</b><span>: ' + value + '</span></div>';
     }).join('');
@@ -369,16 +352,16 @@
   async function removeVote() {
     const pin = prompt('집계자 PIN을 입력하세요');
     if (pin === null) return;
-    const num = prompt('삭제할 투표의 후보 번호를 입력하세요 (1, 2, 3)');
+    const num = prompt('삭제할 투표의 항목 번호를 입력하세요 (1, 2)');
     if (num === null) return;
     const idx = parseInt(num, 10) - 1;
-    if (![0, 1, 2].includes(idx)) {
-      alert('1~3 사이의 번호를 입력해주세요.');
+    if (![0, 1].includes(idx)) {
+      alert('1~2 사이의 번호를 입력해주세요.');
       return;
     }
     const name = prompt('삭제할 투표자 이름을 입력하세요');
     if (name === null || !name.trim()) return;
-    if (!confirm(name.trim() + '님의 ' + (idx + 1) + '번 후보 투표를 삭제할까요?')) return;
+    if (!confirm(name.trim() + '님의 ' + (idx + 1) + '번 항목 투표를 삭제할까요?')) return;
     try {
       const url = '/api/remove-vote?pin=' + encodeURIComponent(pin) +
         '&candidate=' + idx + '&name=' + encodeURIComponent(name.trim());

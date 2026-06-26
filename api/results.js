@@ -8,7 +8,7 @@ module.exports = async (req, res) => {
 
   const votes = [];
   const voters = [];
-  for (let i = 0; i < 3; i++) {
+  for (let i = 0; i < 2; i++) {
     votes.push(Number(await kv.get('wm_mvp_count_' + i)) || 0);
     voters.push(await kv.lrange('wm_mvp_voters_' + i, 0, -1));
   }
