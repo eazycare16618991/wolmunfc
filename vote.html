@@ -38,6 +38,18 @@
     }
     .vote-header h1 { font-size: 22px; font-weight: 900; margin-bottom: 6px; }
     .vote-header p { font-size: 13px; opacity: 0.85; }
+    .progress-wrap {
+      margin-top: 14px; background: rgba(255,255,255,0.2);
+      border-radius: 99px; height: 8px; overflow: hidden;
+    }
+    .progress-bar {
+      height: 100%; border-radius: 99px;
+      background: #fff; transition: width 0.6s ease;
+      width: 0%;
+    }
+    .progress-text {
+      font-size: 12px; opacity: 0.9; margin-top: 6px;
+    }
 
     /* 상태 배너 */
     .status-banner {
@@ -161,6 +173,8 @@
   <div class="tag">VOTE</div>
   <h1>🔧 컨테이너 유지보수 찬반익명투표</h1>
   <p>2026 월문FC · 이름 확인 후 1인 1표</p>
+  <div class="progress-wrap"><div class="progress-bar" id="progressBar"></div></div>
+  <div class="progress-text" id="progressText">투표 현황 불러오는 중...</div>
 </div>
 
 <div class="status-banner" id="statusBanner"></div>
@@ -215,6 +229,21 @@
 </div>
 
 <script>
+  const TOTAL_MEMBERS = 36;
+
+  async function loadProgress() {
+    try {
+      const res = await fetch('/api/count');
+      if (!res.ok) return;
+      const { count } = await res.json();
+      const pct = Math.round(count / TOTAL_MEMBERS * 100);
+      document.getElementById('progressBar').style.width = pct + '%';
+      document.getElementById('progressText').textContent =
+        '투표 진행 현황: ' + TOTAL_MEMBERS + '명 중 ' + count + '명 완료 (' + pct + '%)';
+    } catch (e) {}
+  }
+  loadProgress();
+
   const STORAGE_KEY = 'wolmun_maintenance_vote_v1';
   if (location.search.indexOf('reset=1') !== -1) {
     localStorage.removeItem(STORAGE_KEY);
@@ -270,6 +299,7 @@
       localStorage.setItem(STORAGE_KEY, String(selected));
       myVote = String(selected);
       markVoted();
+      loadProgress();
     } catch (e) {
       alert('네트워크 오류가 발생했습니다. 다시 시도해주세요.');
       checkReady();
