@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>야유회·컨테이너 납부 현황 · 월문FC</title>
+  <title>야유회 납부 현황 · 월문FC</title>
   <style>
     :root {
       --primary: #2bbfbf;
@@ -54,7 +54,7 @@
       box-shadow: 0 2px 16px rgba(0,0,0,0.07);
       overflow-x: auto;
     }
-    table { width: 100%; border-collapse: collapse; min-width: 720px; }
+    table { width: 100%; border-collapse: collapse; min-width: 480px; }
     thead tr { background: var(--primary); }
     thead th {
       color: #fff; padding: 11px 10px; font-size: 12px;
@@ -109,18 +109,14 @@
 <div class="page-header">
   <a href="index.html">← 홈으로</a>
   <div class="tag">PAYMENT</div>
-  <h1>💰 야유회·컨테이너 납부 현황</h1>
+  <h1>💰 야유회 납부 현황</h1>
   <p>2026 월문FC · 항목 탭으로 상태 변경</p>
 </div>
 
 <div class="fee-info">
   <div class="fee-badge">
     <div class="label">🏕️ 야유회비</div>
-    <div class="amount">30,000원</div>
-  </div>
-  <div class="fee-badge">
-    <div class="label">🔧 컨테이너수리비</div>
-    <div class="amount">10,000원</div>
+    <div class="amount">미정</div>
   </div>
 </div>
 
@@ -150,10 +146,8 @@
         <th onclick="sortBy(0)">회원명</th>
         <th onclick="sortBy(1)">야유회</th>
         <th onclick="sortBy(2)">야유회비</th>
-        <th onclick="sortBy(3)">컨테이너비</th>
-        <th onclick="sortBy(4)">합계</th>
-        <th onclick="sortBy(5)">납부액</th>
-        <th onclick="sortBy(6)">납부</th>
+        <th onclick="sortBy(3)">납부액</th>
+        <th onclick="sortBy(4)">납부</th>
       </tr>
     </thead>
     <tbody id="payBody"></tbody>
@@ -162,8 +156,6 @@
         <td>소 계</td>
         <td id="sub-join"></td>
         <td id="sub-outing" class="amount"></td>
-        <td id="sub-container" class="amount"></td>
-        <td id="sub-total" class="amount total-col"></td>
         <td id="sub-amt" class="amount" style="color:#0a6640;"></td>
         <td id="sub-paid"></td>
       </tr>
@@ -176,21 +168,14 @@
   const MEMBERS = [
     '강기빈','강성현','김동수','김병묵','김성록','김인','김준현','김지훈',
     '김태향','김태홍','김현','남궁기남','도지성','박상현','박영록',
-    '박영수','박찬빈','방선우','안성균','우성길','이인표','이형일','이형준','전원표',
-    '전재민','정종환','정해승','조성인','채동훈','채유민','채은일','최만식','최형태',
-    '홍래균','황인성'
+    '박영수','박찬빈','방선우','안성균','우성길','우풍신','이동희','이인표',
+    '이형일','이형준','장지호','전원표','전재민','정종환','정해승','진위',
+    '조성인','채동훈','채유민','채은일','최만식','최형태','홍래균','황대인','황인성'
   ];
-  const OUTING_FEE = 30000;
-  const CONTAINER_FEE = 10000;
-  const KEY_JOIN = 'wm_pay_join';
-  const KEY_PAID = 'wm_pay_paid';
-  const KEY_AMT  = 'wm_pay_amt';
-
-  // 입금내역 기반 초기값 (0=미납, 1=일부납, 2=납부완료)
-  const DEFAULT_NOJOIN  = new Set(['김동수','방선우','도지성','박영록','정종환','박상현','김태향','김인','채은일','김지훈','김성록','홍래균','김준현']);
-  const DEFAULT_PAID    = new Set(['강기빈','최만식','전재민','우성길','김동수','방선우','도지성','박영록','정종환','박상현','김태향','김인','채은일','김지훈','김성록']);
-  const DEFAULT_PARTIAL = new Set(['조성인']);
-  const EXEMPT_OUTING   = new Set(['김지훈','김태향','박상현','정종환']); // 운영진 야유회비 면제
+  const OUTING_FEE = 0; // 야유회비 미정 (확정 후 수정)
+  const KEY_JOIN = 'wm_outing_join_v1';
+  const KEY_PAID = 'wm_outing_paid_v1';
+  const KEY_AMT  = 'wm_outing_amt_v1';
 
   function load(key) { try { return JSON.parse(localStorage.getItem(key) || 'null'); } catch { return null; } }
   function save(key, val) { localStorage.setItem(key, JSON.stringify(val)); }
@@ -200,8 +185,7 @@
   function getAmts() { return load(KEY_AMT)  || {}; }
 
   function isJoin(name, joinState) {
-    if (name in joinState) return joinState[name];
-    return !DEFAULT_NOJOIN.has(name);
+    return name in joinState ? joinState[name] : true;
   }
   function getPayState(name, paidState) {
     if (name in paidState) {
@@ -210,13 +194,11 @@
       if (v === false) return 0;
       return v;
     }
-    if (DEFAULT_PAID.has(name))    return 2;
-    if (DEFAULT_PARTIAL.has(name)) return 1;
     return 0;
   }
   function defaultAmt(ps, total) {
     if (ps === 2) return total;
-    if (ps === 1) return CONTAINER_FEE;
+    if (ps === 1) return Math.floor(total / 2);
     return 0;
   }
   function getAmt(name, ps, total) {
@@ -232,11 +214,8 @@
     const newPs = (getPayState(name, paidState) + 1) % 3;
     paidState[name] = newPs;
     save(KEY_PAID, paidState);
-    // 상태 변경 시 납부액 자동 갱신
-    const exempt = EXEMPT_OUTING.has(name);
     const join = isJoin(name, joinState);
-    const outing = exempt ? 0 : (join ? OUTING_FEE : 0);
-    const total = outing + CONTAINER_FEE;
+    const total = join ? OUTING_FEE : 0;
     const amts = getAmts();
     amts[name] = defaultAmt(newPs, total);
     save(KEY_AMT, amts);
@@ -264,18 +243,14 @@
   }
 
   function getSortKey(name, col, joinState, paidState) {
-    const exempt = EXEMPT_OUTING.has(name);
     const join = isJoin(name, joinState);
     const ps = getPayState(name, paidState);
-    const outing = exempt ? 0 : (join ? OUTING_FEE : 0);
-    const total = outing + CONTAINER_FEE;
+    const total = join ? OUTING_FEE : 0;
     if (col === 0) return name;
-    if (col === 1) return exempt ? 2 : (join ? 1 : 0);
-    if (col === 2) return outing;
-    if (col === 3) return CONTAINER_FEE;
-    if (col === 4) return total;
-    if (col === 5) return getAmt(name, ps, total);
-    if (col === 6) return ps;
+    if (col === 1) return join ? 1 : 0;
+    if (col === 2) return total;
+    if (col === 3) return getAmt(name, ps, total);
+    if (col === 4) return ps;
     return name;
   }
 
@@ -283,11 +258,9 @@
     const joinState = getJoin(), paidState = getPaid();
     let paidCount = 0, partialCount = 0, totalAmt = 0;
     MEMBERS.forEach(name => {
-      const exempt = EXEMPT_OUTING.has(name);
       const join = isJoin(name, joinState);
       const ps = getPayState(name, paidState);
-      const outing = exempt ? 0 : (join ? OUTING_FEE : 0);
-      const total = outing + CONTAINER_FEE;
+      const total = join ? OUTING_FEE : 0;
       if (ps === 2) paidCount++;
       else if (ps === 1) partialCount++;
       totalAmt += getAmt(name, ps, total);
@@ -303,7 +276,7 @@
   function render() {
     const joinState = getJoin(), paidState = getPaid();
     const tbody = document.getElementById('payBody');
-    let sumOuting=0, sumContainer=0, sumTotal=0, joinCount=0;
+    let sumOuting = 0, joinCount = 0;
 
     const sorted = [...MEMBERS].sort((a, b) => {
       if (sortCol === -1) return 0;
@@ -315,35 +288,25 @@
     });
 
     tbody.innerHTML = sorted.map(name => {
-      const exempt = EXEMPT_OUTING.has(name);
       const join = isJoin(name, joinState);
       const ps = getPayState(name, paidState);
-      const outing = exempt ? 0 : (join ? OUTING_FEE : 0);
-      const container = CONTAINER_FEE;
-      const total = outing + container;
+      const total = join ? OUTING_FEE : 0;
       const amt = getAmt(name, ps, total);
-      sumOuting += outing; sumContainer += container; sumTotal += total;
+      sumOuting += total;
       if (join) joinCount++;
       const payClass = ps === 2 ? 'paid' : ps === 1 ? 'partial' : 'unpaid';
       const payLabel = ps === 2 ? '✅납부' : ps === 1 ? '🔸일부납' : '⏳미납';
-      const joinCell = exempt
-        ? `<button class="toggle-btn ${join?'join':'nojoin'}" onclick="toggleJoin('${name}')" style="border:2px solid #aac4ff;">${join?'✅참가':'❌불참'}</button>`
-        : `<button class="toggle-btn ${join?'join':'nojoin'}" onclick="toggleJoin('${name}')">${join?'✅참가':'❌불참'}</button>`;
       return `<tr class="${ps === 2 ? 'paid-row' : ''}">
         <td>${name}</td>
-        <td>${joinCell}</td>
-        <td class="amount">${exempt ? '<span style="color:#3355aa;font-size:11px;">면제</span>' : fmt(outing)}</td>
-        <td class="amount">${fmt(container)}</td>
-        <td class="amount total-col">${total.toLocaleString()}원</td>
+        <td><button class="toggle-btn ${join?'join':'nojoin'}" onclick="toggleJoin('${name}')">${join?'✅참가':'❌불참'}</button></td>
+        <td class="amount">${fmt(total)}</td>
         <td><input type="number" class="amt-input" min="0" step="1000" value="${amt}" onchange="updateAmt('${name}',this.value)" onclick="this.select()"></td>
         <td><button class="toggle-btn ${payClass}" onclick="togglePaid('${name}')">${payLabel}</button></td>
       </tr>`;
     }).join('');
 
     document.getElementById('sub-join').textContent = joinCount + '명 참가';
-    document.getElementById('sub-outing').innerHTML = sumOuting.toLocaleString() + '원';
-    document.getElementById('sub-container').innerHTML = sumContainer.toLocaleString() + '원';
-    document.getElementById('sub-total').innerHTML = sumTotal.toLocaleString() + '원';
+    document.getElementById('sub-outing').innerHTML = sumOuting > 0 ? sumOuting.toLocaleString() + '원' : '미정';
     updateSumBadges();
   }
 
