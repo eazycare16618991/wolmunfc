@@ -914,125 +914,6 @@
 <body>
 
 <!-- ── 욕쟁이상 팝업 ── -->
-<div class="award-overlay" id="awardOverlay">
-  <div class="award-box">
-    <button class="award-close" onclick="closeAward()">✕</button>
-    <div class="award-emoji">🤬</div>
-    <div class="award-title">2026 월문FC · 욕쟁이상</div>
-    <img src="IMG_3353.jpeg" class="award-photo" alt="김지훈" />
-    <div class="award-name">김지훈</div>
-    <div class="award-team">기남팀</div>
-    <button class="award-btn" onclick="closeAward()">확인 👍</button>
-  </div>
-</div>
-
-<!-- ── 득점왕 팝업 ── -->
-<div class="award-overlay" id="goalAwardOverlay" style="display:none;">
-  <div class="award-box">
-    <button class="award-close" onclick="closeGoalAward()">✕</button>
-    <div class="award-emoji">⚽</div>
-    <div class="award-title">2026 월문FC · 득점왕</div>
-    <img src="IMG_3348.jpeg" class="award-photo" alt="정종환" />
-    <div class="award-name">정종환</div>
-    <div class="award-team">해승팀</div>
-    <button class="award-btn" onclick="closeGoalAward()">확인 👍</button>
-  </div>
-</div>
-
-<!-- ── 어시스트상 팝업 ── -->
-<div class="award-overlay" id="assistAwardOverlay" style="display:none;">
-  <div class="award-box">
-    <button class="award-close" onclick="closeAssistAward()">✕</button>
-    <div class="award-emoji">🎯</div>
-    <div class="award-title">2026 월문FC · 어시스트상</div>
-    <img src="IMG_3350.jpeg" class="award-photo" alt="김태향" />
-    <div class="award-name">김태향</div>
-    <div class="award-team">성길팀</div>
-    <button class="award-btn" onclick="closeAssistAward()">확인 👍</button>
-  </div>
-</div>
-
-<!-- ── 철벽수비상 팝업 ── -->
-<div class="award-overlay" id="defenseAwardOverlay" style="display:none;">
-  <div class="award-box">
-    <button class="award-close" onclick="closeDefenseAward()">✕</button>
-    <div class="award-emoji">🛡️</div>
-    <div class="award-title">2026 월문FC · 철벽수비상</div>
-    <img src="IMG_3347.jpeg" class="award-photo" alt="홍래균" />
-    <div class="award-name">홍래균</div>
-    <div class="award-team">기남팀</div>
-    <button class="award-btn" onclick="closeDefenseAward()">확인 👍</button>
-  </div>
-</div>
-
-<!-- ── 야신상 팝업 ── -->
-<div class="award-overlay" id="goalkeeperAwardOverlay" style="display:none;">
-  <div class="award-box">
-    <button class="award-close" onclick="closeGoalkeeperAward()">✕</button>
-    <div class="award-emoji">🧤</div>
-    <div class="award-title">2026 월문FC · 야신상</div>
-    <img src="IMG_3346.jpeg" class="award-photo" alt="채유민" />
-    <div class="award-name">채유민</div>
-    <div class="award-team">성길팀</div>
-    <button class="award-btn" onclick="closeGoalkeeperAward()">확인 👍</button>
-  </div>
-</div>
-<script>
-  function closeAward() {
-    const el = document.getElementById('awardOverlay');
-    el.classList.add('hide');
-    setTimeout(() => { el.style.display = 'none'; el.classList.remove('hide'); }, 350);
-    sessionStorage.setItem('awardSeen', '1');
-  }
-  function showAward() {
-    const el = document.getElementById('awardOverlay');
-    el.style.display = 'flex';
-    el.classList.remove('hide');
-  }
-  if (sessionStorage.getItem('awardSeen')) {
-    document.getElementById('awardOverlay').style.display = 'none';
-  }
-  function closeGoalAward() {
-    const el = document.getElementById('goalAwardOverlay');
-    el.classList.add('hide');
-    setTimeout(() => { el.style.display = 'none'; el.classList.remove('hide'); }, 350);
-  }
-  function showGoalAward() {
-    const el = document.getElementById('goalAwardOverlay');
-    el.style.display = 'flex';
-    el.classList.remove('hide');
-  }
-  function closeAssistAward() {
-    const el = document.getElementById('assistAwardOverlay');
-    el.classList.add('hide');
-    setTimeout(() => { el.style.display = 'none'; el.classList.remove('hide'); }, 350);
-  }
-  function showAssistAward() {
-    const el = document.getElementById('assistAwardOverlay');
-    el.style.display = 'flex';
-    el.classList.remove('hide');
-  }
-  function closeDefenseAward() {
-    const el = document.getElementById('defenseAwardOverlay');
-    el.classList.add('hide');
-    setTimeout(() => { el.style.display = 'none'; el.classList.remove('hide'); }, 350);
-  }
-  function showDefenseAward() {
-    const el = document.getElementById('defenseAwardOverlay');
-    el.style.display = 'flex';
-    el.classList.remove('hide');
-  }
-  function closeGoalkeeperAward() {
-    const el = document.getElementById('goalkeeperAwardOverlay');
-    el.classList.add('hide');
-    setTimeout(() => { el.style.display = 'none'; el.classList.remove('hide'); }, 350);
-  }
-  function showGoalkeeperAward() {
-    const el = document.getElementById('goalkeeperAwardOverlay');
-    el.style.display = 'flex';
-    el.classList.remove('hide');
-  }
-</script>
 
 <!-- ── 헤더 ── -->
 <header>
@@ -1365,16 +1246,16 @@
       <tr><th>시상</th><th>수상자</th><th>상품</th><th>선정 방식</th></tr>
     </thead>
     <tbody>
-      <tr><td>🏆 우승팀 시상</td><td><span class="winner-pending">미정</span></td><td><span class="prize-text">304스스텐 핸디텀블러 600ml</span></td><td>리그 1회 이상 참석 + 야유회 참석자</td></tr>
-      <tr><td>⚽ 득점왕</td><td><span class="winner-pending">미정</span></td><td><span class="prize-text">특대형 와이드그릴 60cm</span></td><td>최다 골 / 동수 시 비우승팀 → 최소실점팀 순</td></tr>
-      <tr><td>🎯 어시스트상</td><td><span class="winner-pending">미정</span></td><td><span class="prize-text">특대형 와이드그릴 60cm</span></td><td>최다 어시스트 / 동수 시 동일 기준</td></tr>
-      <tr><td>🛡️ 철벽수비상</td><td><span class="winner-pending">미정</span></td><td><span class="prize-text">무선 텀블러블렌더 600ml</span></td><td>최다 우수선수 / 동수 시 동일 기준</td></tr>
-      <tr><td>🧤 야신상</td><td><span class="winner-pending">미정</span></td><td><span class="prize-text">무선 텀블러블렌더 600ml</span></td><td>최소실점팀 최다 우수선수 / 동수 시 비우승팀 → 팀장선정 순</td></tr>
-      <tr><td>📈 기량발전상</td><td><span class="winner-pending">심사중</span></td><td><span class="prize-text">14인치스탠드형 5엽날개 선풍기</span></td><td>감독 선정 (1인)</td></tr>
-      <tr><td>👥 최다출석팀상</td><td><span class="winner-pending">미정</span></td><td><span class="prize-text">프리미엄 논슬립 축구양말</span></td><td>리그 1회 이상 참석 + 야유회 참석자</td></tr>
-      <tr><td>🌟 리그 MVP</td><td><span class="winner-pending">심사중</span></td><td><span class="prize-text">디지털터치식 에어프라이어 3.5리터</span></td><td>운영진 5인 합의 선정</td></tr>
-      <tr><td>🤬 욕쟁이상</td><td><span class="winner-pending">미정</span></td><td><span class="winner-secret">미공개</span></td><td>—</td></tr>
-      <tr class="dup-row"><td>📋 중복수상 안내</td><td></td><td></td><td>득 → 어 → 수 → 야 우선순위 (중복 시 차석자 수여)</td></tr>
+      <tr><td>🏆 우승팀 시상</td><td><span class="winner-pending">미정</span></td><td><span class="prize-text">미정</span></td><td>협의중</td></tr>
+      <tr><td>⚽ 득점왕</td><td><span class="winner-pending">미정</span></td><td><span class="prize-text">미정</span></td><td>협의중</td></tr>
+      <tr><td>🎯 어시스트상</td><td><span class="winner-pending">미정</span></td><td><span class="prize-text">미정</span></td><td>협의중</td></tr>
+      <tr><td>🛡️ 철벽수비상</td><td><span class="winner-pending">미정</span></td><td><span class="prize-text">미정</span></td><td>협의중</td></tr>
+      <tr><td>🧤 야신상</td><td><span class="winner-pending">미정</span></td><td><span class="prize-text">미정</span></td><td>협의중</td></tr>
+      <tr><td>📈 기량발전상</td><td><span class="winner-pending">미정</span></td><td><span class="prize-text">미정</span></td><td>협의중</td></tr>
+      <tr><td>👥 최다출석팀상</td><td><span class="winner-pending">미정</span></td><td><span class="prize-text">미정</span></td><td>협의중</td></tr>
+      <tr><td>🌟 리그 MVP</td><td><span class="winner-pending">미정</span></td><td><span class="prize-text">미정</span></td><td>협의중</td></tr>
+      <tr><td>🤬 욕쟁이상</td><td><span class="winner-pending">미정</span></td><td><span class="winner-secret">미공개</span></td><td>협의중</td></tr>
+      <tr class="dup-row"><td>📋 중복수상 안내</td><td></td><td></td><td>승점 → 전체득실차 → 다득점</td></tr>
     </tbody>
   </table>
   </div>
@@ -1632,67 +1513,78 @@
   <!-- 1라운드 참석현황 -->
   <div class="attend-panel" data-round="1">
     <div class="attend-grid">
-      <div class="attend-card rank1">
+      <div class="attend-card">
         <span class="crown">🥇</span>
-        <div class="team-nm">성길팀</div>
-        <div class="attend-bar-wrap"><div class="attend-bar" style="width:100%"></div></div>
-        <div class="attend-nums"><div><strong>10명</strong>참석</div></div>
-        <span class="attend-award">🏆 참석왕</span>
+        <div class="team-nm">-</div>
+        <div class="attend-bar-wrap"><div class="attend-bar" style="width:0%"></div></div>
+        <div class="attend-nums"><div><strong>미정</strong></div></div>
+        <span class="attend-award">참석왕 미정</span>
       </div>
-      <div class="attend-card rank2">
+      <div class="attend-card">
         <span class="crown">🥈</span>
-        <div class="team-nm">기남팀</div>
-        <div class="attend-bar-wrap"><div class="attend-bar" style="width:70%"></div></div>
-        <div class="attend-nums"><div><strong>7명</strong>참석</div></div>
+        <div class="team-nm">-</div>
+        <div class="attend-bar-wrap"><div class="attend-bar" style="width:0%"></div></div>
+        <div class="attend-nums"><div><strong>미정</strong></div></div>
       </div>
-      <div class="attend-card rank3">
+      <div class="attend-card">
         <span class="crown">🥉</span>
-        <div class="team-nm">해승팀</div>
-        <div class="attend-bar-wrap"><div class="attend-bar" style="width:60%"></div></div>
-        <div class="attend-nums"><div><strong>6명</strong>참석</div></div>
+        <div class="team-nm">-</div>
+        <div class="attend-bar-wrap"><div class="attend-bar" style="width:0%"></div></div>
+        <div class="attend-nums"><div><strong>미정</strong></div></div>
       </div>
     </div>
     <div class="attend-table-wrap">
       <table class="attend-table">
         <thead>
           <tr>
-            <th>이름</th><th>팀</th><th>1라운드 (05.03)</th><th>참석</th>
+            <th>이름</th><th>팀</th><th>1라운드 (10.11)</th><th>참석</th>
           </tr>
         </thead>
         <tbody>
-          <tr><td>방선우</td><td>해승팀</td><td><span class="attend-o">●</span></td><td class="attend-total">1</td></tr>
-          <tr><td>장지호</td><td>해승팀</td><td><span class="attend-o">●</span></td><td class="attend-total">1</td></tr>
-          <tr><td>정종환</td><td>해승팀</td><td><span class="attend-o">●</span></td><td class="attend-total">1</td></tr>
-          <tr><td>김태홍</td><td>해승팀</td><td><span class="attend-x">✕</span></td><td class="attend-total">0</td></tr>
-          <tr><td>최만식</td><td>해승팀</td><td><span class="attend-o">●</span></td><td class="attend-total">1</td></tr>
-          <tr class="extra-row"><td>김병묵</td><td>해승팀</td><td><span class="attend-o">●</span></td><td class="attend-total">1</td></tr>
-          <tr class="extra-row"><td>김성록</td><td>해승팀</td><td><span class="attend-o">●</span></td><td class="attend-total">1</td></tr>
-          <tr class="extra-row"><td>정해승</td><td>해승팀</td><td><span class="attend-x">✕</span></td><td class="attend-total">0</td></tr>
-          <tr class="extra-row"><td>우성길</td><td>해승팀</td><td><span class="attend-x">✕</span></td><td class="attend-total">0</td></tr>
-          <tr class="extra-row"><td>강기빈</td><td>성길팀</td><td><span class="attend-o">●</span></td><td class="attend-total">1</td></tr>
-          <tr class="extra-row"><td>김태향</td><td>성길팀</td><td><span class="attend-o">●</span></td><td class="attend-total">1</td></tr>
-          <tr class="extra-row"><td>전원표</td><td>성길팀</td><td><span class="attend-o">●</span></td><td class="attend-total">1</td></tr>
-          <tr class="extra-row"><td>황인성</td><td>성길팀</td><td><span class="attend-o">●</span></td><td class="attend-total">1</td></tr>
-          <tr class="extra-row"><td>박영수</td><td>성길팀</td><td><span class="attend-o">●</span></td><td class="attend-total">1</td></tr>
-          <tr class="extra-row"><td>채동훈</td><td>성길팀</td><td><span class="attend-o">●</span></td><td class="attend-total">1</td></tr>
-          <tr class="extra-row"><td>박찬빈</td><td>성길팀</td><td><span class="attend-o">●</span></td><td class="attend-total">1</td></tr>
-          <tr class="extra-row"><td>채유민</td><td>성길팀</td><td><span class="attend-o">●</span></td><td class="attend-total">1</td></tr>
-          <tr class="extra-row"><td>이형일</td><td>성길팀</td><td><span class="attend-o">●</span></td><td class="attend-total">1</td></tr>
-          <tr class="extra-row"><td>이인표</td><td>성길팀</td><td><span class="attend-o">●</span></td><td class="attend-total">1</td></tr>
-          <tr class="extra-row"><td>안성균</td><td>성길팀</td><td><span class="attend-x">✕</span></td><td class="attend-total">0</td></tr>
-          <tr class="extra-row"><td>박영록</td><td>기남팀</td><td><span class="attend-o">●</span></td><td class="attend-total">1</td></tr>
-          <tr class="extra-row"><td>박상현</td><td>기남팀</td><td><span class="attend-o">●</span></td><td class="attend-total">1</td></tr>
-          <tr class="extra-row"><td>김동수</td><td>기남팀</td><td><span class="attend-o">●</span></td><td class="attend-total">1</td></tr>
-          <tr class="extra-row"><td>김지훈</td><td>기남팀</td><td><span class="attend-o">●</span></td><td class="attend-total">1</td></tr>
-          <tr class="extra-row"><td>홍래균</td><td>기남팀</td><td><span class="attend-o">●</span></td><td class="attend-total">1</td></tr>
-          <tr class="extra-row"><td>강성현</td><td>기남팀</td><td><span class="attend-o">●</span></td><td class="attend-total">1</td></tr>
-          <tr class="extra-row"><td>조성인</td><td>기남팀</td><td><span class="attend-o">●</span></td><td class="attend-total">1</td></tr>
-          <tr class="extra-row"><td>김인</td><td>기남팀</td><td><span class="attend-x">✕</span></td><td class="attend-total">0</td></tr>
-          <tr class="extra-row"><td>김현</td><td>기남팀</td><td><span class="attend-x">✕</span></td><td class="attend-total">0</td></tr>
+          <tr><td>남궁기남</td><td>기남팀</td><td><span style="color:#8a9aaa">-</span></td><td class="attend-total">-</td></tr>
+          <tr><td>김태향</td><td>기남팀</td><td><span style="color:#8a9aaa">-</span></td><td class="attend-total">-</td></tr>
+          <tr><td>박상현</td><td>기남팀</td><td><span style="color:#8a9aaa">-</span></td><td class="attend-total">-</td></tr>
+          <tr><td>최만식</td><td>기남팀</td><td><span style="color:#8a9aaa">-</span></td><td class="attend-total">-</td></tr>
+          <tr><td>이형일</td><td>기남팀</td><td><span style="color:#8a9aaa">-</span></td><td class="attend-total">-</td></tr>
+          <tr class="extra-row"><td>홍래균</td><td>기남팀</td><td><span style="color:#8a9aaa">-</span></td><td class="attend-total">-</td></tr>
+          <tr class="extra-row"><td>도지성</td><td>기남팀</td><td><span style="color:#8a9aaa">-</span></td><td class="attend-total">-</td></tr>
+          <tr class="extra-row"><td>박영수</td><td>기남팀</td><td><span style="color:#8a9aaa">-</span></td><td class="attend-total">-</td></tr>
+          <tr class="extra-row"><td>박영록</td><td>기남팀</td><td><span style="color:#8a9aaa">-</span></td><td class="attend-total">-</td></tr>
+          <tr class="extra-row"><td>박찬빈</td><td>기남팀</td><td><span style="color:#8a9aaa">-</span></td><td class="attend-total">-</td></tr>
+          <tr class="extra-row"><td>김성록</td><td>기남팀</td><td><span style="color:#8a9aaa">-</span></td><td class="attend-total">-</td></tr>
+          <tr class="extra-row"><td>전재민</td><td>기남팀</td><td><span style="color:#8a9aaa">-</span></td><td class="attend-total">-</td></tr>
+          <tr class="extra-row"><td>김준현</td><td>기남팀</td><td><span style="color:#8a9aaa">-</span></td><td class="attend-total">-</td></tr>
+          <tr class="extra-row"><td>최형태</td><td>기남팀</td><td><span style="color:#8a9aaa">-</span></td><td class="attend-total">-</td></tr>
+          <tr class="extra-row"><td>우성길</td><td>성길팀</td><td><span style="color:#8a9aaa">-</span></td><td class="attend-total">-</td></tr>
+          <tr class="extra-row"><td>강기빈</td><td>성길팀</td><td><span style="color:#8a9aaa">-</span></td><td class="attend-total">-</td></tr>
+          <tr class="extra-row"><td>전원표</td><td>성길팀</td><td><span style="color:#8a9aaa">-</span></td><td class="attend-total">-</td></tr>
+          <tr class="extra-row"><td>황인성</td><td>성길팀</td><td><span style="color:#8a9aaa">-</span></td><td class="attend-total">-</td></tr>
+          <tr class="extra-row"><td>채동훈</td><td>성길팀</td><td><span style="color:#8a9aaa">-</span></td><td class="attend-total">-</td></tr>
+          <tr class="extra-row"><td>안성균</td><td>성길팀</td><td><span style="color:#8a9aaa">-</span></td><td class="attend-total">-</td></tr>
+          <tr class="extra-row"><td>우풍신</td><td>성길팀</td><td><span style="color:#8a9aaa">-</span></td><td class="attend-total">-</td></tr>
+          <tr class="extra-row"><td>김병묵</td><td>성길팀</td><td><span style="color:#8a9aaa">-</span></td><td class="attend-total">-</td></tr>
+          <tr class="extra-row"><td>황대인</td><td>성길팀</td><td><span style="color:#8a9aaa">-</span></td><td class="attend-total">-</td></tr>
+          <tr class="extra-row"><td>이인표</td><td>성길팀</td><td><span style="color:#8a9aaa">-</span></td><td class="attend-total">-</td></tr>
+          <tr class="extra-row"><td>김동수</td><td>성길팀</td><td><span style="color:#8a9aaa">-</span></td><td class="attend-total">-</td></tr>
+          <tr class="extra-row"><td>김인</td><td>성길팀</td><td><span style="color:#8a9aaa">-</span></td><td class="attend-total">-</td></tr>
+          <tr class="extra-row"><td>조성인</td><td>성길팀</td><td><span style="color:#8a9aaa">-</span></td><td class="attend-total">-</td></tr>
+          <tr class="extra-row"><td>정해승</td><td>해승팀</td><td><span style="color:#8a9aaa">-</span></td><td class="attend-total">-</td></tr>
+          <tr class="extra-row"><td>장지호</td><td>해승팀</td><td><span style="color:#8a9aaa">-</span></td><td class="attend-total">-</td></tr>
+          <tr class="extra-row"><td>정종환</td><td>해승팀</td><td><span style="color:#8a9aaa">-</span></td><td class="attend-total">-</td></tr>
+          <tr class="extra-row"><td>김지훈</td><td>해승팀</td><td><span style="color:#8a9aaa">-</span></td><td class="attend-total">-</td></tr>
+          <tr class="extra-row"><td>강성현</td><td>해승팀</td><td><span style="color:#8a9aaa">-</span></td><td class="attend-total">-</td></tr>
+          <tr class="extra-row"><td>방선우</td><td>해승팀</td><td><span style="color:#8a9aaa">-</span></td><td class="attend-total">-</td></tr>
+          <tr class="extra-row"><td>김태홍</td><td>해승팀</td><td><span style="color:#8a9aaa">-</span></td><td class="attend-total">-</td></tr>
+          <tr class="extra-row"><td>이형준</td><td>해승팀</td><td><span style="color:#8a9aaa">-</span></td><td class="attend-total">-</td></tr>
+          <tr class="extra-row"><td>이동희</td><td>해승팀</td><td><span style="color:#8a9aaa">-</span></td><td class="attend-total">-</td></tr>
+          <tr class="extra-row"><td>채유민</td><td>해승팀</td><td><span style="color:#8a9aaa">-</span></td><td class="attend-total">-</td></tr>
+          <tr class="extra-row"><td>김현</td><td>해승팀</td><td><span style="color:#8a9aaa">-</span></td><td class="attend-total">-</td></tr>
+          <tr class="extra-row"><td>채은일</td><td>해승팀</td><td><span style="color:#8a9aaa">-</span></td><td class="attend-total">-</td></tr>
+          <tr class="extra-row"><td>진위</td><td>해승팀</td><td><span style="color:#8a9aaa">-</span></td><td class="attend-total">-</td></tr>
         </tbody>
       </table>
       <button class="attend-toggle-btn" onclick="toggleRows(this)">
-        24명 더 보기 <i class="arrow">▼</i>
+        35명 더 보기 <i class="arrow">▼</i>
       </button>
     </div>
   </div>
@@ -2143,8 +2035,8 @@
 
   // 페이지 로드 시 초기화
   let videoPage = 1;
-  const videoMaxPage = 3;
-  const videoPageLabels = { 1: '최신 영상', 2: '이전 영상', 3: '이전 영상 2' };
+  const videoMaxPage = 1;
+  const videoPageLabels = { 1: '최신 영상' };
 
   function changeVideoPage(dir) {
     videoPage = Math.max(1, Math.min(videoMaxPage, videoPage + dir));
@@ -2187,200 +2079,16 @@
     <p>리그 경기 하이라이트 영상을 확인하세요</p>
   </div>
 
-  <!-- 영상 네비게이터 -->
-  <div class="round-nav">
-    <button class="round-arrow" id="video-prev" onclick="changeVideoPage(-1)" disabled>◀</button>
-    <span class="round-label" id="video-page-label">최신 영상</span>
-    <button class="round-arrow" id="video-next" onclick="changeVideoPage(1)">▶</button>
-  </div>
-
-  <!-- 페이지 1: 최신 3개 -->
   <div class="video-grid video-page" data-page="1">
-    <a href="https://youtu.be/SOuHrHbu0To?si=zcrGsZQREKpUzgyd" target="_blank" class="video-card">
+    <a href="https://youtu.be/GURXm-8Gqm4" target="_blank" class="video-card">
       <div class="video-thumb">
-        <img src="https://img.youtube.com/vi/SOuHrHbu0To/hqdefault.jpg" alt="경기 영상 15" />
+        <img src="https://img.youtube.com/vi/GURXm-8Gqm4/hqdefault.jpg" alt="경기 영상 1" />
         <div class="play-btn"></div>
         <span class="video-thumb-label">📹 유튜브</span>
       </div>
       <div class="video-info">
-        <div class="round">경기 영상 15 · 최신</div>
-        <div class="title">5라운드 6경기</div>
-        <div class="meta">YouTube에서 보기</div>
-      </div>
-    </a>
-    <a href="https://youtu.be/qoVwahBtORU?si=9rhbBt785cBBIgJo" target="_blank" class="video-card">
-      <div class="video-thumb">
-        <img src="https://img.youtube.com/vi/qoVwahBtORU/hqdefault.jpg" alt="경기 영상 14" />
-        <div class="play-btn"></div>
-        <span class="video-thumb-label">📹 유튜브</span>
-      </div>
-      <div class="video-info">
-        <div class="round">경기 영상 14</div>
-        <div class="title">5라운드 5경기</div>
-        <div class="meta">YouTube에서 보기</div>
-      </div>
-    </a>
-    <a href="https://youtu.be/O_itN0prST0?si=QftN4QtQ577-O2-j" target="_blank" class="video-card">
-      <div class="video-thumb">
-        <img src="https://img.youtube.com/vi/O_itN0prST0/hqdefault.jpg" alt="경기 영상 13" />
-        <div class="play-btn"></div>
-        <span class="video-thumb-label">📹 유튜브</span>
-      </div>
-      <div class="video-info">
-        <div class="round">경기 영상 13</div>
-        <div class="title">5라운드 4경기</div>
-        <div class="meta">YouTube에서 보기</div>
-      </div>
-    </a>
-    <a href="https://youtu.be/Vf35rtkoR_Q?si=JMUx5D5iLaM1Zv6p" target="_blank" class="video-card">
-      <div class="video-thumb">
-        <img src="https://img.youtube.com/vi/Vf35rtkoR_Q/hqdefault.jpg" alt="경기 영상 11" />
-        <div class="play-btn"></div>
-        <span class="video-thumb-label">📹 유튜브</span>
-      </div>
-      <div class="video-info">
-        <div class="round">경기 영상 11</div>
-        <div class="title">5라운드 3경기</div>
-        <div class="meta">YouTube에서 보기</div>
-      </div>
-    </a>
-    <a href="https://youtu.be/RUb4kg_cq6A?si=HMsWGjpRqAAVffRq" target="_blank" class="video-card">
-      <div class="video-thumb">
-        <img src="https://img.youtube.com/vi/RUb4kg_cq6A/hqdefault.jpg" alt="경기 영상 12" />
-        <div class="play-btn"></div>
-        <span class="video-thumb-label">📹 유튜브</span>
-      </div>
-      <div class="video-info">
-        <div class="round">경기 영상 12</div>
-        <div class="title">5라운드 2경기</div>
-        <div class="meta">YouTube에서 보기</div>
-      </div>
-    </a>
-    <a href="https://youtu.be/5ftaxZGpM_Y?si=GgbKv09e5jfrMDMw" target="_blank" class="video-card">
-      <div class="video-thumb">
-        <img src="https://img.youtube.com/vi/5ftaxZGpM_Y/hqdefault.jpg" alt="경기 영상 10" />
-        <div class="play-btn"></div>
-        <span class="video-thumb-label">📹 유튜브</span>
-      </div>
-      <div class="video-info">
-        <div class="round">경기 영상 10</div>
-        <div class="title">5라운드 1게임</div>
-        <div class="meta">YouTube에서 보기</div>
-      </div>
-    </a>
-    <a href="https://youtu.be/I7XVD24LwUI?si=vg6hRWHbnSIIb5ZE" target="_blank" class="video-card">
-      <div class="video-thumb">
-        <img src="https://img.youtube.com/vi/I7XVD24LwUI/hqdefault.jpg" alt="경기 영상 9" />
-        <div class="play-btn"></div>
-        <span class="video-thumb-label">📹 유튜브</span>
-      </div>
-      <div class="video-info">
-        <div class="round">경기 영상 9</div>
-        <div class="title">4라운드 1게임</div>
-        <div class="meta">YouTube에서 보기</div>
-      </div>
-    </a>
-    <a href="https://youtu.be/JsByRv1vIKM?si=v4wXeV7FycRaDUsX" target="_blank" class="video-card">
-      <div class="video-thumb">
-        <img src="https://img.youtube.com/vi/JsByRv1vIKM/hqdefault.jpg" alt="경기 영상 8" />
-        <div class="play-btn"></div>
-        <span class="video-thumb-label">📹 유튜브</span>
-      </div>
-      <div class="video-info">
-        <div class="round">경기 영상 8</div>
-        <div class="title">4라운드 2게임</div>
-        <div class="meta">YouTube에서 보기</div>
-      </div>
-    </a>
-    <a href="https://youtu.be/y8t1dZxm8s4?si=0_6IsiM8Oe12sv46" target="_blank" class="video-card">
-      <div class="video-thumb">
-        <img src="https://img.youtube.com/vi/y8t1dZxm8s4/hqdefault.jpg" alt="경기 영상 7" />
-        <div class="play-btn"></div>
-        <span class="video-thumb-label">📹 유튜브</span>
-      </div>
-      <div class="video-info">
-        <div class="round">경기 영상 7</div>
-        <div class="title">월문 FC 경기 영상</div>
-        <div class="meta">YouTube에서 보기</div>
-      </div>
-    </a>
-  </div>
-
-  <!-- 페이지 2 -->
-  <div class="video-grid video-page" data-page="2" style="display:none">
-    <a href="https://youtu.be/SDT-8yjTR88?si=fbmtAL5ggjsVGpnv" target="_blank" class="video-card">
-      <div class="video-thumb">
-        <img src="https://img.youtube.com/vi/SDT-8yjTR88/hqdefault.jpg" alt="경기 영상 6" />
-        <div class="play-btn"></div>
-        <span class="video-thumb-label">📹 유튜브</span>
-      </div>
-      <div class="video-info">
-        <div class="round">경기 영상 6</div>
-        <div class="title">월문 FC 경기 영상</div>
-        <div class="meta">YouTube에서 보기</div>
-      </div>
-    </a>
-    <a href="https://youtu.be/VZzsikPlPNs?si=NQMYFuhkgWb8EfUt" target="_blank" class="video-card">
-      <div class="video-thumb">
-        <img src="https://img.youtube.com/vi/VZzsikPlPNs/hqdefault.jpg" alt="경기 영상 5" />
-        <div class="play-btn"></div>
-        <span class="video-thumb-label">📹 유튜브</span>
-      </div>
-      <div class="video-info">
-        <div class="round">경기 영상 5</div>
-        <div class="title">월문 FC 경기 영상</div>
-        <div class="meta">YouTube에서 보기</div>
-      </div>
-    </a>
-    <a href="https://youtu.be/6kIc9ip23vc?si=5UhwU35xJGk0-yFr" target="_blank" class="video-card">
-      <div class="video-thumb">
-        <img src="https://img.youtube.com/vi/6kIc9ip23vc/hqdefault.jpg" alt="경기 영상 4" />
-        <div class="play-btn"></div>
-        <span class="video-thumb-label">📹 유튜브</span>
-      </div>
-      <div class="video-info">
-        <div class="round">경기 영상 4</div>
-        <div class="title">월문 FC 경기 영상</div>
-        <div class="meta">YouTube에서 보기</div>
-      </div>
-    </a>
-  </div>
-
-  <!-- 페이지 3 -->
-  <div class="video-grid video-page" data-page="3" style="display:none">
-    <a href="https://youtu.be/JYEP9sgpsdc?si=ZoO0OmtIxTJdJH3o" target="_blank" class="video-card">
-      <div class="video-thumb">
-        <img src="https://img.youtube.com/vi/JYEP9sgpsdc/hqdefault.jpg" alt="경기 영상 3" />
-        <div class="play-btn"></div>
-        <span class="video-thumb-label">📹 유튜브</span>
-      </div>
-      <div class="video-info">
-        <div class="round">경기 영상 3</div>
-        <div class="title">월문 FC 경기 영상</div>
-        <div class="meta">YouTube에서 보기</div>
-      </div>
-    </a>
-    <a href="https://youtu.be/JdzkkJ36PUU?si=w06MuVC9eXeE4y3S" target="_blank" class="video-card">
-      <div class="video-thumb">
-        <img src="https://img.youtube.com/vi/JdzkkJ36PUU/hqdefault.jpg" alt="경기 영상 2" />
-        <div class="play-btn"></div>
-        <span class="video-thumb-label">📹 유튜브</span>
-      </div>
-      <div class="video-info">
-        <div class="round">경기 영상 2</div>
-        <div class="title">월문 FC 경기 영상</div>
-        <div class="meta">YouTube에서 보기</div>
-      </div>
-    </a>
-    <a href="https://youtu.be/6tqjWWmDHsU?si=_E5QW1i3tWG8hT3Z" target="_blank" class="video-card">
-      <div class="video-thumb">
-        <img src="https://img.youtube.com/vi/6tqjWWmDHsU/hqdefault.jpg" alt="경기 영상 1" />
-        <div class="play-btn"></div>
-        <span class="video-thumb-label">📹 유튜브</span>
-      </div>
-      <div class="video-info">
-        <div class="round">경기 영상 1</div>
-        <div class="title">월문 FC 경기 영상</div>
+        <div class="round">경기 영상 1 · 최신</div>
+        <div class="title">추계리그 경기 영상</div>
         <div class="meta">YouTube에서 보기</div>
       </div>
     </a>
@@ -2405,74 +2113,28 @@
   </div>
 
   <!-- 1라운드 -->
-  <div class="round-content" data-round="1" style="display:none">
+  <div class="round-content" data-round="1">
     <div class="attend-table-wrap">
       <table class="records-table">
         <thead>
           <tr><th>회원명</th><th>팀</th><th>득점</th><th>어시스트</th><th>키퍼</th><th>실점</th><th>실점율</th></tr>
         </thead>
         <tbody>
-          <tr><td><span class="record-name">김성록</span></td><td><span class="team-chip">해승팀</span></td><td>3</td><td>0</td><td>0</td><td>-</td><td>-</td></tr>
-          <tr><td><span class="record-name">최만식</span></td><td><span class="team-chip">해승팀</span></td><td>3</td><td>0</td><td>0</td><td>-</td><td>-</td></tr>
-          <tr><td><span class="record-name">강기빈</span></td><td><span class="team-chip">성길팀</span></td><td>2</td><td>1</td><td>0</td><td>-</td><td>-</td></tr>
-          <tr><td><span class="record-name">황인성</span></td><td><span class="team-chip">성길팀</span></td><td>2</td><td>0</td><td>0</td><td>-</td><td>-</td></tr>
-          <tr><td><span class="record-name">김동수</span></td><td><span class="team-chip">기남팀</span></td><td>2</td><td>0</td><td>0</td><td>-</td><td>-</td></tr>
-          <tr class="extra-row"><td><span class="record-name">장지호</span></td><td><span class="team-chip">해승팀</span></td><td>1</td><td>4</td><td>0</td><td>-</td><td>-</td></tr>
-          <tr class="extra-row"><td><span class="record-name">김태향</span></td><td><span class="team-chip">성길팀</span></td><td>1</td><td>3</td><td>0</td><td>-</td><td>-</td></tr>
-          <tr class="extra-row"><td><span class="record-name">조성인</span></td><td><span class="team-chip">기남팀</span></td><td>1</td><td>2</td><td>0</td><td>-</td><td>-</td></tr>
-          <tr class="extra-row"><td><span class="record-name">전원표</span></td><td><span class="team-chip">성길팀</span></td><td>1</td><td>0</td><td>0</td><td>-</td><td>-</td></tr>
-          <tr class="extra-row"><td><span class="record-name">채동훈</span></td><td><span class="team-chip">성길팀</span></td><td>1</td><td>0</td><td>0</td><td>-</td><td>-</td></tr>
-          <tr class="extra-row"><td><span class="record-name">방선우</span></td><td><span class="team-chip">해승팀</span></td><td>0</td><td>1</td><td>4</td><td>5</td><td>1.2</td></tr>
-          <tr class="extra-row"><td><span class="record-name">김지훈</span></td><td><span class="team-chip">기남팀</span></td><td>0</td><td>0</td><td>3</td><td>6</td><td>2.0</td></tr>
-          <tr class="extra-row"><td><span class="record-name">박영수</span></td><td><span class="team-chip">성길팀</span></td><td>0</td><td>1</td><td>1</td><td>2</td><td>2.0</td></tr>
-          <tr class="extra-row"><td><span class="record-name">박찬빈</span></td><td><span class="team-chip">성길팀</span></td><td>0</td><td>1</td><td>1</td><td>0</td><td>0.0</td></tr>
-          <tr class="extra-row"><td><span class="record-name">이형일</span></td><td><span class="team-chip">성길팀</span></td><td>0</td><td>1</td><td>1</td><td>1</td><td>1.0</td></tr>
-          <tr class="extra-row"><td><span class="record-name">정종환</span></td><td><span class="team-chip">해승팀</span></td><td>0</td><td>1</td><td>0</td><td>-</td><td>-</td></tr>
-          <tr class="extra-row"><td><span class="record-name">박상현</span></td><td><span class="team-chip">기남팀</span></td><td>0</td><td>1</td><td>0</td><td>-</td><td>-</td></tr>
-          <tr class="extra-row"><td><span class="record-name">강성현</span></td><td><span class="team-chip">기남팀</span></td><td>0</td><td>0</td><td>1</td><td>1</td><td>1.0</td></tr>
-          <tr class="extra-row"><td><span class="record-name">채유민</span></td><td><span class="team-chip">성길팀</span></td><td>0</td><td>0</td><td>1</td><td>2</td><td>2.0</td></tr>
         </tbody>
       </table>
-      <button class="attend-toggle-btn" onclick="toggleRows(this)">
-        13명 더 보기 <i class="arrow">▼</i>
-      </button>
     </div>
   </div>
 
   <!-- 2라운드 -->
-  <div class="round-content" data-round="2">
+  <div class="round-content" data-round="2" style="display:none">
     <div class="attend-table-wrap">
       <table class="records-table">
         <thead>
           <tr><th>회원명</th><th>팀</th><th>득점</th><th>어시스트</th><th>키퍼</th><th>실점</th><th>실점율</th></tr>
         </thead>
         <tbody>
-          <tr><td><span class="record-name">김현</span></td><td><span class="team-chip">기남팀</span></td><td>5</td><td>2</td><td>0</td><td>-</td><td>-</td></tr>
-          <tr><td><span class="record-name">강기빈</span></td><td><span class="team-chip">성길팀</span></td><td>4</td><td>0</td><td>0</td><td>-</td><td>-</td></tr>
-          <tr><td><span class="record-name">정종환</span></td><td><span class="team-chip">해승팀</span></td><td>5</td><td>1</td><td>0</td><td>-</td><td>-</td></tr>
-          <tr><td><span class="record-name">장지호</span></td><td><span class="team-chip">해승팀</span></td><td>3</td><td>2</td><td>0</td><td>-</td><td>-</td></tr>
-          <tr><td><span class="record-name">김지훈</span></td><td><span class="team-chip">기남팀</span></td><td>3</td><td>1</td><td>2</td><td>3</td><td>1.5</td></tr>
-          <tr class="extra-row"><td><span class="record-name">황인성</span></td><td><span class="team-chip">성길팀</span></td><td>2</td><td>0</td><td>0</td><td>-</td><td>-</td></tr>
-          <tr class="extra-row"><td><span class="record-name">김동수</span></td><td><span class="team-chip">기남팀</span></td><td>2</td><td>1</td><td>0</td><td>-</td><td>-</td></tr>
-          <tr class="extra-row"><td><span class="record-name">박상현</span></td><td><span class="team-chip">기남팀</span></td><td>1</td><td>2</td><td>0</td><td>-</td><td>-</td></tr>
-          <tr class="extra-row"><td><span class="record-name">최만식</span></td><td><span class="team-chip">해승팀</span></td><td>1</td><td>1</td><td>0</td><td>-</td><td>-</td></tr>
-          <tr class="extra-row"><td><span class="record-name">홍래균</span></td><td><span class="team-chip">기남팀</span></td><td>1</td><td>1</td><td>0</td><td>-</td><td>-</td></tr>
-          <tr class="extra-row"><td><span class="record-name">김성록</span></td><td><span class="team-chip">해승팀</span></td><td>1</td><td>1</td><td>0</td><td>-</td><td>-</td></tr>
-          <tr class="extra-row"><td><span class="record-name">채유민</span></td><td><span class="team-chip">성길팀</span></td><td>1</td><td>0</td><td>1</td><td>4</td><td>4.0</td></tr>
-          <tr class="extra-row"><td><span class="record-name">전원표</span></td><td><span class="team-chip">성길팀</span></td><td>0</td><td>3</td><td>0</td><td>-</td><td>-</td></tr>
-          <tr class="extra-row"><td><span class="record-name">채동훈</span></td><td><span class="team-chip">성길팀</span></td><td>0</td><td>2</td><td>0</td><td>-</td><td>-</td></tr>
-          <tr class="extra-row"><td><span class="record-name">방선우</span></td><td><span class="team-chip">해승팀</span></td><td>0</td><td>1</td><td>2</td><td>5</td><td>2.5</td></tr>
-          <tr class="extra-row"><td><span class="record-name">박영록</span></td><td><span class="team-chip">기남팀</span></td><td>0</td><td>1</td><td>2</td><td>4</td><td>2.0</td></tr>
-          <tr class="extra-row"><td><span class="record-name">김태향</span></td><td><span class="team-chip">성길팀</span></td><td>0</td><td>1</td><td>0</td><td>-</td><td>-</td></tr>
-          <tr class="extra-row"><td><span class="record-name">김인</span></td><td><span class="team-chip">기남팀</span></td><td>0</td><td>1</td><td>0</td><td>-</td><td>-</td></tr>
-          <tr class="extra-row"><td><span class="record-name">박영수</span></td><td><span class="team-chip">성길팀</span></td><td>0</td><td>0</td><td>2</td><td>2</td><td>1.0</td></tr>
-          <tr class="extra-row"><td><span class="record-name">정해승</span></td><td><span class="team-chip">해승팀</span></td><td>0</td><td>0</td><td>2</td><td>8</td><td>4.0</td></tr>
-          <tr class="extra-row"><td><span class="record-name">이형일</span></td><td><span class="team-chip">성길팀</span></td><td>0</td><td>0</td><td>1</td><td>3</td><td>3.0</td></tr>
         </tbody>
       </table>
-      <button class="attend-toggle-btn" onclick="toggleRows(this)">
-        16명 더 보기 <i class="arrow">▼</i>
-      </button>
     </div>
   </div>
 
@@ -2484,34 +2146,12 @@
           <tr><th>회원명</th><th>팀</th><th>득점</th><th>어시스트</th><th>키퍼</th><th>실점</th><th>실점율</th></tr>
         </thead>
         <tbody>
-          <tr><td><span class="record-name">정종환</span></td><td><span class="team-chip">해승팀</span></td><td>5</td><td>1</td><td>1</td><td>5</td><td>5.0</td></tr>
-          <tr><td><span class="record-name">강기빈</span></td><td><span class="team-chip">성길팀</span></td><td>4</td><td>3</td><td>2</td><td>6</td><td>3.0</td></tr>
-          <tr><td><span class="record-name">우성길</span></td><td><span class="team-chip">해승팀</span></td><td>4</td><td>1</td><td>0</td><td>-</td><td>-</td></tr>
-          <tr><td><span class="record-name">황인성</span></td><td><span class="team-chip">성길팀</span></td><td>3</td><td>2</td><td>0</td><td>-</td><td>-</td></tr>
-          <tr><td><span class="record-name">김지훈</span></td><td><span class="team-chip">기남팀</span></td><td>3</td><td>1</td><td>0</td><td>-</td><td>-</td></tr>
-          <tr class="extra-row"><td><span class="record-name">박상현</span></td><td><span class="team-chip">기남팀</span></td><td>3</td><td>2</td><td>0</td><td>-</td><td>-</td></tr>
-          <tr class="extra-row"><td><span class="record-name">홍래균</span></td><td><span class="team-chip">기남팀</span></td><td>2</td><td>0</td><td>0</td><td>-</td><td>-</td></tr>
-          <tr class="extra-row"><td><span class="record-name">장지호</span></td><td><span class="team-chip">해승팀</span></td><td>2</td><td>6</td><td>1</td><td>1</td><td>1.0</td></tr>
-          <tr class="extra-row"><td><span class="record-name">채동훈</span></td><td><span class="team-chip">성길팀</span></td><td>2</td><td>1</td><td>1</td><td>2</td><td>2.0</td></tr>
-          <tr class="extra-row"><td><span class="record-name">김태향</span></td><td><span class="team-chip">성길팀</span></td><td>2</td><td>2</td><td>0</td><td>-</td><td>-</td></tr>
-          <tr class="extra-row"><td><span class="record-name">강성현</span></td><td><span class="team-chip">기남팀</span></td><td>1</td><td>2</td><td>0</td><td>-</td><td>-</td></tr>
-          <tr class="extra-row"><td><span class="record-name">이인표</span></td><td><span class="team-chip">성길팀</span></td><td>1</td><td>1</td><td>0</td><td>-</td><td>-</td></tr>
-          <tr class="extra-row"><td><span class="record-name">채유민</span></td><td><span class="team-chip">성길팀</span></td><td>1</td><td>0</td><td>2</td><td>4</td><td>2.0</td></tr>
-          <tr class="extra-row"><td><span class="record-name">박영록</span></td><td><span class="team-chip">기남팀</span></td><td>0</td><td>2</td><td>0</td><td>-</td><td>-</td></tr>
-          <tr class="extra-row"><td><span class="record-name">최만식</span></td><td><span class="team-chip">해승팀</span></td><td>0</td><td>1</td><td>1</td><td>1</td><td>1.0</td></tr>
-          <tr class="extra-row"><td><span class="record-name">안성균</span></td><td><span class="team-chip">성길팀</span></td><td>0</td><td>1</td><td>0</td><td>-</td><td>-</td></tr>
-          <tr class="extra-row"><td><span class="record-name">방선우</span></td><td><span class="team-chip">해승팀</span></td><td>0</td><td>0</td><td>2</td><td>7</td><td>3.5</td></tr>
-          <tr class="extra-row"><td><span class="record-name">이형일</span></td><td><span class="team-chip">성길팀</span></td><td>0</td><td>0</td><td>1</td><td>3</td><td>3.0</td></tr>
-          <tr class="extra-row"><td><span class="record-name">정해승</span></td><td><span class="team-chip">해승팀</span></td><td>0</td><td>0</td><td>1</td><td>4</td><td>4.0</td></tr>
         </tbody>
       </table>
-      <button class="attend-toggle-btn" onclick="toggleRows(this)">
-        14명 더 보기 <i class="arrow">▼</i>
-      </button>
     </div>
   </div>
 
-  <!-- 4라운드 오늘의 기록 -->
+  <!-- 4라운드 -->
   <div class="round-content" data-round="4" style="display:none">
     <div class="attend-table-wrap">
       <table class="records-table">
@@ -2519,65 +2159,21 @@
           <tr><th>회원명</th><th>팀</th><th>득점</th><th>어시스트</th><th>키퍼</th><th>실점</th><th>실점율</th></tr>
         </thead>
         <tbody>
-          <tr><td><span class="record-name">황인성</span></td><td><span class="team-chip">성길팀</span></td><td>3</td><td>0</td><td>0</td><td>-</td><td>-</td></tr>
-          <tr><td><span class="record-name">채동훈</span></td><td><span class="team-chip">성길팀</span></td><td>1</td><td>0</td><td>0</td><td>-</td><td>-</td></tr>
-          <tr><td><span class="record-name">강기빈</span></td><td><span class="team-chip">성길팀</span></td><td>1</td><td>2</td><td>0</td><td>-</td><td>-</td></tr>
-          <tr><td><span class="record-name">김지훈</span></td><td><span class="team-chip">기남팀</span></td><td>1</td><td>1</td><td>0</td><td>-</td><td>-</td></tr>
-          <tr><td><span class="record-name">박상현</span></td><td><span class="team-chip">기남팀</span></td><td>1</td><td>0</td><td>0</td><td>-</td><td>-</td></tr>
-          <tr class="extra-row"><td><span class="record-name">김태향</span></td><td><span class="team-chip">성길팀</span></td><td>0</td><td>1</td><td>0</td><td>-</td><td>-</td></tr>
-          <tr class="extra-row"><td><span class="record-name">채은일</span></td><td><span class="team-chip">성길팀</span></td><td>0</td><td>1</td><td>0</td><td>-</td><td>-</td></tr>
-          <tr class="extra-row"><td><span class="record-name">채유민</span></td><td><span class="team-chip">성길팀</span></td><td>0</td><td>1</td><td>1</td><td>0</td><td>0.0</td></tr>
-          <tr class="extra-row"><td><span class="record-name">김동수</span></td><td><span class="team-chip">기남팀</span></td><td>0</td><td>1</td><td>0</td><td>-</td><td>-</td></tr>
-          <tr class="extra-row"><td><span class="record-name">이형일</span></td><td><span class="team-chip">성길팀</span></td><td>0</td><td>0</td><td>1</td><td>2</td><td>2.0</td></tr>
-          <tr class="extra-row"><td><span class="record-name">남궁기남</span></td><td><span class="team-chip">기남팀</span></td><td>0</td><td>0</td><td>1</td><td>3</td><td>3.0</td></tr>
-          <tr class="extra-row"><td><span class="record-name">박영록</span></td><td><span class="team-chip">기남팀</span></td><td>0</td><td>0</td><td>1</td><td>2</td><td>2.0</td></tr>
         </tbody>
       </table>
-      <button class="attend-toggle-btn" onclick="toggleRows(this)">
-        7명 더 보기 <i class="arrow">▼</i>
-      </button>
     </div>
   </div>
 
-  <!-- 5라운드 오늘의 기록 -->
-  <div class="round-content" data-round="5">
+  <!-- 5라운드 -->
+  <div class="round-content" data-round="5" style="display:none">
     <div class="attend-table-wrap">
       <table class="records-table">
         <thead>
           <tr><th>회원명</th><th>팀</th><th>득점</th><th>어시스트</th><th>키퍼</th><th>실점</th><th>실점율</th></tr>
         </thead>
         <tbody>
-          <tr><td><span class="record-name">정종환</span></td><td><span class="team-chip">해승팀</span></td><td>7</td><td>0</td><td>1</td><td>1</td><td>1.0</td></tr>
-          <tr><td><span class="record-name">강성현</span></td><td><span class="team-chip">기남팀</span></td><td>6</td><td>3</td><td>0</td><td>-</td><td>-</td></tr>
-          <tr><td><span class="record-name">강기빈</span></td><td><span class="team-chip">성길팀</span></td><td>4</td><td>1</td><td>1</td><td>0</td><td>0.0</td></tr>
-          <tr><td><span class="record-name">채동훈</span></td><td><span class="team-chip">성길팀</span></td><td>3</td><td>2</td><td>0</td><td>-</td><td>-</td></tr>
-          <tr><td><span class="record-name">채은일</span></td><td><span class="team-chip">성길팀</span></td><td>3</td><td>2</td><td>0</td><td>-</td><td>-</td></tr>
-          <tr class="extra-row"><td><span class="record-name">김현</span></td><td><span class="team-chip">기남팀</span></td><td>3</td><td>6</td><td>0</td><td>-</td><td>-</td></tr>
-          <tr class="extra-row"><td><span class="record-name">박상현</span></td><td><span class="team-chip">기남팀</span></td><td>2</td><td>2</td><td>0</td><td>-</td><td>-</td></tr>
-          <tr class="extra-row"><td><span class="record-name">김지훈</span></td><td><span class="team-chip">기남팀</span></td><td>2</td><td>1</td><td>1</td><td>2</td><td>2.0</td></tr>
-          <tr class="extra-row"><td><span class="record-name">김태홍</span></td><td><span class="team-chip">해승팀</span></td><td>1</td><td>4</td><td>0</td><td>-</td><td>-</td></tr>
-          <tr class="extra-row"><td><span class="record-name">도지성</span></td><td><span class="team-chip">해승팀</span></td><td>1</td><td>3</td><td>0</td><td>-</td><td>-</td></tr>
-          <tr class="extra-row"><td><span class="record-name">김동수</span></td><td><span class="team-chip">기남팀</span></td><td>1</td><td>2</td><td>0</td><td>-</td><td>-</td></tr>
-          <tr class="extra-row"><td><span class="record-name">박찬빈</span></td><td><span class="team-chip">성길팀</span></td><td>1</td><td>2</td><td>0</td><td>-</td><td>-</td></tr>
-          <tr class="extra-row"><td><span class="record-name">정해승</span></td><td><span class="team-chip">해승팀</span></td><td>1</td><td>1</td><td>2</td><td>11</td><td>5.5</td></tr>
-          <tr class="extra-row"><td><span class="record-name">황인성</span></td><td><span class="team-chip">성길팀</span></td><td>1</td><td>0</td><td>0</td><td>-</td><td>-</td></tr>
-          <tr class="extra-row"><td><span class="record-name">채유민</span></td><td><span class="team-chip">성길팀</span></td><td>1</td><td>0</td><td>2</td><td>3</td><td>1.5</td></tr>
-          <tr class="extra-row"><td><span class="record-name">박영록</span></td><td><span class="team-chip">기남팀</span></td><td>1</td><td>0</td><td>1</td><td>0</td><td>0.0</td></tr>
-          <tr class="extra-row"><td><span class="record-name">김태향</span></td><td><span class="team-chip">성길팀</span></td><td>0</td><td>4</td><td>0</td><td>-</td><td>-</td></tr>
-          <tr class="extra-row"><td><span class="record-name">우성길</span></td><td><span class="team-chip">해승팀</span></td><td>0</td><td>1</td><td>1</td><td>2</td><td>2.0</td></tr>
-          <tr class="extra-row"><td><span class="record-name">최만식</span></td><td><span class="team-chip">해승팀</span></td><td>0</td><td>1</td><td>0</td><td>-</td><td>-</td></tr>
-          <tr class="extra-row"><td><span class="record-name">이형준</span></td><td><span class="team-chip">성길팀</span></td><td>0</td><td>1</td><td>0</td><td>-</td><td>-</td></tr>
-          <tr class="extra-row"><td><span class="record-name">안성균</span></td><td><span class="team-chip">성길팀</span></td><td>0</td><td>1</td><td>0</td><td>-</td><td>-</td></tr>
-          <tr class="extra-row"><td><span class="record-name">홍래균</span></td><td><span class="team-chip">기남팀</span></td><td>0</td><td>1</td><td>1</td><td>2</td><td>2.0</td></tr>
-          <tr class="extra-row"><td><span class="record-name">방선우</span></td><td><span class="team-chip">해승팀</span></td><td>0</td><td>0</td><td>2</td><td>7</td><td>3.5</td></tr>
-          <tr class="extra-row"><td><span class="record-name">이형일</span></td><td><span class="team-chip">성길팀</span></td><td>0</td><td>0</td><td>1</td><td>2</td><td>2.0</td></tr>
-          <tr class="extra-row"><td><span class="record-name">박영수</span></td><td><span class="team-chip">성길팀</span></td><td>0</td><td>0</td><td>1</td><td>3</td><td>3.0</td></tr>
-          <tr class="extra-row"><td><span class="record-name">김인</span></td><td><span class="team-chip">기남팀</span></td><td>0</td><td>0</td><td>1</td><td>1</td><td>1.0</td></tr>
         </tbody>
       </table>
-      <button class="attend-toggle-btn" onclick="toggleRows(this)">
-        21명 더 보기 <i class="arrow">▼</i>
-      </button>
     </div>
   </div>
 </section>
@@ -2615,40 +2211,46 @@
 
 <script>
   const recordsData = [
-    { name:'강기빈',  team:'성길팀', goal:0, assist:0,  keeper:0, attend:0, ga:0,  gar:0.0 },
-    { name:'강성현',  team:'기남팀', goal:0,  assist:0,  keeper:0, attend:0, ga:0,  gar:0.0 },
-    { name:'김동수',  team:'기남팀', goal:0,  assist:0,  keeper:0, attend:0, ga:0,  gar:0.0 },
-    { name:'김병묵',  team:'해승팀', goal:0,  assist:0,  keeper:0, attend:0, ga:0,  gar:0.0 },
-    { name:'김성록',  team:'해승팀', goal:0,  assist:0,  keeper:0, attend:0, ga:0,  gar:0.0 },
-    { name:'김인',    team:'기남팀', goal:0,  assist:0,  keeper:0, attend:0, ga:0,  gar:0.0 },
-    { name:'김지훈',  team:'기남팀', goal:0,  assist:0,  keeper:0, attend:0, ga:0, gar:0.0 },
-    { name:'김태향',  team:'성길팀', goal:0,  assist:0, keeper:0, attend:0, ga:0,  gar:0.0 },
-    { name:'김태홍',  team:'해승팀', goal:0,  assist:0,  keeper:0, attend:0, ga:0,  gar:0.0 },
-    { name:'김현',    team:'기남팀', goal:0,  assist:0,  keeper:0, attend:0, ga:0,  gar:0.0 },
-    { name:'남궁기남',team:'기남팀', goal:0,  assist:0,  keeper:0, attend:0, ga:0,  gar:0.0 },
-    { name:'도지성',  team:'해승팀', goal:0,  assist:0,  keeper:0, attend:0, ga:0,  gar:0.0 },
-    { name:'박상현',  team:'기남팀', goal:0,  assist:0,  keeper:0, attend:0, ga:0,  gar:0.0 },
-    { name:'박영록',  team:'기남팀', goal:0,  assist:0,  keeper:0, attend:0, ga:0,  gar:0.0 },
-    { name:'박영수',  team:'성길팀', goal:0,  assist:0,  keeper:0, attend:0, ga:0,  gar:0.0 },
-    { name:'박찬빈',  team:'성길팀', goal:0,  assist:0,  keeper:0, attend:0, ga:0,  gar:0.0 },
-    { name:'방선우',  team:'해승팀', goal:0,  assist:0,  keeper:0,attend:0, ga:0, gar:0.0 },
-    { name:'안성균',  team:'성길팀', goal:0,  assist:0,  keeper:0, attend:0, ga:0,  gar:0.0 },
-    { name:'우성길',  team:'해승팀', goal:0,  assist:0,  keeper:0, attend:0, ga:0,  gar:0.0 },
-    { name:'이인표',  team:'성길팀', goal:0,  assist:0,  keeper:0, attend:0, ga:0,  gar:0.0 },
-    { name:'이형일',  team:'성길팀', goal:0,  assist:0,  keeper:0, attend:0, ga:0, gar:0.0 },
-    { name:'이형준',  team:'성길팀', goal:0,  assist:0,  keeper:0, attend:0, ga:0,  gar:0.0 },
-    { name:'장지호',  team:'해승팀', goal:0,  assist:0, keeper:0, attend:0, ga:0,  gar:0.0 },
-    { name:'전원표',  team:'성길팀', goal:0,  assist:0,  keeper:0, attend:0, ga:0,  gar:0.0 },
-    { name:'정종환',  team:'해승팀', goal:0, assist:0,  keeper:0, attend:0, ga:0,  gar:0.0 },
-    { name:'정해승',  team:'해승팀', goal:0,  assist:0,  keeper:0, attend:0, ga:0, gar:0.0 },
-    { name:'조성인',  team:'기남팀', goal:0,  assist:0,  keeper:0, attend:0, ga:0,  gar:0.0 },
-    { name:'채동훈',  team:'성길팀', goal:0,  assist:0,  keeper:0, attend:0, ga:0,  gar:0.0 },
-    { name:'채유민',  team:'성길팀', goal:0,  assist:0,  keeper:0, attend:0, ga:0, gar:0.0 },
-    { name:'채은일',  team:'성길팀', goal:0,  assist:0,  keeper:0, attend:0, ga:0,  gar:0.0 },
-    { name:'최만식',  team:'해승팀', goal:0,  assist:0,  keeper:0, attend:0, ga:0,  gar:0.0 },
-    { name:'최형태',  team:'해승팀', goal:0,  assist:0,  keeper:0, attend:0, ga:0,  gar:0.0 },
-    { name:'홍래균',  team:'기남팀', goal:0,  assist:0,  keeper:0, attend:0, ga:0,  gar:0.0 },
-    { name:'황인성',  team:'성길팀', goal:0, assist:0,  keeper:0, attend:0, ga:0,  gar:0.0 },
+    { name:'강기빈',  team:'성길팀', goal:0, assist:0,  keeper:0, attend:0, ga:0, gar:0.0 },
+    { name:'강성현',  team:'해승팀', goal:0, assist:0,  keeper:0, attend:0, ga:0, gar:0.0 },
+    { name:'김동수',  team:'성길팀', goal:0, assist:0,  keeper:0, attend:0, ga:0, gar:0.0 },
+    { name:'김병묵',  team:'성길팀', goal:0, assist:0,  keeper:0, attend:0, ga:0, gar:0.0 },
+    { name:'김성록',  team:'기남팀', goal:0, assist:0,  keeper:0, attend:0, ga:0, gar:0.0 },
+    { name:'김인',    team:'성길팀', goal:0, assist:0,  keeper:0, attend:0, ga:0, gar:0.0 },
+    { name:'김지훈',  team:'해승팀', goal:0, assist:0,  keeper:0, attend:0, ga:0, gar:0.0 },
+    { name:'김준현',  team:'기남팀', goal:0, assist:0,  keeper:0, attend:0, ga:0, gar:0.0 },
+    { name:'김태향',  team:'기남팀', goal:0, assist:0,  keeper:0, attend:0, ga:0, gar:0.0 },
+    { name:'김태홍',  team:'해승팀', goal:0, assist:0,  keeper:0, attend:0, ga:0, gar:0.0 },
+    { name:'김현',    team:'해승팀', goal:0, assist:0,  keeper:0, attend:0, ga:0, gar:0.0 },
+    { name:'남궁기남',team:'기남팀', goal:0, assist:0,  keeper:0, attend:0, ga:0, gar:0.0 },
+    { name:'도지성',  team:'기남팀', goal:0, assist:0,  keeper:0, attend:0, ga:0, gar:0.0 },
+    { name:'박상현',  team:'기남팀', goal:0, assist:0,  keeper:0, attend:0, ga:0, gar:0.0 },
+    { name:'박영록',  team:'기남팀', goal:0, assist:0,  keeper:0, attend:0, ga:0, gar:0.0 },
+    { name:'박영수',  team:'기남팀', goal:0, assist:0,  keeper:0, attend:0, ga:0, gar:0.0 },
+    { name:'박찬빈',  team:'기남팀', goal:0, assist:0,  keeper:0, attend:0, ga:0, gar:0.0 },
+    { name:'방선우',  team:'해승팀', goal:0, assist:0,  keeper:0, attend:0, ga:0, gar:0.0 },
+    { name:'안성균',  team:'성길팀', goal:0, assist:0,  keeper:0, attend:0, ga:0, gar:0.0 },
+    { name:'우성길',  team:'성길팀', goal:0, assist:0,  keeper:0, attend:0, ga:0, gar:0.0 },
+    { name:'우풍신',  team:'성길팀', goal:0, assist:0,  keeper:0, attend:0, ga:0, gar:0.0 },
+    { name:'이동희',  team:'해승팀', goal:0, assist:0,  keeper:0, attend:0, ga:0, gar:0.0 },
+    { name:'이인표',  team:'성길팀', goal:0, assist:0,  keeper:0, attend:0, ga:0, gar:0.0 },
+    { name:'이형일',  team:'기남팀', goal:0, assist:0,  keeper:0, attend:0, ga:0, gar:0.0 },
+    { name:'이형준',  team:'해승팀', goal:0, assist:0,  keeper:0, attend:0, ga:0, gar:0.0 },
+    { name:'장지호',  team:'해승팀', goal:0, assist:0,  keeper:0, attend:0, ga:0, gar:0.0 },
+    { name:'전원표',  team:'성길팀', goal:0, assist:0,  keeper:0, attend:0, ga:0, gar:0.0 },
+    { name:'전재민',  team:'기남팀', goal:0, assist:0,  keeper:0, attend:0, ga:0, gar:0.0 },
+    { name:'정종환',  team:'해승팀', goal:0, assist:0,  keeper:0, attend:0, ga:0, gar:0.0 },
+    { name:'정해승',  team:'해승팀', goal:0, assist:0,  keeper:0, attend:0, ga:0, gar:0.0 },
+    { name:'진위',    team:'해승팀', goal:0, assist:0,  keeper:0, attend:0, ga:0, gar:0.0 },
+    { name:'조성인',  team:'성길팀', goal:0, assist:0,  keeper:0, attend:0, ga:0, gar:0.0 },
+    { name:'채동훈',  team:'성길팀', goal:0, assist:0,  keeper:0, attend:0, ga:0, gar:0.0 },
+    { name:'채유민',  team:'해승팀', goal:0, assist:0,  keeper:0, attend:0, ga:0, gar:0.0 },
+    { name:'채은일',  team:'해승팀', goal:0, assist:0,  keeper:0, attend:0, ga:0, gar:0.0 },
+    { name:'최만식',  team:'기남팀', goal:0, assist:0,  keeper:0, attend:0, ga:0, gar:0.0 },
+    { name:'최형태',  team:'기남팀', goal:0, assist:0,  keeper:0, attend:0, ga:0, gar:0.0 },
+    { name:'홍래균',  team:'기남팀', goal:0, assist:0,  keeper:0, attend:0, ga:0, gar:0.0 },
+    { name:'황대인',  team:'성길팀', goal:0, assist:0,  keeper:0, attend:0, ga:0, gar:0.0 },
+    { name:'황인성',  team:'성길팀', goal:0, assist:0,  keeper:0, attend:0, ga:0, gar:0.0 },
   ];
 
   let currentSort = { col: null, asc: false };
