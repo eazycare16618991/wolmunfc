@@ -898,7 +898,7 @@
       <div class="lbl">참가팀</div>
     </div>
     <div class="hero-stat">
-      <div class="num">4라운드</div>
+      <div class="num">5라운드</div>
       <div class="lbl">진행 현황</div>
     </div>
     <div class="hero-stat">
@@ -1076,8 +1076,38 @@
         </div>
       </div>
 
-      <!-- 누적 순위표 -->
+      <!-- 6라운드 순위표 -->
       <div class="standings-panel" data-round="6" style="display:none">
+        <div class="card">
+          <div class="card-header">
+            <span class="icon">🏆</span>
+            <h3>리그 순위표</h3>
+            <span class="badge-live">6라운드</span>
+          </div>
+          <div class="standings-table-wrap"><table class="standings-table">
+            <thead>
+              <tr><th>팀명</th><th>경기</th><th>승</th><th>무</th><th>패</th><th>득점</th><th>실점</th><th>골득실</th><th>승점</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><span class="rank-num rank-1">1</span>성길팀</td>
+                <td>0</td><td class="win">0</td><td class="draw">0</td><td class="loss">0</td><td>0</td><td>0</td><td>0</td><td><strong>0</strong></td>
+              </tr>
+              <tr>
+                <td><span class="rank-num rank-2">2</span>해승팀</td>
+                <td>0</td><td class="win">0</td><td class="draw">0</td><td class="loss">0</td><td>0</td><td>0</td><td>0</td><td><strong>0</strong></td>
+              </tr>
+              <tr>
+                <td><span class="rank-num rank-3">3</span>기남팀</td>
+                <td>0</td><td class="win">0</td><td class="draw">0</td><td class="loss">0</td><td>0</td><td>0</td><td>0</td><td><strong>0</strong></td>
+              </tr>
+            </tbody>
+          </table></div>
+        </div>
+      </div>
+
+      <!-- 누적 순위표 -->
+      <div class="standings-panel" data-round="7" style="display:none">
         <div class="card">
           <div class="card-header">
             <span class="icon">🏆</span>
@@ -1429,6 +1459,18 @@
           </ul>
         </div>
       </div>
+      <!-- 6라운드 경기결과 -->
+      <div class="match-panel" data-round="6" style="display:none">
+        <div class="card">
+          <div class="card-header">
+            <span class="icon">📋</span>
+            <h3>6라운드 경기 결과 · 미정</h3>
+          </div>
+          <ul class="match-list">
+            <li class="match-item" style="justify-content:center;color:#8a9aaa;padding:20px;">경기 결과가 아직 등록되지 않았습니다.</li>
+          </ul>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -1541,6 +1583,20 @@
 
   <!-- 5라운드 MVP -->
   <div class="round-content" data-round="5" style="display:none">
+    <div style="display:flex;justify-content:center;padding:16px 0;">
+      <div class="mvp-team-card" style="max-width:340px;width:100%;">
+        <div class="mvp-items">
+          <div class="mvp-item">
+            <div class="mvp-badge defense">🛡️</div>
+            <div class="mvp-info"><span class="mvp-label">수비 MVP</span><span class="mvp-name">박영수</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 6라운드 MVP -->
+  <div class="round-content" data-round="6" style="display:none">
     <div style="display:flex;justify-content:center;padding:16px 0;">
       <div class="mvp-team-card" style="max-width:340px;width:100%;">
         <div class="mvp-items">
@@ -1955,8 +2011,36 @@
     </div>
   </div>
 
-  <!-- 누적참석인원 현황 -->
+  <!-- 6라운드 참석현황 -->
   <div class="attend-panel" data-round="6" style="display:none">
+    <div class="attend-grid">
+      <div class="attend-card rank1">
+        <span class="crown">🥇</span>
+        <div class="team-nm">미정</div>
+        <div class="attend-bar-wrap"><div class="attend-bar" style="width:100%"></div></div>
+        <div class="attend-nums"><div><strong>-명</strong>참석</div></div>
+        <span class="attend-award">🏆 참석왕</span>
+      </div>
+      <div class="attend-card rank2">
+        <span class="crown">🥈</span>
+        <div class="team-nm">미정</div>
+        <div class="attend-bar-wrap"><div class="attend-bar" style="width:0%"></div></div>
+        <div class="attend-nums"><div><strong>-명</strong>참석</div></div>
+      </div>
+      <div class="attend-card rank3">
+        <span class="crown">🥉</span>
+        <div class="team-nm">미정</div>
+        <div class="attend-bar-wrap"><div class="attend-bar" style="width:0%"></div></div>
+        <div class="attend-nums"><div><strong>-명</strong>참석</div></div>
+      </div>
+    </div>
+    <div class="attend-table-wrap" style="text-align:center;padding:20px;color:#8a9aaa;">
+      6라운드 경기 후 업데이트 예정
+    </div>
+  </div>
+
+  <!-- 누적참석인원 현황 -->
+  <div class="attend-panel" data-round="7" style="display:none">
     <div class="attend-grid">
       <div class="attend-card rank1">
         <span class="crown">🥇</span>
@@ -2042,8 +2126,8 @@
   }
 
   // ── 리그 순위표 네비게이터 (1라운드 → 2라운드 → 3라운드 → 누적) ──
-  let leagueRound = 4;
-  const leagueMaxRound = 6;
+  let leagueRound = 5;
+  const leagueMaxRound = 7;
 
   function changeLeagueRound(dir) {
     leagueRound = Math.max(1, Math.min(leagueMaxRound, leagueRound + dir));
@@ -2061,9 +2145,9 @@
   }
 
   // ── 경기결과 네비게이터 ──
-  let matchRound = 4;
-  const matchMaxRound = 5;
-  const matchLabels = { 1: '1라운드 · 10.11', 2: '2라운드 · 10.18', 3: '3라운드 · 10.25', 4: '4라운드 · 11.15', 5: '5라운드 · 11.22' };
+  let matchRound = 5;
+  const matchMaxRound = 6;
+  const matchLabels = { 1: '1라운드 · 10.11', 2: '2라운드 · 10.18', 3: '3라운드 · 10.25', 4: '4라운드 · 11.15', 5: '5라운드 · 11.22', 6: '6라운드 · 미정' };
 
   function changeMatchRound(dir) {
     matchRound = Math.max(1, Math.min(matchMaxRound, matchRound + dir));
@@ -2080,9 +2164,9 @@
   }
 
   // ── 참석인원 네비게이터 (1라운드 → 2라운드 → 3라운드 → 누적) ──
-  let attendRound = 4;
-  const attendMaxRound = 6;
-  const attendLabels = { 1: '1라운드 참석현황', 2: '2라운드 참석현황', 3: '3라운드 참석현황', 4: '4라운드 참석현황', 5: '5라운드 참석현황', 6: '누적참석인원 현황' };
+  let attendRound = 5;
+  const attendMaxRound = 7;
+  const attendLabels = { 1: '1라운드 참석현황', 2: '2라운드 참석현황', 3: '3라운드 참석현황', 4: '4라운드 참석현황', 5: '5라운드 참석현황', 6: '6라운드 참석현황', 7: '누적참석인원 현황' };
 
   function changeAttendRound(dir) {
     attendRound = Math.max(1, Math.min(attendMaxRound, attendRound + dir));
@@ -2100,7 +2184,7 @@
 
   // ── MVP 네비게이터 ──
   let mvpRound = 1;
-  const mvpMaxRound = 5;
+  const mvpMaxRound = 6;
 
   function changeMvpRound(dir) {
     mvpRound = Math.max(1, Math.min(mvpMaxRound, mvpRound + dir));
@@ -2117,8 +2201,8 @@
   }
 
   // ── 오늘의 기록 네비게이터 ──
-  let todayRound = 4;
-  const todayMaxRound = 5;
+  let todayRound = 5;
+  const todayMaxRound = 6;
 
   function changeTodayRound(dir) {
     todayRound = Math.max(1, Math.min(todayMaxRound, todayRound + dir));
@@ -2131,6 +2215,7 @@
     3: '3라운드 (10.25) · 골·어시스트·키퍼 기록 선수',
     4: '4라운드 (11.15) · 골·어시스트·키퍼 기록 선수',
     5: '5라운드 (11.22) · 골·어시스트·키퍼 기록 선수',
+    6: '6라운드 (미정) · 골·어시스트·키퍼 기록 선수',
   };
 
   function updateTodayDisplay() {
@@ -2432,6 +2517,19 @@
         </tbody>
       </table>
       <button class="attend-toggle-btn" onclick="toggleRows(this)">14명 더 보기 <i class="arrow">▼</i></button>
+    </div>
+  </div>
+
+  <!-- 6라운드 -->
+  <div class="round-content" data-round="6" style="display:none">
+    <div class="attend-table-wrap">
+      <table class="records-table">
+        <thead>
+          <tr><th>회원명</th><th>팀</th><th>득점</th><th>어시스트</th><th>키퍼</th><th>실점</th><th>실점율</th></tr>
+        </thead>
+        <tbody>
+        </tbody>
+      </table>
     </div>
   </div>
 </section>
