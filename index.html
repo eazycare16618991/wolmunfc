@@ -1561,13 +1561,13 @@
       <tr><th>시상</th><th>수상자</th><th>상품</th><th>선정 방식</th></tr>
     </thead>
     <tbody>
-      <tr><td>🏆 우승팀 시상</td><td><span class="winner-pending">미정</span></td><td><span class="prize-text">미정</span></td><td>협의중</td></tr>
-      <tr><td>⚽ 득점왕</td><td><span class="winner-pending">미정</span></td><td><span class="prize-text">미정</span></td><td>협의중</td></tr>
-      <tr><td>🎯 어시스트상</td><td><span class="winner-pending">미정</span></td><td><span class="prize-text">미정</span></td><td>협의중</td></tr>
+      <tr><td>🏆 우승팀 시상</td><td><span class="winner-confirmed">해승팀</span></td><td><span class="prize-text">미정</span></td><td>협의중</td></tr>
+      <tr><td>⚽ 득점왕</td><td><span class="winner-confirmed">강기빈</span> <small style="color:var(--muted)">17골</small></td><td><span class="prize-text">미정</span></td><td>협의중</td></tr>
+      <tr><td>🎯 어시스트상</td><td><span class="winner-confirmed">김태향</span> <small style="color:var(--muted)">13어시</small></td><td><span class="prize-text">미정</span></td><td>협의중</td></tr>
       <tr><td>🛡️ 철벽수비상</td><td><span class="winner-pending">미정</span></td><td><span class="prize-text">미정</span></td><td>협의중</td></tr>
       <tr><td>🧤 야신상</td><td><span class="winner-pending">미정</span></td><td><span class="prize-text">미정</span></td><td>협의중</td></tr>
       <tr><td>📈 기량발전상</td><td><span class="winner-pending">미정</span></td><td><span class="prize-text">미정</span></td><td>협의중</td></tr>
-      <tr><td>👥 최다출석팀상</td><td><span class="winner-pending">미정</span></td><td><span class="prize-text">미정</span></td><td>협의중</td></tr>
+      <tr><td>👥 최다출석팀상</td><td><span class="winner-confirmed">기남팀/성길팀</span> <small style="color:var(--muted)">공동 1위 각 47명</small></td><td><span class="prize-text">미정</span></td><td>협의중</td></tr>
       <tr><td>🌟 리그 MVP</td><td><span class="winner-pending">미정</span></td><td><span class="prize-text">미정</span></td><td>협의중</td></tr>
 
       <tr class="dup-row"><td>📋 중복수상 안내</td><td></td><td></td><td>승점 → 전체득실차 → 다득점</td></tr>
@@ -2227,7 +2227,7 @@
   // ── 경기결과 네비게이터 ──
   let matchRound = 6;
   const matchMaxRound = 6;
-  const matchLabels = { 1: '1라운드 · 10.11', 2: '2라운드 · 10.18', 3: '3라운드 · 10.25', 4: '4라운드 · 11.15', 5: '5라운드 · 11.22', 6: '6라운드 · 미정' };
+  const matchLabels = { 1: '1라운드 · 10.11', 2: '2라운드 · 10.18', 3: '3라운드 · 10.25', 4: '4라운드 · 11.15', 5: '5라운드 · 11.22', 6: '6라운드 · 11.22' };
 
   function changeMatchRound(dir) {
     matchRound = Math.max(1, Math.min(matchMaxRound, matchRound + dir));
@@ -2295,7 +2295,7 @@
     3: '3라운드 (10.25) · 골·어시스트·키퍼 기록 선수',
     4: '4라운드 (11.15) · 골·어시스트·키퍼 기록 선수',
     5: '5라운드 (11.22) · 골·어시스트·키퍼 기록 선수',
-    6: '6라운드 (미정) · 골·어시스트·키퍼 기록 선수',
+    6: '6라운드 (11.22) · 골·어시스트·키퍼 기록 선수',
   };
 
   function updateTodayDisplay() {
